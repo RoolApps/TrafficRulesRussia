@@ -25,7 +25,7 @@ namespace Tickets
         public MainPage()
         {
             this.InitializeComponent();
-
+            
             this.NavigationCacheMode = NavigationCacheMode.Required;
         }
 

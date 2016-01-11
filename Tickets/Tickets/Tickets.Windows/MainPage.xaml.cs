@@ -25,6 +25,7 @@ namespace Tickets
         public MainPage()
         {
             this.InitializeComponent();
+            
         }
     }
 }

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tickets.Windows", "Tickets\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tickets.WindowsPhone", "Tickets\Tickets.WindowsPhone\Tickets.WindowsPhone.csproj", "{EE978E81-AE21-4F1F-851F-63D4530DBF30}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteShared", "SQLiteShared\SQLiteShared.csproj", "{ED5BDB33-53D5-49C3-803D-85637D1D8150}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Tickets\Tickets.Shared\Tickets.Shared.projitems*{ee978e81-ae21-4f1f-851f-63d4530dbf30}*SharedItemsImports = 4
@@ -72,6 +74,16 @@ Global
 		{EE978E81-AE21-4F1F-851F-63D4530DBF30}.Release|x86.ActiveCfg = Release|x86
 		{EE978E81-AE21-4F1F-851F-63D4530DBF30}.Release|x86.Build.0 = Release|x86
 		{EE978E81-AE21-4F1F-851F-63D4530DBF30}.Release|x86.Deploy.0 = Release|x86
+		{ED5BDB33-53D5-49C3-803D-85637D1D8150}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED5BDB33-53D5-49C3-803D-85637D1D8150}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED5BDB33-53D5-49C3-803D-85637D1D8150}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{ED5BDB33-53D5-49C3-803D-85637D1D8150}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{ED5BDB33-53D5-49C3-803D-85637D1D8150}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ED5BDB33-53D5-49C3-803D-85637D1D8150}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED5BDB33-53D5-49C3-803D-85637D1D8150}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED5BDB33-53D5-49C3-803D-85637D1D8150}.Release|ARM.ActiveCfg = Release|Any CPU
+		{ED5BDB33-53D5-49C3-803D-85637D1D8150}.Release|x64.ActiveCfg = Release|Any CPU
+		{ED5BDB33-53D5-49C3-803D-85637D1D8150}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
