@@ -131,6 +131,10 @@
       <Project>{ed5bdb33-53d5-49c3-803d-85637d1d8150}</Project>
       <Name>SQLiteShared</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\XAMLMarkup\XAMLMarkup.csproj">
+      <Project>{015c87ef-3536-48e1-abd0-03e93bd37b0f}</Project>
+      <Name>XAMLMarkup</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <SDKReference Include="Microsoft.VCLibs, version=12.0">
