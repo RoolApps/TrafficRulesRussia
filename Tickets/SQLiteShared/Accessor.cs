@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Storage;
+using SQLite.Net;
+using SQLite.Net.Platform.WinRT;
 
 namespace SQLiteShared
 {
@@ -15,9 +17,16 @@ namespace SQLiteShared
         private static readonly StorageFolder LocalFolder = ApplicationData.Current.LocalFolder;
         private static readonly StorageFolder InstalledLocationFolder = Package.Current.InstalledLocation;
 
+        private static void Query(Action<SQLiteConnection> query)
+        {
+            using(var connection = new SQLiteConnection(new SQLitePlatformWinRT(), Path.Combine(LocalFolder.Path, DBFileName)))
+            {
+                query(connection);
+            }
+        }
+
         public static void Connect()
         {
-
             CheckDBFile().ContinueWith(async (result) =>
             {
                 bool exists = await result;
@@ -26,12 +35,11 @@ namespace SQLiteShared
                     await CopyDBFile();
                 }
 
-                using (var connection = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), 
-                    Path.Combine(LocalFolder.Path, DBFileName)))
+                Query(connection =>
                 {
-                    var answers = connection.Query<Models.Answers>("select * from Answers");
+                    var answers = connection.Query<Models.Answer>("select * from Answers");
                     answers.ToString();
-                }
+                });
             });
         }
 
