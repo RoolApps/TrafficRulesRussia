@@ -10,7 +10,7 @@ namespace AppLogic
     {
         int[] GetTicketNums();
 
-        int[] GetQuestionsByTickets(int[] tickets);
+        int[] GetQuestionIdsByTickets(int[] tickets);
 
         IQuestion GetQuestionById(int id);
     }
