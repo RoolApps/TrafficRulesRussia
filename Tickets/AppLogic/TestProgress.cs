@@ -27,7 +27,7 @@ namespace AppLogic
         internal TestProgress(IDataAccessor dataAccessor, TestParams parameters)
         {
             DataAccessor = dataAccessor;
-            var questions = dataAccessor.GetQuestionsByTickets(parameters.TicketNums);
+            var questions = dataAccessor.GetQuestionIdsByTickets(parameters.TicketNums);
             if(parameters.Shuffle)
             {
                 Random rand = new Random((int)DateTime.Now.ToBinary());
