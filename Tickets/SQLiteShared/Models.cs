@@ -7,14 +7,12 @@ using System.Threading.Tasks;
 
 namespace SQLiteShared.Models
 {
-    [Table("Tickets")]
-    public class Ticket : BaseModel
+    public class Tickets : BaseModel
     {
         public int num { get; set; }
     }
     
-    [Table("Questions")]
-    public class Question : BaseModel
+    public class Questions : BaseModel
     {
         public int num { get; set; }
 
@@ -25,8 +23,7 @@ namespace SQLiteShared.Models
         public int ticket_id { get; set; }
     }
 
-    [Table("Answers")]
-    public class Answer : BaseModel
+    public class Answers : BaseModel
     {
         public String answer { get; set; }
 
