@@ -132,7 +132,7 @@
       <Name>SQLiteShared</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\XAMLMarkup\XAMLMarkup.csproj">
-      <Project>{015c87ef-3536-48e1-abd0-03e93bd37b0f}</Project>
+      <Project>{c0f8f593-f465-4ce3-b820-f5b130a391cd}</Project>
       <Name>XAMLMarkup</Name>
     </ProjectReference>
   </ItemGroup>
