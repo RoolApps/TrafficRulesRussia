@@ -9,6 +9,6 @@
     mc:Ignorable="d">
     
     <XAMLMarkup:FlippingCanvas>
-        <Ellipse Fill="Red"></Ellipse>
+        <Ellipse Fill="Blue" Width="50" Height="50" Canvas.Left="300" Canvas.Top="200"></Ellipse>
     </XAMLMarkup:FlippingCanvas>
 </Page>
