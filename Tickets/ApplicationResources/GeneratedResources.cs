@@ -1,5 +1,5 @@
 
-namespace SharedApplication
+namespace AppData
 {
     public static class Resources
     {

@@ -28,9 +28,9 @@ namespace ResourcesGenerator
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("\r\nnamespace SharedApplication\r\n{\r\n    public static class Resources\r\n    {\r\n     " +
-                    "   private static System.Collections.Generic.Dictionary<string, object> Resource" +
-                    "sDictionary = new System.Collections.Generic.Dictionary<string, object>();\r\n\r\n");
+            this.Write("\r\nnamespace AppData\r\n{\r\n    public static class Resources\r\n    {\r\n        private" +
+                    " static System.Collections.Generic.Dictionary<string, object> ResourcesDictionar" +
+                    "y = new System.Collections.Generic.Dictionary<string, object>();\r\n\r\n");
             
             #line 13 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
  foreach (var resource in Resources.ResourcesArray)

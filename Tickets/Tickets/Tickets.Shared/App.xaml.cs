@@ -58,13 +58,13 @@ namespace Tickets
         private void InitResources()
         {
             var dbFileName = "tickets.db";
-            if(SharedApplication.Resources.ConnectionString == null)
+            if(AppData.Resources.ConnectionString == null)
             {
-                SharedApplication.Resources.ConnectionString = Path.Combine(ApplicationData.Current.LocalFolder.Path, dbFileName);
+                AppData.Resources.ConnectionString = Path.Combine(ApplicationData.Current.LocalFolder.Path, dbFileName);
             }
-            if(SharedApplication.Resources.DBFileName == null)
+            if(AppData.Resources.DBFileName == null)
             {
-                SharedApplication.Resources.DBFileName = dbFileName;
+                AppData.Resources.DBFileName = dbFileName;
             }
         }
 
@@ -87,7 +87,7 @@ namespace Tickets
         {
             try
             {
-                await ApplicationData.Current.LocalFolder.GetFileAsync(SharedApplication.Resources.DBFileName);
+                await ApplicationData.Current.LocalFolder.GetFileAsync(AppData.Resources.DBFileName);
                 return true;
             }
             catch (FileNotFoundException)
@@ -101,7 +101,7 @@ namespace Tickets
             try
             {
                 
-                var dbFile = await Package.Current.InstalledLocation.GetFileAsync(SharedApplication.Resources.DBFileName);
+                var dbFile = await Package.Current.InstalledLocation.GetFileAsync(AppData.Resources.DBFileName);
                 await dbFile.CopyAsync(ApplicationData.Current.LocalFolder);
                 return true;
             }

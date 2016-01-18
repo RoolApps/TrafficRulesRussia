@@ -24,7 +24,7 @@ namespace SQLiteShared
         #region Constructor
         public SQLiteDataAccessor()
         {
-            Connection = new SQLiteConnection(new SQLitePlatformWinRT(), SharedApplication.Resources.ConnectionString);
+            Connection = new SQLiteConnection(new SQLitePlatformWinRT(), AppData.Resources.ConnectionString);
         }
         #endregion
 
