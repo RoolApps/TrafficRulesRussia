@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteShared", "SQLiteShare
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppLogic", "AppLogic\AppLogic.csproj", "{AD57EF64-9DB5-4A05-9AD8-EB85CF4F1E7E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationResources", "ApplicationResources\ApplicationResources.csproj", "{7F7CE34F-45B2-4181-A273-565DA64BA575}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Tickets\Tickets.Shared\Tickets.Shared.projitems*{ee978e81-ae21-4f1f-851f-63d4530dbf30}*SharedItemsImports = 4
@@ -120,6 +122,20 @@ Global
 		{AD57EF64-9DB5-4A05-9AD8-EB85CF4F1E7E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AD57EF64-9DB5-4A05-9AD8-EB85CF4F1E7E}.Release|x64.ActiveCfg = Release|Any CPU
 		{AD57EF64-9DB5-4A05-9AD8-EB85CF4F1E7E}.Release|x86.ActiveCfg = Release|Any CPU
+		{7F7CE34F-45B2-4181-A273-565DA64BA575}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F7CE34F-45B2-4181-A273-565DA64BA575}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F7CE34F-45B2-4181-A273-565DA64BA575}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{7F7CE34F-45B2-4181-A273-565DA64BA575}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7F7CE34F-45B2-4181-A273-565DA64BA575}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7F7CE34F-45B2-4181-A273-565DA64BA575}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7F7CE34F-45B2-4181-A273-565DA64BA575}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7F7CE34F-45B2-4181-A273-565DA64BA575}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F7CE34F-45B2-4181-A273-565DA64BA575}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F7CE34F-45B2-4181-A273-565DA64BA575}.Release|ARM.ActiveCfg = Release|Any CPU
+		{7F7CE34F-45B2-4181-A273-565DA64BA575}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7F7CE34F-45B2-4181-A273-565DA64BA575}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7F7CE34F-45B2-4181-A273-565DA64BA575}.Release|x64.ActiveCfg = Release|Any CPU
+		{7F7CE34F-45B2-4181-A273-565DA64BA575}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

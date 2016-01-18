@@ -5,11 +5,11 @@
     <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AD57EF64-9DB5-4A05-9AD8-EB85CF4F1E7E}</ProjectGuid>
+    <ProjectGuid>{7F7CE34F-45B2-4181-A273-565DA64BA575}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AppLogic</RootNamespace>
-    <AssemblyName>AppLogic</AssemblyName>
+    <RootNamespace>ApplicationResources</RootNamespace>
+    <AssemblyName>ApplicationResources</AssemblyName>
     <DefaultLanguage>ru-RU</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -35,30 +35,23 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <ProjectReference Include="..\ApplicationResources\ApplicationResources.csproj">
-      <Project>{7f7ce34f-45b2-4181-a273-565da64ba575}</Project>
-      <Name>ApplicationResources</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SQLiteShared\SQLiteShared.csproj">
-      <Project>{ed5bdb33-53d5-49c3-803d-85637d1d8150}</Project>
-      <Name>SQLiteShared</Name>
-    </ProjectReference>
+    <Content Include="ResourcesDefinition.xml" />
   </ItemGroup>
   <ItemGroup>
     <TargetPlatform Include="WindowsPhoneApp, Version=8.1" />
     <TargetPlatform Include="Windows, Version=8.1" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppController.cs" />
-    <Compile Include="IAnswer.cs" />
-    <Compile Include="IDataAccessor.cs" />
-    <Compile Include="IQuestion.cs" />
+    <Compile Include="GeneratedResources.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestController.cs" />
-    <Compile Include="TestParams.cs" />
-    <Compile Include="TestProgress.cs" />
+    <Compile Include="ResourceInitializer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>call "$(DevEnvDir)..\..\VC\vcvarsall.bat" x86_amd64
+msbuild $(SolutionDir)..\ResourcesGenerator\ResourcesGenerator.sln /t:ResourcesGenerator /p:Configuration="Release" /p:Platform="Any CPU" /p:OutputPath="$(SolutionDir)..\ToolsBinaries"
+$(SolutionDir)..\ToolsBinaries\ResourcesGenerator.exe $(ProjectDir)ResourcesDefinition.xml $(ProjectDir)GeneratedResources.cs</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

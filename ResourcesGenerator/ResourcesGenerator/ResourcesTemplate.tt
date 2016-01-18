@@ -1,0 +1,52 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+namespace SharedApplication
+{
+    public static class Resources
+    {
+        private static System.Collections.Generic.Dictionary<string, object> ResourcesDictionary = new System.Collections.Generic.Dictionary<string, object>();
+
+<# foreach (var resource in Resources.ResourcesArray)
+{ 
+#>
+        public static <#= resource.Type #> <#= resource.Name #>
+        {
+            get
+            {
+                return GetResourceByName<<#= resource.Type #>>("<#= resource.Name #>");
+            }
+            set
+            {
+                SetResourceByName<<#= resource.Type #>>("<#= resource.Name #>", value);
+            }
+        }
+        
+<#
+}#>
+
+        private static T GetResourceByName<T>(System.String name)
+        {
+            if(!ResourcesDictionary.ContainsKey(name))
+            {
+                return default(T);
+            }
+            else
+            {
+                return (T)ResourcesDictionary[name];
+            }
+        }
+
+        private static void SetResourceByName<T>(System.String name, T value)
+        {
+            if(ResourcesDictionary.ContainsKey(name))
+            {
+                ResourcesDictionary.Remove(name);
+            }
+            ResourcesDictionary.Add(name, value);
+        }
+	}
+}

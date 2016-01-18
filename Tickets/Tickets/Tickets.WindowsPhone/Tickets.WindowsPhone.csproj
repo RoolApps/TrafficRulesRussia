@@ -105,6 +105,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\ApplicationResources\ApplicationResources.csproj">
+      <Project>{7f7ce34f-45b2-4181-a273-565da64ba575}</Project>
+      <Name>ApplicationResources</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\SQLiteShared\SQLiteShared.csproj">
       <Project>{ed5bdb33-53d5-49c3-803d-85637d1d8150}</Project>
       <Name>SQLiteShared</Name>
