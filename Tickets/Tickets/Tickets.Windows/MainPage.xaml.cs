@@ -25,7 +25,6 @@ namespace Tickets
         public MainPage()
         {
             this.InitializeComponent();
-            SQLiteShared.Accessor.InitDB();
         }
     }
 }

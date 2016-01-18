@@ -27,8 +27,6 @@ namespace Tickets
             this.InitializeComponent();
             
             this.NavigationCacheMode = NavigationCacheMode.Required;
-
-            SQLiteShared.Accessor.InitDB();
         }
 
         /// <summary>

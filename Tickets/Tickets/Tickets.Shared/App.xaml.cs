@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -29,6 +31,11 @@ namespace Tickets
         private TransitionCollection transitions;
 #endif
 
+        String connectionStringKey = "ConnectionString";
+        String dbFileName = "tickets.db";
+        private readonly StorageFolder LocalFolder = ApplicationData.Current.LocalFolder;
+        private readonly StorageFolder InstalledLocationFolder = Package.Current.InstalledLocation;
+
         /// <summary>
         /// Инициализирует одноэлементный объект приложения. Это первая выполняемая строка разрабатываемого
         /// кода; поэтому она является логическим эквивалентом main() или WinMain().
@@ -37,6 +44,71 @@ namespace Tickets
         {
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
+            InitApp();
+        }
+
+        /// <summary>
+        /// Подготавливает приложение к работе
+        /// </summary>
+        private void InitApp()
+        {
+            InitResources();
+            InitDBFile();
+        }
+
+
+        /// <summary>
+        /// Инициализирует начальные значения ресурсов
+        /// </summary>
+        private void InitResources()
+        {
+            if(!Application.Current.Resources.ContainsKey(connectionStringKey))
+            {
+                var connectionString = Path.Combine(ApplicationData.Current.LocalFolder.Path, dbFileName);
+                Application.Current.Resources.Add(connectionStringKey, connectionString);
+            }
+        }
+
+        /// <summary>
+        /// Убеждается, что файл файл базы данных находится в папке LocalFolder
+        /// </summary>
+        private void InitDBFile()
+        {
+            CheckDBFile().ContinueWith(async (result) =>
+            {
+                bool exists = await result;
+                if (!exists)
+                {
+                    await CopyDBFile();
+                }
+            });
+        }
+
+        private async Task<bool> CheckDBFile()
+        {
+            try
+            {
+                await LocalFolder.GetFileAsync(dbFileName);
+                return true;
+            }
+            catch (FileNotFoundException)
+            {
+                return false;
+            }
+        }
+
+        private async Task<bool> CopyDBFile()
+        {
+            try
+            {
+                var dbFile = await InstalledLocationFolder.GetFileAsync(dbFileName);
+                await dbFile.CopyAsync(LocalFolder);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         /// <summary>
