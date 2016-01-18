@@ -15,19 +15,16 @@ namespace SQLiteShared
     public class SQLiteDataAccessor : IDisposable
     {
         #region Private Members
-        private const String DBFileName = "tickets.db";
         private const String SelectObjectQueryPattern = "select {0} from {1}";
         private const String SelectModelQueryPattern = "select * from {0}";
         private const String FilterQueryPattern = " where {0}";
-        private readonly StorageFolder LocalFolder = ApplicationData.Current.LocalFolder;
-        private readonly StorageFolder InstalledLocationFolder = Package.Current.InstalledLocation;
         private readonly SQLiteConnection Connection = null;
         #endregion
 
         #region Constructor
         public SQLiteDataAccessor()
         {
-            Connection = new SQLiteConnection(new SQLitePlatformWinRT(), Path.Combine(LocalFolder.Path, DBFileName));
+            Connection = new SQLiteConnection(new SQLitePlatformWinRT(), SharedApplication.Resources.ConnectionString);
         }
         #endregion
 

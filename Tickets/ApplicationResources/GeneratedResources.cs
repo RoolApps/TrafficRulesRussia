@@ -17,6 +17,18 @@ namespace SharedApplication
             }
         }
         
+        public static System.String DBFileName
+        {
+            get
+            {
+                return GetResourceByName<System.String>("DBFileName");
+            }
+            set
+            {
+                SetResourceByName<System.String>("DBFileName", value);
+            }
+        }
+        
 
         private static T GetResourceByName<T>(System.String name)
         {

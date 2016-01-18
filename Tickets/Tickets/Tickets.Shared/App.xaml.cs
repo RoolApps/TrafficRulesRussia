@@ -31,11 +31,6 @@ namespace Tickets
         private TransitionCollection transitions;
 #endif
 
-        String connectionStringKey = "ConnectionString";
-        String dbFileName = "tickets.db";
-        private readonly StorageFolder LocalFolder = ApplicationData.Current.LocalFolder;
-        private readonly StorageFolder InstalledLocationFolder = Package.Current.InstalledLocation;
-
         /// <summary>
         /// Инициализирует одноэлементный объект приложения. Это первая выполняемая строка разрабатываемого
         /// кода; поэтому она является логическим эквивалентом main() или WinMain().
@@ -62,10 +57,14 @@ namespace Tickets
         /// </summary>
         private void InitResources()
         {
-            if(!Application.Current.Resources.ContainsKey(connectionStringKey))
+            var dbFileName = "tickets.db";
+            if(SharedApplication.Resources.ConnectionString == null)
             {
-                var connectionString = Path.Combine(ApplicationData.Current.LocalFolder.Path, dbFileName);
-                Application.Current.Resources.Add(connectionStringKey, connectionString);
+                SharedApplication.Resources.ConnectionString = Path.Combine(ApplicationData.Current.LocalFolder.Path, dbFileName);
+            }
+            if(SharedApplication.Resources.DBFileName == null)
+            {
+                SharedApplication.Resources.DBFileName = dbFileName;
             }
         }
 
@@ -88,7 +87,7 @@ namespace Tickets
         {
             try
             {
-                await LocalFolder.GetFileAsync(dbFileName);
+                await ApplicationData.Current.LocalFolder.GetFileAsync(SharedApplication.Resources.DBFileName);
                 return true;
             }
             catch (FileNotFoundException)
@@ -101,8 +100,9 @@ namespace Tickets
         {
             try
             {
-                var dbFile = await InstalledLocationFolder.GetFileAsync(dbFileName);
-                await dbFile.CopyAsync(LocalFolder);
+                
+                var dbFile = await Package.Current.InstalledLocation.GetFileAsync(SharedApplication.Resources.DBFileName);
+                await dbFile.CopyAsync(ApplicationData.Current.LocalFolder);
                 return true;
             }
             catch (Exception)

@@ -5,5 +5,9 @@
       <Name>ConnectionString</Name>
       <Type>System.String</Type>
     </Resource>
+    <Resource>
+      <Name>DBFileName</Name>
+      <Type>System.String</Type>
+    </Resource>
   </ResourcesArray>
 </Resources>
