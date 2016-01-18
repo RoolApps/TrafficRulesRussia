@@ -105,6 +105,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\ApplicationResources\ApplicationResources.csproj">
+      <Project>{7f7ce34f-45b2-4181-a273-565da64ba575}</Project>
+      <Name>ApplicationResources</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\SQLiteShared\SQLiteShared.csproj">
       <Project>{ed5bdb33-53d5-49c3-803d-85637d1d8150}</Project>
       <Name>SQLiteShared</Name>
@@ -114,7 +118,7 @@
     <SDKReference Include="Microsoft.VCLibs, version=12.0">
       <Name>Microsoft Visual C++ 2013 Runtime Package for Windows Phone</Name>
     </SDKReference>
-    <SDKReference Include="SQLite.WP81, Version=3.10.0">
+    <SDKReference Include="SQLite.WP81, Version=3.10.1">
       <Name>SQLite for Windows Phone 8.1</Name>
     </SDKReference>
   </ItemGroup>

@@ -53,7 +53,7 @@ namespace Tickets
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
-
+            
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Не повторяйте инициализацию приложения, если в окне уже имеется содержимое,
