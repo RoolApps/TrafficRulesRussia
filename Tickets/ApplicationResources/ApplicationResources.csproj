@@ -8,7 +8,7 @@
     <ProjectGuid>{7F7CE34F-45B2-4181-A273-565DA64BA575}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ApplicationResources</RootNamespace>
+    <RootNamespace>AppData</RootNamespace>
     <AssemblyName>ApplicationResources</AssemblyName>
     <DefaultLanguage>ru-RU</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="GeneratedResources.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceInitializer.cs" />
+    <Compile Include="ResourceRetriever.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <PropertyGroup>

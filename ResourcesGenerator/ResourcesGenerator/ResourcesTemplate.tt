@@ -8,8 +8,6 @@ namespace AppData
 {
     public static class Resources
     {
-        private static System.Collections.Generic.Dictionary<string, object> ResourcesDictionary = new System.Collections.Generic.Dictionary<string, object>();
-
 <# foreach (var resource in Resources.ResourcesArray)
 { 
 #>
@@ -17,36 +15,15 @@ namespace AppData
         {
             get
             {
-                return GetResourceByName<<#= resource.Type #>>("<#= resource.Name #>");
+                return ResourceRetriever.GetResourceByName<<#= resource.Type #>>("<#= resource.Name #>");
             }
             set
             {
-                SetResourceByName<<#= resource.Type #>>("<#= resource.Name #>", value);
+                ResourceRetriever.SetResourceByName<<#= resource.Type #>>("<#= resource.Name #>", value);
             }
         }
         
 <#
 }#>
-
-        private static T GetResourceByName<T>(System.String name)
-        {
-            if(!ResourcesDictionary.ContainsKey(name))
-            {
-                return default(T);
-            }
-            else
-            {
-                return (T)ResourcesDictionary[name];
-            }
-        }
-
-        private static void SetResourceByName<T>(System.String name, T value)
-        {
-            if(ResourcesDictionary.ContainsKey(name))
-            {
-                ResourcesDictionary.Remove(name);
-            }
-            ResourcesDictionary.Add(name, value);
-        }
 	}
 }

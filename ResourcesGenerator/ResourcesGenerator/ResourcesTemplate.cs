@@ -28,11 +28,9 @@ namespace ResourcesGenerator
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("\r\nnamespace AppData\r\n{\r\n    public static class Resources\r\n    {\r\n        private" +
-                    " static System.Collections.Generic.Dictionary<string, object> ResourcesDictionar" +
-                    "y = new System.Collections.Generic.Dictionary<string, object>();\r\n\r\n");
+            this.Write("\r\nnamespace AppData\r\n{\r\n    public static class Resources\r\n    {\r\n");
             
-            #line 13 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
+            #line 11 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
  foreach (var resource in Resources.ResourcesArray)
 { 
 
@@ -41,79 +39,57 @@ namespace ResourcesGenerator
             #line hidden
             this.Write("        public static ");
             
-            #line 16 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
+            #line 14 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(resource.Type));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 16 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
+            #line 14 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(resource.Name));
             
             #line default
             #line hidden
-            this.Write("\r\n        {\r\n            get\r\n            {\r\n                return GetResourceBy" +
-                    "Name<");
+            this.Write("\r\n        {\r\n            get\r\n            {\r\n                return ResourceRetri" +
+                    "ever.GetResourceByName<");
             
-            #line 20 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
+            #line 18 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(resource.Type));
             
             #line default
             #line hidden
             this.Write(">(\"");
             
-            #line 20 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
+            #line 18 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(resource.Name));
             
             #line default
             #line hidden
-            this.Write("\");\r\n            }\r\n            set\r\n            {\r\n                SetResourceBy" +
-                    "Name<");
+            this.Write("\");\r\n            }\r\n            set\r\n            {\r\n                ResourceRetri" +
+                    "ever.SetResourceByName<");
             
-            #line 24 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
+            #line 22 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(resource.Type));
             
             #line default
             #line hidden
             this.Write(">(\"");
             
-            #line 24 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
+            #line 22 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(resource.Name));
             
             #line default
             #line hidden
             this.Write("\", value);\r\n            }\r\n        }\r\n        \r\n");
             
-            #line 28 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
+            #line 26 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
 
 }
             
             #line default
             #line hidden
-            this.Write(@"
-        private static T GetResourceByName<T>(System.String name)
-        {
-            if(!ResourcesDictionary.ContainsKey(name))
-            {
-                return default(T);
-            }
-            else
-            {
-                return (T)ResourcesDictionary[name];
-            }
-        }
-
-        private static void SetResourceByName<T>(System.String name, T value)
-        {
-            if(ResourcesDictionary.ContainsKey(name))
-            {
-                ResourcesDictionary.Remove(name);
-            }
-            ResourcesDictionary.Add(name, value);
-        }
-	}
-}");
+            this.Write("\t}\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }
