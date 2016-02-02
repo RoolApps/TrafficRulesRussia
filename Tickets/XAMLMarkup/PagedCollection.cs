@@ -15,6 +15,8 @@ namespace XAMLMarkup
         int currentIndex = 0;
         int pagingSize = 0;
         private IEnumerable<T> dataSource = null;
+        private int dataSourceLastIndex = 0;
+        private int dataSourceFirstIndex = 0;
         #endregion
 
         #region Events
@@ -31,6 +33,7 @@ namespace XAMLMarkup
             set
             {
                 this.dataSource = value;
+                dataSourceLastIndex = value.Count() - 1;
             }
         }
         #endregion
@@ -38,29 +41,7 @@ namespace XAMLMarkup
         #region Public Methods
         public void MoveSelectedIndex(MoveDirection direction)
         {
-            if (direction == MoveDirection.Forward)
-            {
-                currentIndex++;
-                if (CollectionChanged != null)
-                {
-                    throw new NotImplementedException("Not implemented yet");   
-                    //load object from datasource
-                    //raise event
-                    //delete other object
-                }
-            }
-            else if (direction == MoveDirection.Back)
-            {
-                currentIndex--;
-                if (CollectionChanged != null)
-                {
-                    throw new NotImplementedException("Not implemented yet");
-                    //load object from datasource
-                    //raise event
-                    //delete other object
-                }
-            }
-            else throw new NotImplementedException("Not supported direction type");
+            MoveIndex(direction);
         }
 
         public IEnumerator<T> IEnumerable<T>.GetEnumerator()
@@ -74,9 +55,41 @@ namespace XAMLMarkup
         }
         #endregion
 
+        #region Constructor
         public PagedCollection(int pagingSize)
         {
             this.pagingSize = pagingSize;
         }
+        #endregion
+
+        #region Private Methods
+        private void MoveIndex(MoveDirection direction)
+        {
+            int step = 1;
+            int multiplier = direction == MoveDirection.Forward ? 1 : -1;
+            int upperBound = direction == MoveDirection.Forward ? dataSourceLastIndex : dataSourceFirstIndex;
+            int lowerBound = dataSourceLastIndex - upperBound;
+            if(currentIndex * multiplier + step <= upperBound)
+            {
+                currentIndex += multiplier * step;
+                if(CollectionChanged != null)
+                {
+                    var upperElement = currentIndex + pagingSize * multiplier;
+                    if(upperElement * multiplier <= upperBound * multiplier)
+                    {
+                        CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add,
+                            new List<T> { DataSource.ElementAt(upperElement) }, upperElement));
+                    }
+                    var lowerElement = currentIndex - multiplier * (pagingSize + step);
+                    if(lowerElement * multiplier >= lowerBound * multiplier )
+                    {
+                        CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove,
+                            new List<T> { DataSource.ElementAt(lowerElement) }, lowerElement));
+                    }
+                    //TODO: проверить формулы
+                }
+            }
+        }
+        #endregion
     }
 }
