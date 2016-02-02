@@ -39,6 +39,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PagedCanvas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -52,8 +56,14 @@
     <Compile Include="FlippingCanvas.xaml.cs">
       <DependentUpon>FlippingCanvas.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\IPagedCollection.cs" />
+    <Compile Include="PagedCanvas.xaml.cs">
+      <DependentUpon>PagedCanvas.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PagedCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
