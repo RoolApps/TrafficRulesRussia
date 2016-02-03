@@ -17,6 +17,7 @@ namespace XAMLMarkup
         private IEnumerable<T> dataSource = null;
         private int dataSourceLastIndex = 0;
         private int dataSourceFirstIndex = 0;
+        private int dataSourceLength = 0;
         #endregion
 
         #region Events
@@ -33,7 +34,8 @@ namespace XAMLMarkup
             set
             {
                 this.dataSource = value;
-                dataSourceLastIndex = value.Count() - 1;
+                dataSourceLength = value.Count();
+                dataSourceLastIndex = dataSourceLength - 1;
             }
         }
         #endregion
@@ -46,12 +48,14 @@ namespace XAMLMarkup
 
         public IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
-            return this.DataSource.OfType<T>().Skip(currentIndex).Take(pagingSize).GetEnumerator();
+            var from = Math.Max(dataSourceFirstIndex, currentIndex);
+            var to = Math.Min(dataSourceLength, currentIndex);
+            return this.DataSource.Skip(from).Take(to - from + 1).GetEnumerator();
         }
         
         public IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.DataSource.OfType<T>().Skip(currentIndex).Take(pagingSize).GetEnumerator();
+            return (this as IEnumerable<T>).GetEnumerator();
         }
         #endregion
 
