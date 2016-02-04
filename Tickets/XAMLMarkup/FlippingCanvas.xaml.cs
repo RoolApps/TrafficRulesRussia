@@ -27,7 +27,8 @@ namespace XAMLMarkup
     public sealed partial class FlippingCanvas : UserControl
     {
         #region Variable
-        private string animationProperty = "(Canvas.Left)";
+        private const string animationProperty = "(Canvas.Left)";
+        private const int animationDuration = 1500;
 
         private double X_position = 0.0;
 
@@ -37,79 +38,74 @@ namespace XAMLMarkup
         private Point last_p;
         private Point initial_p;
 
-        private Boolean isPressed;
-
-        private List<Storyboard> animations;
+        private Boolean isPressed = false;
 
         DispatcherTimer timer;
+
+        Storyboard storyboard;
+
+        List<UIElement> elements;
         #endregion
+
+        public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("CanvasContent", typeof(object), typeof(FlippingCanvas), null);
+        public object CanvasContent
+        {
+            get
+            {
+                return GetValue(ContentProperty);
+            }
+            set
+            {
+                SetValue(ContentProperty, value);
+            }
+        }
 
         public FlippingCanvas()
         {
             this.InitializeComponent();
 
-            /*
+            canvas.PointerPressed += canvas_PointerPressed;
+            canvas.PointerReleased += canvas_PointerReleased;
+            canvas.PointerMoved += canvas_PointerMoved;
+            canvas.Loaded += canvas_Loaded;
+
             timer = new DispatcherTimer();
             timer.Tick += tick;
-            timer.Interval = TimeSpan.FromMilliseconds(100);
+            timer.Interval = TimeSpan.FromMilliseconds(200);
             timer.Start();
-            */
-
-            isPressed = false;
-            animations = new List<Storyboard>();
         }
 
-        /*
+        void canvas_Loaded(object sender, RoutedEventArgs e)
+        {
+            canvas.Children.Add(CanvasContent as UIElement);
+        }
+
         private void tick(object sender, object e)
         {
 
         }
-        */
 
-        private void SelectPosition()
-        {
-            X_position = GetXPosition(corrector);
-
-            foreach (var obj in canvas.Children.ToList()) {
-                if (X_position != 0.0) {
-                    if (X_position < 0.0) {
-                        if (X_position >= -(window_w / 2)) {
-                            AnimateObject(obj, Math.Abs(X_position));
-                        } else if (X_position < -(window_w / 2)) {
-                            AnimateObject(obj, -(window_w - Math.Abs(X_position)));
-                        }
-                    } else if (X_position > 0.0) {
-                        if (X_position <= (window_w / 2)) {
-                            AnimateObject(obj, -(Math.Abs(X_position)));
-                        } else if (X_position > (window_w / 2)) {
-                            AnimateObject(obj, (window_w - Math.Abs(X_position)));
-                        }
-                    }
-                }
-            }
-        }
-
-        private void grid_PointerPressed(object sender, PointerRoutedEventArgs e)
+        private void canvas_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
             isPressed = true;
-            last_p = initial_p = e.GetCurrentPoint(this).Position;   //(this) = (sender as canvas)
+            last_p = initial_p = e.GetCurrentPoint(this).Position;   //(this) = (sender as Canvas)
 
-            if (animations.Count != 0) {
-                foreach (Storyboard sb in animations) {
-                    sb.Pause();
-                }
-
-                animations.Clear();
+            if (storyboard != null) {
+                storyboard.Pause();
             }
+
+            storyboard = new Storyboard();
         }
 
-        private void grid_PointerReleased(object sender, PointerRoutedEventArgs e)
+        private void canvas_PointerReleased(object sender, PointerRoutedEventArgs e)
         {
             isPressed = false;
+
             SelectPosition();
+            storyboard.Begin();
         }
 
-        private void grid_PointerMoved(object sender, PointerRoutedEventArgs e)
+        private void canvas_PointerMoved(object sender, PointerRoutedEventArgs e)
         {
             double px = 0;
 
@@ -121,41 +117,64 @@ namespace XAMLMarkup
             }
         }
 
-        private void AnimateObject(DependencyObject obj, double dist)
+        private void completed()
         {
-            Storyboard storyboard = new Storyboard();
-
-            ExponentialEase easingFunction = new ExponentialEase();
-            easingFunction.EasingMode = EasingMode.EaseInOut;
-
-            DoubleAnimation doubleanimation = new DoubleAnimation() {
-                Duration = new Duration(TimeSpan.FromMilliseconds(1000)),
-                EnableDependentAnimation = true,
-                By = dist,
-                EasingFunction = easingFunction
-            };
-
-            Storyboard.SetTarget(doubleanimation, obj);
-            Storyboard.SetTargetProperty(doubleanimation, animationProperty);
-
-            storyboard.Children.Add(doubleanimation);
-            storyboard.Completed += storyboard_Completed;
-
-            animations.Add(storyboard);
-            storyboard.Begin();
+            SetXPosition(corrector, 0.0);
         }
 
-        private void storyboard_Completed(object sender, object e)
+        private void AddAnimation(DependencyObject obj, String property, double from, double to, int duration, EasingFunctionBase easing = null, Action completed = null)
         {
-            animations.Remove(sender as Storyboard);
-            SetXPosition(corrector, 0);
+            DoubleAnimation animation = new DoubleAnimation();
+
+            if (easing != null) {
+                animation.EasingFunction = easing;
+                easing.EasingMode = EasingMode.EaseInOut;
+            }
+
+            animation.Duration = TimeSpan.FromMilliseconds(duration);
+            animation.EnableDependentAnimation = true;
+            animation.From = from;
+            animation.To = to;
+
+            Storyboard.SetTarget(animation, obj);
+            Storyboard.SetTargetProperty(animation, property);
+
+            storyboard.Children.Add(animation);
+
+            if (completed != null) {
+                storyboard.Completed += (s, e) => completed();
+            }
+        }
+
+        private void SelectPosition()
+        {
+            X_position = GetXPosition(corrector);
+            elements = canvas.Children.ToList();
+
+            foreach (var element in elements) {
+                if (X_position != 0.0) {
+                    if (X_position < 0.0) {
+                        if (X_position >= -(window_w / 2)) {
+                            AddAnimation(element, animationProperty, GetXPosition(element), (GetXPosition(element) + Math.Abs(X_position)), animationDuration, new ExponentialEase(), completed);
+                        } else if (X_position < -(window_w / 2)) {
+                            AddAnimation(element, animationProperty, GetXPosition(element), GetXPosition(element) - (window_w - Math.Abs(X_position)), animationDuration, new ExponentialEase(), completed);
+                        }
+                    } else if (X_position > 0.0) {
+                        if (X_position <= (window_w / 2)) {
+                            AddAnimation(element, animationProperty, GetXPosition(element), (GetXPosition(element) - Math.Abs(X_position)), animationDuration, new ExponentialEase(), completed);
+                        } else if (X_position > (window_w / 2)) {
+                            AddAnimation(element, animationProperty, GetXPosition(element), GetXPosition(element) + (window_w - Math.Abs(X_position)), animationDuration, new ExponentialEase(), completed);
+                        }
+                    }
+                }
+            }
         }
 
         private void MoveObjectsOnCanvas(double px)
         {
             var objects = canvas.Children.ToList();
             foreach (var obj in objects) {
-                Canvas.SetLeft(obj, GetXPosition(obj) + px);
+                SetXPosition(obj, GetXPosition(obj) + px);
             }
         }
 
@@ -182,18 +201,6 @@ namespace XAMLMarkup
         private double Distance(Point first_point, Point second_point)
         {
             return (double)(second_point.X - first_point.X);
-        }
-
-        private void Ellipse_Loaded(object sender, RoutedEventArgs e)
-        {
-            //AnimateObject(sender as Ellipse, 500);
-        }
-
-        private void canvas_Loaded(object sender, RoutedEventArgs e)
-        {
-            foreach (var obj in canvas.Children.ToList()) {
-                AnimateObject(obj, 500);
-            }
         }
     }
 }

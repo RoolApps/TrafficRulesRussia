@@ -15,4 +15,17 @@
         </Canvas>
     </Grid>
     
+    <!--
+    <Grid>
+        <XAMLMarkup:FlippingCanvas>
+            <XAMLMarkup:FlippingCanvas.CanvasContent>
+                <Canvas>
+                    <Rectangle Fill="Red" Height="100" Width="100" Canvas.Left="100" Canvas.Top="100"></Rectangle>
+                    <Rectangle Fill="Red" Height="100" Width="100" Canvas.Left="400" Canvas.Top="100"></Rectangle>
+                </Canvas>
+            </XAMLMarkup:FlippingCanvas.CanvasContent>
+        </XAMLMarkup:FlippingCanvas>
+    </Grid>
+    -->
+    
 </UserControl>
