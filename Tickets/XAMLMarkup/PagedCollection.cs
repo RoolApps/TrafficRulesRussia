@@ -33,9 +33,12 @@ namespace XAMLMarkup
             }
             set
             {
+                var oldItems = this.AsEnumerable();
                 this.dataSource = value;
                 dataSourceLength = value.Count();
                 dataSourceLastIndex = dataSourceLength - 1;
+                currentIndex = 0;
+                RaiseDataSourceChanged(oldItems);
             }
         }
         #endregion
@@ -48,14 +51,12 @@ namespace XAMLMarkup
 
         public IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
-            var from = Math.Max(dataSourceFirstIndex, currentIndex);
-            var to = Math.Min(dataSourceLength, currentIndex);
-            return this.DataSource.Skip(from).Take(to - from + 1).GetEnumerator();
+            return this.GetEnumerator();
         }
         
         public IEnumerator IEnumerable.GetEnumerator()
         {
-            return (this as IEnumerable<T>).GetEnumerator();
+            return this.GetEnumerator();
         }
         #endregion
 
@@ -67,6 +68,13 @@ namespace XAMLMarkup
         #endregion
 
         #region Private Methods
+        private IEnumerator<T> GetEnumerator()
+        {
+            var from = Math.Max(dataSourceFirstIndex, currentIndex);
+            var to = Math.Min(dataSourceLength, currentIndex);
+            return this.DataSource.Skip(from).Take(to - from + 1).GetEnumerator();
+        }
+
         private void MoveIndex(MoveDirection direction)
         {
             int step = 1;
@@ -92,6 +100,20 @@ namespace XAMLMarkup
                     }
                     //TODO: проверить формулы
                 }
+            }
+        }
+
+        private void RaiseDataSourceChanged(IEnumerable<T> oldDataSource)
+        {
+            if(oldDataSource == null || !oldDataSource.Any())
+            {
+                return;
+            }
+            var list = oldDataSource.ToList();
+            if(CollectionChanged != null)
+            {
+                CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, list, list.IndexOf(list.First())));
+                CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, (this as IEnumerable<T>).ToList(), dataSourceFirstIndex));
             }
         }
         #endregion
