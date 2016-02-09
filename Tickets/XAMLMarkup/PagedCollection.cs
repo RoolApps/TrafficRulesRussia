@@ -70,8 +70,8 @@ namespace XAMLMarkup
         #region Private Methods
         private IEnumerator<T> GetEnumerator()
         {
-            var from = Math.Max(dataSourceFirstIndex, currentIndex);
-            var to = Math.Min(dataSourceLength, currentIndex);
+            var from = Math.Max(dataSourceFirstIndex, currentIndex - pagingSize);
+            var to = Math.Min(dataSourceLength, currentIndex + pagingSize);
             return this.DataSource.Skip(from).Take(to - from + 1).GetEnumerator();
         }
 
