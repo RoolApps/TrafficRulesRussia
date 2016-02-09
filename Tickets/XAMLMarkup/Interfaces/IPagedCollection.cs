@@ -11,5 +11,5 @@ namespace XAMLMarkup.Interfaces
         void MoveSelectedIndex(MoveDirection direction);
     }
 
-    enum MoveDirection { Forward, Back }
+    public enum MoveDirection { Forward, Back }
 }

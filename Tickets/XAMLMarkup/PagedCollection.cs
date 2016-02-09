@@ -49,12 +49,12 @@ namespace XAMLMarkup
             MoveIndex(direction);
         }
 
-        public IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
             return this.GetEnumerator();
         }
         
-        public IEnumerator IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
         }
