@@ -9,24 +9,18 @@ namespace AppLogic
 {
     class Question : IQuestion
     {
-        public int Id
+        public byte[] Image { get; internal set; }
+
+        public IEnumerable<IAnswer> Answers { get; internal set; }
+
+        public bool IsAnswered 
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                return Answers.Any(answer => answer.IsSelected);
+            }
         }
 
-        public byte[] Image
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public IEnumerable<IAnswer> Answers
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public bool IsAnswered
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public String Text { get; internal set; }
     }
 }

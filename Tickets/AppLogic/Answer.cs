@@ -9,39 +9,28 @@ namespace AppLogic
 {
     class Answer : IAnswer
     {
+        private bool isSelected;
+
         public event EventHandler<IsSelectedChangedEventArgs> IsSelectedChanged;
 
-        public int Id
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public bool IsRight { get; internal set; }
 
-        public bool IsRight
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public string Text
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public string Text { get; internal set; }
 
         public bool IsSelected
         {
             get
             {
-                throw new NotImplementedException();
+                return isSelected;
             }
             set
             {
                 if(value != IsSelected && IsSelectedChanged != null)
                 {
+                    isSelected = value;
                     IsSelectedChanged(this, new IsSelectedChangedEventArgs(IsSelected));
                 }
-                throw new NotImplementedException();
             }
         }
-
-        
     }
 }

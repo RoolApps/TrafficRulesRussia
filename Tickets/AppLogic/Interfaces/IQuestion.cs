@@ -8,9 +8,9 @@ namespace AppLogic.Interfaces
 {
     public interface IQuestion
     {
-        int Id { get; }
         byte[] Image { get; }
         IEnumerable<IAnswer> Answers { get; }
         bool IsAnswered { get; }
+        String Text { get; }
     }
 }
