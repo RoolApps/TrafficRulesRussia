@@ -81,5 +81,17 @@ namespace AppLogic.Tests
             Assert.IsTrue(session.Questions.Any());
             Assert.IsTrue(questions.All(question => session.Questions.Any(q => q.Text == question)));
         }
+
+        [TestMethod]
+        public void SessionReturnsRandomTicket()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void SessionShufflesQuestions()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
