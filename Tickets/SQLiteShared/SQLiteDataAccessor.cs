@@ -12,7 +12,7 @@ using System.Linq.Expressions;
 
 namespace SQLiteShared
 {
-    public class SQLiteDataAccessor : IDisposable
+    public class SQLiteDataAccessor : IDataAccessor
     {
         #region Private Members
         private const String SelectObjectQueryPattern = "select {0} from {1}";
