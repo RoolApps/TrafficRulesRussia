@@ -9,8 +9,8 @@ namespace SQLiteShared
 {
     interface IDataAccessor : IDisposable
     {
-        List<TModel> GetModelsList<TModel>(String filter = null) where TModel : Models.BaseModel;
+        List<TModel> GetModelsList<TModel>(String filter = null) where TModel : class;
 
-        List<TResult> GetObjectsList<TModel, TResult>(Expression<Func<TModel, TResult>> field, String filter) where TModel : Models.BaseModel;
+        List<TResult> GetObjectsList<TModel, TResult>(Expression<Func<TModel, TResult>> field, String filter) where TModel : class;
     }
 }
