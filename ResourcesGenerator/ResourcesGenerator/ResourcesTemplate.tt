@@ -11,11 +11,12 @@ namespace AppData
 <# foreach (var resource in Resources.ResourcesArray)
 { 
 #>
+        internal static <#= resource.Type #> <#= resource.Name #>DefaultValue = <#= resource.DefaultValue #>;
         public static <#= resource.Type #> <#= resource.Name #>
         {
             get
             {
-                return ResourceRetriever.GetResourceByName<<#= resource.Type #>>("<#= resource.Name #>");
+                return ResourceRetriever.GetResourceByName<<#= resource.Type #>>("<#= resource.Name #>") ?? <#= resource.Name #>DefaultValue;
             }
             set
             {

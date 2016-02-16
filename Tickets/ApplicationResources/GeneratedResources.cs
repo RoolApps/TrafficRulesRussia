@@ -3,11 +3,12 @@ namespace AppData
 {
     public static class Resources
     {
+        internal static System.String ConnectionStringDefaultValue = "";
         public static System.String ConnectionString
         {
             get
             {
-                return ResourceRetriever.GetResourceByName<System.String>("ConnectionString");
+                return ResourceRetriever.GetResourceByName<System.String>("ConnectionString") ?? ConnectionStringDefaultValue;
             }
             set
             {
@@ -15,11 +16,12 @@ namespace AppData
             }
         }
         
+        internal static System.String DBFileNameDefaultValue = "tickets.db";
         public static System.String DBFileName
         {
             get
             {
-                return ResourceRetriever.GetResourceByName<System.String>("DBFileName");
+                return ResourceRetriever.GetResourceByName<System.String>("DBFileName") ?? DBFileNameDefaultValue;
             }
             set
             {

@@ -37,7 +37,7 @@ namespace ResourcesGenerator
             
             #line default
             #line hidden
-            this.Write("        public static ");
+            this.Write("        internal static ");
             
             #line 14 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(resource.Type));
@@ -51,39 +51,67 @@ namespace ResourcesGenerator
             
             #line default
             #line hidden
-            this.Write("\r\n        {\r\n            get\r\n            {\r\n                return ResourceRetri" +
-                    "ever.GetResourceByName<");
+            this.Write("DefaultValue = ");
             
-            #line 18 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
+            #line 14 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(resource.DefaultValue));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n        public static ");
+            
+            #line 15 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(resource.Type));
             
             #line default
             #line hidden
-            this.Write(">(\"");
+            this.Write(" ");
             
-            #line 18 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
+            #line 15 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(resource.Name));
             
             #line default
             #line hidden
-            this.Write("\");\r\n            }\r\n            set\r\n            {\r\n                ResourceRetri" +
-                    "ever.SetResourceByName<");
+            this.Write("\r\n        {\r\n            get\r\n            {\r\n                return ResourceRetri" +
+                    "ever.GetResourceByName<");
             
-            #line 22 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
+            #line 19 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(resource.Type));
             
             #line default
             #line hidden
             this.Write(">(\"");
             
-            #line 22 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
+            #line 19 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(resource.Name));
+            
+            #line default
+            #line hidden
+            this.Write("\") ?? ");
+            
+            #line 19 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(resource.Name));
+            
+            #line default
+            #line hidden
+            this.Write("DefaultValue;\r\n            }\r\n            set\r\n            {\r\n                Res" +
+                    "ourceRetriever.SetResourceByName<");
+            
+            #line 23 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(resource.Type));
+            
+            #line default
+            #line hidden
+            this.Write(">(\"");
+            
+            #line 23 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(resource.Name));
             
             #line default
             #line hidden
             this.Write("\", value);\r\n            }\r\n        }\r\n        \r\n");
             
-            #line 26 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
+            #line 27 "C:\Repositories\Tickets\ResourcesGenerator\ResourcesGenerator\ResourcesTemplate.tt"
 
 }
             

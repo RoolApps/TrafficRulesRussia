@@ -4,10 +4,12 @@
     <Resource>
       <Name>ConnectionString</Name>
       <Type>System.String</Type>
+      <DefaultValue>""</DefaultValue>
     </Resource>
     <Resource>
       <Name>DBFileName</Name>
       <Type>System.String</Type>
+      <DefaultValue>"tickets.db"</DefaultValue>
     </Resource>
   </ResourcesArray>
 </Resources>

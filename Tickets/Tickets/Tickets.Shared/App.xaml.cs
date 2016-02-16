@@ -47,25 +47,7 @@ namespace Tickets
         /// </summary>
         private void InitApp()
         {
-            InitResources();
             InitDBFile();
-        }
-
-
-        /// <summary>
-        /// Инициализирует начальные значения ресурсов
-        /// </summary>
-        private void InitResources()
-        {
-            var dbFileName = "tickets.db";
-            if(AppData.Resources.ConnectionString == null)
-            {
-                AppData.Resources.ConnectionString = Path.Combine(ApplicationData.Current.LocalFolder.Path, dbFileName);
-            }
-            if(AppData.Resources.DBFileName == null)
-            {
-                AppData.Resources.DBFileName = dbFileName;
-            }
         }
 
         /// <summary>

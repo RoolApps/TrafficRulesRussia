@@ -5,6 +5,9 @@ using System.Text;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using AppLogic.Interfaces;
 using AppLogic.Enums;
+using AppData;
+using Windows.ApplicationModel;
+using System.IO;
 
 namespace AppLogic.Tests
 {
@@ -18,6 +21,11 @@ namespace AppLogic.Tests
             public int[] TicketNums { get; set; }
 
             public QuestionsGenerationMode Mode { get; set; }
+        }
+
+        public SessionTests()
+        {
+            Resources.ConnectionString = Path.Combine(Package.Current.InstalledLocation.Path, Resources.DBFileName);
         }
 
         [TestMethod]

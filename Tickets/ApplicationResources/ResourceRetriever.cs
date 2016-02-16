@@ -19,6 +19,7 @@ namespace AppData
             {
                 if(resourcesDictionary == null)
                 {
+                    ApplicationDefaults.InitializeDefaultValues();
                     var resourcesFileContent = ReadFile(ResourcesFileName);
                     resourcesDictionary = DeserializeDictionary(resourcesFileContent);
                 }
@@ -48,6 +49,17 @@ namespace AppData
             catch (FileNotFoundException)
             {
                 return null;
+            }
+            catch (AggregateException ex)
+            {
+                if (ex.InnerException != null && ex.InnerException is FileNotFoundException)
+                {
+                    return null;
+                }
+                else
+                {
+                    throw;
+                }
             }
         }
 
