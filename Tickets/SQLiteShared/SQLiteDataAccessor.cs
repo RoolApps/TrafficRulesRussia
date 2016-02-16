@@ -12,7 +12,7 @@ using System.Linq.Expressions;
 
 namespace SQLiteShared
 {
-    public class SQLiteDataAccessor : IDisposable
+    public class SQLiteDataAccessor : IDataAccessor
     {
         #region Private Members
         private const String SelectObjectQueryPattern = "select {0} from {1}";
@@ -30,7 +30,7 @@ namespace SQLiteShared
 
         #region Public Methods
         public List<TModel> GetModelsList<TModel>(String filter = null)
-            where TModel : Models.BaseModel
+            where TModel : class
         {
             List<TModel> result = null;
             String query = String.Format(SelectModelQueryPattern, typeof(TModel).Name);
@@ -43,7 +43,7 @@ namespace SQLiteShared
         }
 
         public List<TResult> GetObjectsList<TModel, TResult>(Expression<Func<TModel, TResult>> field, String filter = null)
-            where TModel : Models.BaseModel
+            where TModel : class
         {
             List<TResult> result = new List<TResult>();
             var fieldName = (field.Body as MemberExpression).Member.Name;
