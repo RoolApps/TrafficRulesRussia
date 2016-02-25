@@ -72,8 +72,7 @@ namespace AppLogic.Tests
             IEnumerable<string> questions;
             using(var accessor = new SQLiteShared.SQLiteDataAccessor())
             {
-                //this test is very fragile because of column name using
-                questions = accessor.GetObjectsList<SQLiteShared.Models.Questions, String>(q => q.question, "ticket_id = 1");
+                questions = accessor.CreateQuery<SQLiteShared.Models.Questions>().Where(question => question.ticket_id == 1).Select(question => question.question).ToArray();
             }
 
             Assert.IsNotNull(session);
