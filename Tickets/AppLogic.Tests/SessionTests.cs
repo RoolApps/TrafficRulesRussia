@@ -65,14 +65,16 @@ namespace AppLogic.Tests
         [TestMethod]
         public void SessionSelectsRightQuestions()
         {
+            var ticketNums = new int[] { 1 };
             ISession session;
-            var parameters = new SessionParameters() { Mode = QuestionsGenerationMode.SelectedTickets, TicketNums = new int[] { 1 } };
+            var parameters = new SessionParameters() { Mode = QuestionsGenerationMode.SelectedTickets, TicketNums = ticketNums };
             var creationResult = SessionFactory.CreateSession(parameters, out session);
 
             IEnumerable<string> questions;
             using(var accessor = new SQLiteShared.SQLiteDataAccessor())
             {
-                questions = accessor.CreateQuery<SQLiteShared.Models.Questions>().Where(question => question.ticket_id == 1).Select(question => question.question).ToArray();
+                var ticketIds = accessor.CreateQuery<SQLiteShared.Models.Tickets>().Where(ticket => ticketNums.Contains(ticket.num)).Select(ticket => ticket.id);
+                questions = accessor.CreateQuery<SQLiteShared.Models.Questions>().Where(question => ticketIds.Contains(question.ticket_id)).Select(question => question.question).ToArray();
             }
 
             Assert.IsNotNull(session);
