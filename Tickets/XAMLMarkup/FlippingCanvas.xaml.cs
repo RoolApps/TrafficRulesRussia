@@ -20,7 +20,7 @@ using Windows.UI.Input;
 using Windows.UI.Xaml.Media.Animation;
 using System.Threading;
 using System.Collections;
-
+using XAMLMarkup;
 
 namespace XAMLMarkup
 {
@@ -45,9 +45,13 @@ namespace XAMLMarkup
         Storyboard storyboard;
 
         List<UIElement> elements;
+
+        PagedCanvas paged_canvas = null;
         #endregion
 
-        public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("CanvasContent", typeof(object), typeof(FlippingCanvas), null);
+        public static readonly DependencyProperty ContentProperty = 
+            DependencyProperty.Register("CanvasContent", typeof(object), typeof(FlippingCanvas), null);
+
         public object CanvasContent
         {
             get
@@ -77,7 +81,13 @@ namespace XAMLMarkup
 
         void canvas_Loaded(object sender, RoutedEventArgs e)
         {
-            canvas.Children.Add(CanvasContent as UIElement);
+            if (CanvasContent as UIElement != null) {
+                canvas.Children.Add(CanvasContent as UIElement);
+            }
+
+            if (CanvasContent is PagedCanvas) {
+                paged_canvas = this.CanvasContent as PagedCanvas;
+            }
         }
 
         private void tick(object sender, object e)
@@ -149,25 +159,29 @@ namespace XAMLMarkup
         private void SelectPosition()
         {
             X_position = GetXPosition(corrector);
-            elements = canvas.Children.ToList();
-
-            foreach (var element in elements) {
+            //elements = canvas.Children.ToList();
+            var element = paged_canvas;
+            
+            //foreach (var element in elements) {
                 if (X_position != 0.0) {
                     if (X_position < 0.0) {
                         if (X_position >= -(window_w / 2)) {
                             AddAnimation(element, animationProperty, GetXPosition(element), (GetXPosition(element) + Math.Abs(X_position)), animationDuration, new ExponentialEase(), completed);
                         } else if (X_position < -(window_w / 2)) {
                             AddAnimation(element, animationProperty, GetXPosition(element), GetXPosition(element) - (window_w - Math.Abs(X_position)), animationDuration, new ExponentialEase(), completed);
+                            paged_canvas.LoadNext();
+                            System.Diagnostics.Debug.WriteLine("load next");
                         }
                     } else if (X_position > 0.0) {
                         if (X_position <= (window_w / 2)) {
                             AddAnimation(element, animationProperty, GetXPosition(element), (GetXPosition(element) - Math.Abs(X_position)), animationDuration, new ExponentialEase(), completed);
                         } else if (X_position > (window_w / 2)) {
                             AddAnimation(element, animationProperty, GetXPosition(element), GetXPosition(element) + (window_w - Math.Abs(X_position)), animationDuration, new ExponentialEase(), completed);
+                            paged_canvas.LoadPrevious();
                         }
                     }
                 }
-            }
+            //}
         }
 
         private void MoveObjectsOnCanvas(double px)

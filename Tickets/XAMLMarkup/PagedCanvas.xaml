@@ -8,24 +8,8 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
-    
-    <Grid>
-        <Canvas x:Name="mainCanvas">
-            
-        </Canvas>
-    </Grid>
-    
-    <!--
-    <Grid>
-        <XAMLMarkup:FlippingCanvas>
-            <XAMLMarkup:FlippingCanvas.CanvasContent>
-                <Canvas>
-                    <Rectangle Fill="Red" Height="100" Width="100" Canvas.Left="100" Canvas.Top="100"></Rectangle>
-                    <Rectangle Fill="Red" Height="100" Width="100" Canvas.Left="400" Canvas.Top="100"></Rectangle>
-                </Canvas>
-            </XAMLMarkup:FlippingCanvas.CanvasContent>
-        </XAMLMarkup:FlippingCanvas>
-    </Grid>
-    -->
+
+    <Canvas x:Name="canvas" Background="Transparent">
+    </Canvas>
     
 </UserControl>

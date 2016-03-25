@@ -14,7 +14,9 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using System.Reflection;
 using XAMLMarkup.Interfaces;
+using Utils;
 
 namespace XAMLMarkup
 {
@@ -89,7 +91,8 @@ namespace XAMLMarkup
             }
             else if(e.Action == NotifyCollectionChangedAction.Remove)
             {
-                RemoveCanvasItem(e.NewStartingIndex);   
+                //RemoveCanvasItem(e.NewStartingIndex);   
+                RemoveCanvasItem(e.OldStartingIndex);   
             }
             else
             {
@@ -97,23 +100,42 @@ namespace XAMLMarkup
             }
         }
 
-        private void AddCanvasItem(int index, object content)
+        public object CanvasContent
         {
-            throw new NotImplementedException("Not implemented yet");
-            //mainCanvas.Children.Insert(index, content);
+            get { return (object)GetValue(CanvasContentProperty); }
+            set { SetValue(CanvasContentProperty, value); }
         }
 
+        public static readonly DependencyProperty CanvasContentProperty =
+            DependencyProperty.Register("CanvasContent", typeof(object), typeof(PagedCanvas), null);
+
+        private void AddCanvasItem(int index, object content)
+        {
+            UIElement CC = CanvasContent as UIElement;
+            if(CC != null){
+                (CC as Canvas).DataContext = content;
+                UIElement element = UIElementProperties.Clone(CC);
+                if (element != null) {
+                    canvas.Children.Insert(index, element);
+                    Canvas.SetLeft(element, index * 1366);
+                }
+            } else {
+                throw new NotImplementedException("Not implemented yet");
+            }
+        }
+        
         private void RemoveCanvasItem(int index)
         {
-            throw new NotImplementedException("Not implemented yet");
-            //mainCanvas.Children.RemoveAt(index);
+            //throw new NotImplementedException("Not implemented yet");
+            canvas.Children.RemoveAt(index);
         }
 
         private void ClearCanvas()
         {
-            throw new NotImplementedException("Not implemented yet");
-            //mainCanvas.Children.Clear();
+            //throw new NotImplementedException("Not implemented yet");
+            canvas.Children.Clear();
         }
+
         #endregion
 
         public PagedCanvas()
