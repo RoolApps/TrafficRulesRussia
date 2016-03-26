@@ -86,18 +86,23 @@ namespace XAMLMarkup
                 currentIndex += multiplier * step;
                 if(CollectionChanged != null)
                 {
+                    var lowerElement = currentIndex - multiplier * (pagingSize + step);
+                    if (lowerElement * multiplier >= lowerBound * multiplier)
+                    {
+                        //судя по тестам, может быть либо pagingSize * 2 либо 0
+                        //т.е. step + multiplier * step
+                        CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove,
+                            new List<T> { DataSource.ElementAt(lowerElement) }, step - multiplier * step));
+                    }
+
                     var upperElement = currentIndex + pagingSize * multiplier;
                     if(upperElement * multiplier <= upperBound * multiplier)
                     {
+                        //ну чтож. тут нужно возвращать либо 0 либо Min(pagingSize * 2 + 1, upperElement), в зависимости от Direction
                         CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add,
-                            new List<T> { DataSource.ElementAt(upperElement) }, upperElement));
+                            new List<T> { DataSource.ElementAt(upperElement) }, step + multiplier * step));
                     }
-                    var lowerElement = currentIndex - multiplier * (pagingSize + step);
-                    if(lowerElement * multiplier >= lowerBound * multiplier )
-                    {
-                        CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove,
-                            new List<T> { DataSource.ElementAt(lowerElement) }, lowerElement));
-                    }
+                    
                     //TODO: проверить формулы
                 }
             }

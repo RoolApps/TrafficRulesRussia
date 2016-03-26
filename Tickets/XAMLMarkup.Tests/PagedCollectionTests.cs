@@ -208,7 +208,7 @@ namespace XAMLMarkup.Tests
             Assert.AreEqual(NotifyCollectionChangedAction.Add, addEventArgs.Action);
             Assert.AreEqual(1, addEventArgs.NewItems.Count);
             Assert.AreEqual(collection.ElementAt(3), addEventArgs.NewItems.OfType<Object>().Single());
-            Assert.AreEqual(3, addEventArgs.NewStartingIndex);
+            Assert.AreEqual(2, addEventArgs.NewStartingIndex);
 
             Assert.IsNotNull(removeEventArgs);
             Assert.AreEqual(NotifyCollectionChangedAction.Remove, removeEventArgs.Action);
@@ -228,13 +228,13 @@ namespace XAMLMarkup.Tests
             Assert.AreEqual(NotifyCollectionChangedAction.Add, addEventArgs.Action);
             Assert.AreEqual(1, addEventArgs.NewItems.Count);
             Assert.AreEqual(collection.ElementAt(4), addEventArgs.NewItems.OfType<Object>().Single());
-            Assert.AreEqual(4, addEventArgs.NewStartingIndex);
+            Assert.AreEqual(2, addEventArgs.NewStartingIndex);
 
             Assert.IsNotNull(removeEventArgs);
             Assert.AreEqual(NotifyCollectionChangedAction.Remove, removeEventArgs.Action);
             Assert.AreEqual(1, removeEventArgs.OldItems.Count);
             Assert.AreEqual(collection.ElementAt(1), removeEventArgs.OldItems.OfType<Object>().Single());
-            Assert.AreEqual(1, removeEventArgs.OldStartingIndex);
+            Assert.AreEqual(0, removeEventArgs.OldStartingIndex);
 
 
             addEventArgs = null;
@@ -250,7 +250,7 @@ namespace XAMLMarkup.Tests
             Assert.AreEqual(NotifyCollectionChangedAction.Remove, removeEventArgs.Action);
             Assert.AreEqual(1, removeEventArgs.OldItems.Count);
             Assert.AreEqual(collection.ElementAt(2), removeEventArgs.OldItems.OfType<Object>().Single());
-            Assert.AreEqual(2, removeEventArgs.OldStartingIndex);
+            Assert.AreEqual(0, removeEventArgs.OldStartingIndex);
 
 
             addEventArgs = null;
@@ -264,7 +264,7 @@ namespace XAMLMarkup.Tests
             Assert.AreEqual(NotifyCollectionChangedAction.Add, addEventArgs.Action);
             Assert.AreEqual(1, addEventArgs.NewItems.Count);
             Assert.AreEqual(collection.ElementAt(2), addEventArgs.NewItems.OfType<Object>().Single());
-            Assert.AreEqual(2, addEventArgs.NewStartingIndex);
+            Assert.AreEqual(0, addEventArgs.NewStartingIndex);
 
             Assert.IsNull(removeEventArgs);
 
@@ -280,13 +280,13 @@ namespace XAMLMarkup.Tests
             Assert.AreEqual(NotifyCollectionChangedAction.Add, addEventArgs.Action);
             Assert.AreEqual(1, addEventArgs.NewItems.Count);
             Assert.AreEqual(collection.ElementAt(1), addEventArgs.NewItems.OfType<Object>().Single());
-            Assert.AreEqual(1, addEventArgs.NewStartingIndex);
+            Assert.AreEqual(0, addEventArgs.NewStartingIndex);
 
             Assert.IsNotNull(removeEventArgs);
             Assert.AreEqual(NotifyCollectionChangedAction.Remove, removeEventArgs.Action);
             Assert.AreEqual(1, removeEventArgs.OldItems.Count);
             Assert.AreEqual(collection.ElementAt(4), removeEventArgs.OldItems.OfType<Object>().Single());
-            Assert.AreEqual(4, removeEventArgs.OldStartingIndex);
+            Assert.AreEqual(2, removeEventArgs.OldStartingIndex);
 
 
             addEventArgs = null;
@@ -306,7 +306,7 @@ namespace XAMLMarkup.Tests
             Assert.AreEqual(NotifyCollectionChangedAction.Remove, removeEventArgs.Action);
             Assert.AreEqual(1, removeEventArgs.OldItems.Count);
             Assert.AreEqual(collection.ElementAt(3), removeEventArgs.OldItems.OfType<Object>().Single());
-            Assert.AreEqual(3, removeEventArgs.OldStartingIndex);
+            Assert.AreEqual(2, removeEventArgs.OldStartingIndex);
 
 
             addEventArgs = null;
