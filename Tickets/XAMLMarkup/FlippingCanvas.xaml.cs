@@ -22,18 +22,25 @@ using System.Threading;
 using System.Collections;
 using XAMLMarkup;
 
+
 namespace XAMLMarkup
 {
     public sealed partial class FlippingCanvas : UserControl
     {
         #region Variable
+        private enum Moved : int { NoWhere, ToPrevious, ToNext } ;
         private const string animationProperty = "(Canvas.Left)";
         private const int animationDuration = 1500;
 
         private double X_position = 0.0;
-
-        private const int window_h = 768;
-        private const int window_w = 1366;
+        private int animated_objects = 0;
+        private static int completed_animations = 0;
+        private Moved direction;
+        
+        //private const int window_h = 768;
+        //private const int window_w = 1366;
+        private double window_h = Window.Current.Bounds.Height;
+        private double window_w = Window.Current.Bounds.Width;
 
         private Point last_p;
         private Point initial_p;
@@ -92,7 +99,8 @@ namespace XAMLMarkup
 
         private void tick(object sender, object e)
         {
-
+            //ystem.Diagnostics.Debug.WriteLine("width: " + window_w);
+            //System.Diagnostics.Debug.WriteLine("height: " + window_h);
         }
 
         private void canvas_PointerPressed(object sender, PointerRoutedEventArgs e)
@@ -130,6 +138,17 @@ namespace XAMLMarkup
         private void completed()
         {
             SetXPosition(corrector, 0.0);
+            completed_animations++;
+            if (completed_animations == animated_objects) {
+                if (this.direction == Moved.ToNext) {
+                    System.Diagnostics.Debug.WriteLine("paged_canvas.LoadNext();");
+                    paged_canvas.LoadNext();
+                } else if (this.direction == Moved.ToPrevious) {
+                    System.Diagnostics.Debug.WriteLine("paged_canvas.LoadPrevious();");
+                    paged_canvas.LoadPrevious();
+                }
+                completed_animations = 0;
+            }
         }
 
         private void AddAnimation(DependencyObject obj, String property, double from, double to, int duration, EasingFunctionBase easing = null, Action completed = null)
@@ -159,29 +178,53 @@ namespace XAMLMarkup
         private void SelectPosition()
         {
             X_position = GetXPosition(corrector);
-            //elements = canvas.Children.ToList();
-            var element = paged_canvas;
-            
-            //foreach (var element in elements) {
-                if (X_position != 0.0) {
-                    if (X_position < 0.0) {
-                        if (X_position >= -(window_w / 2)) {
-                            AddAnimation(element, animationProperty, GetXPosition(element), (GetXPosition(element) + Math.Abs(X_position)), animationDuration, new ExponentialEase(), completed);
-                        } else if (X_position < -(window_w / 2)) {
-                            AddAnimation(element, animationProperty, GetXPosition(element), GetXPosition(element) - (window_w - Math.Abs(X_position)), animationDuration, new ExponentialEase(), completed);
-                            paged_canvas.LoadNext();
-                            System.Diagnostics.Debug.WriteLine("load next");
-                        }
-                    } else if (X_position > 0.0) {
-                        if (X_position <= (window_w / 2)) {
-                            AddAnimation(element, animationProperty, GetXPosition(element), (GetXPosition(element) - Math.Abs(X_position)), animationDuration, new ExponentialEase(), completed);
-                        } else if (X_position > (window_w / 2)) {
-                            AddAnimation(element, animationProperty, GetXPosition(element), GetXPosition(element) + (window_w - Math.Abs(X_position)), animationDuration, new ExponentialEase(), completed);
-                            paged_canvas.LoadPrevious();
-                        }
-                    }
+            //System.Diagnostics.Debug.WriteLine("X_POS: " + X_position.ToString());
+            this.animated_objects = canvas.Children.Count;
+
+            if (X_position != 0.0){
+                this.direction = Moved.NoWhere;
+                if(X_position < 0.0){
+                    SlideForward();
+                } else if (X_position > 0.0) {
+                    SlideBack();
                 }
-            //}
+            }
+        }
+
+        private void SlideBack()
+        {
+            double to = 0.0;
+            double px = PxToMove();
+            //System.Diagnostics.Debug.WriteLine("px to move forward: " + px.ToString());
+            // Если расстояние слишком большое для успешного перехода на следующее окно, остаемся в текущем окне
+            if (px > window_w / 2) {
+                to = -X_position;
+            } else {
+                to = window_w - X_position;
+                this.direction = Moved.ToPrevious;
+            }
+
+            foreach (var obj in canvas.Children.ToList()) {
+                AddAnimation(obj, animationProperty, GetXPosition(obj), GetXPosition(obj) + to, animationDuration, new ExponentialEase(), completed);
+            }
+        }
+
+        private void SlideForward()
+        {
+            double to = 0.0;
+            double px = PxToMove();
+            //System.Diagnostics.Debug.WriteLine("px to move back: " + px.ToString());
+            // Если расстояние слишком большое для успешного перехода на предыдущее окно, остаемся в текущем окне
+            if (px > -window_w / 2) {
+                to = -(window_w + X_position);
+                this.direction = Moved.ToNext;
+            } else {
+                to = Math.Abs(X_position);
+            }
+
+            foreach (var obj in canvas.Children.ToList()) {
+                AddAnimation(obj, animationProperty, GetXPosition(obj), GetXPosition(obj) + to, animationDuration, new ExponentialEase(), completed);
+            }
         }
 
         private void MoveObjectsOnCanvas(double px)
@@ -190,6 +233,12 @@ namespace XAMLMarkup
             foreach (var obj in objects) {
                 SetXPosition(obj, GetXPosition(obj) + px);
             }
+        }
+
+        private double PxToMove()
+        {
+            // Возвращает расстояние до следующего окна
+            return (X_position < 0) ? -(window_w + X_position) : (window_w - X_position);
         }
 
         private void SetXPosition(UIElement obj, double X)
@@ -215,6 +264,12 @@ namespace XAMLMarkup
         private double Distance(Point first_point, Point second_point)
         {
             return (double)(second_point.X - first_point.X);
+        }
+
+        private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            this.window_h = e.NewSize.Height;
+            this.window_w = e.NewSize.Width;
         }
     }
 }

@@ -64,6 +64,7 @@ namespace Tickets
             
             this.InitializeComponent();
 
+            
             paged_canvas = flipping_canvas.CanvasContent as PagedCanvas;
             //paged_canvas.DataSource = Questions;
             PagedCollection<Question_> paged_col = new PagedCollection<Question_>(1);
