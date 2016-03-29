@@ -112,12 +112,26 @@ namespace XAMLMarkup
         private void AddCanvasItem(int index, object content)
         {
             UIElement CC = CanvasContent as UIElement;
-            if(CC != null){
+            if(CC != null) {
                 (CC as Canvas).DataContext = content;
                 UIElement element = UIElementProperties.Clone(CC);
                 if (element != null) {
+                    double left;
+                    double offset = Window.Current.Bounds.Width;
+                    if(canvas.Children.Count == 0)
+                    {
+                        left = 0;
+                    }
+                    else if(index > 0)
+                    {
+                        left = Canvas.GetLeft(canvas.Children.Last()) + offset;
+                    }
+                    else
+                    {
+                        left = Canvas.GetLeft(canvas.Children.First()) - offset;
+                    }
                     canvas.Children.Insert(index, element);
-                    Canvas.SetLeft(element, index * 1366);
+                    Canvas.SetLeft(element, left);
                 }
             } else {
                 throw new NotImplementedException("Not implemented yet");
