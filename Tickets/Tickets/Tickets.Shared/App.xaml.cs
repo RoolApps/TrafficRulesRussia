@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -37,6 +39,58 @@ namespace Tickets
         {
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
+            InitApp();
+        }
+
+        /// <summary>
+        /// Подготавливает приложение к работе
+        /// </summary>
+        private void InitApp()
+        {
+            InitDBFile();
+        }
+
+        /// <summary>
+        /// Убеждается, что файл файл базы данных находится в папке LocalFolder
+        /// </summary>
+        private void InitDBFile()
+        {
+            CheckDBFile().ContinueWith(async (result) =>
+            {
+                bool exists = await result;
+                if (!exists)
+                {
+                    await CopyDBFile();
+                }
+            });
+        }
+
+        private async Task<bool> CheckDBFile()
+        {
+            try
+            {
+                await ApplicationData.Current.LocalFolder.GetFileAsync(AppData.Resources.DBFileName);
+                return true;
+            }
+            catch (FileNotFoundException)
+            {
+                return false;
+            }
+        }
+
+        private async Task<bool> CopyDBFile()
+        {
+            try
+            {
+                
+                var dbFile = await Package.Current.InstalledLocation.GetFileAsync(AppData.Resources.DBFileName);
+                await dbFile.CopyAsync(ApplicationData.Current.LocalFolder);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -53,7 +107,7 @@ namespace Tickets
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
-
+            
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Не повторяйте инициализацию приложения, если в окне уже имеется содержимое,
