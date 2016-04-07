@@ -11,6 +11,7 @@
 
     <Grid x:Name="grid">
         <XAMLMarkup:FlippingCanvas x:Name="flipping_canvas">
+            <XAMLMarkup:FlippingCanvas.MotionDuration>1500</XAMLMarkup:FlippingCanvas.MotionDuration>
             <XAMLMarkup:FlippingCanvas.CanvasContent>
                 <XAMLMarkup:PagedCanvas>
                     <XAMLMarkup:PagedCanvas.CanvasContent>
@@ -26,17 +27,5 @@
             </XAMLMarkup:FlippingCanvas.CanvasContent>
         </XAMLMarkup:FlippingCanvas>
     </Grid>
-        <!--
-        <Canvas x:Name="canvas1">
-            <Canvas x:Name="canvas" Background="Transparent" >
-                <Rectangle x:Name="rect" Fill="Red" Height="100" Width="100" Canvas.Left="100" Canvas.Top="400"></Rectangle>
-                <Rectangle x:Name="rect_copy" Fill="Blue" Height="100" Width="100" Canvas.Left="100" Canvas.Top="500"></Rectangle>
-                <Rectangle x:Name="rect_copy2" Fill="Green" Height="100" Width="100" Canvas.Left="100" Canvas.Top="600"></Rectangle>
-                <TextBlock x:Name="tb" Canvas.Top="89" Canvas.Left="328" FontSize="12" Height="748" Width="880"></TextBlock>
-                <TextBlock x:Name="tb1" Canvas.Top="89" Canvas.Left="58" FontSize="12" Height="100" Width="300" Text="{Binding }"></TextBlock>
-                <TextBlock x:Name="tb1_Copy" Canvas.Top="194" Canvas.Left="58" FontSize="12" Height="100" Width="300"/>
-            </Canvas>
-            <Rectangle x:Name="rect3" Fill="Yellow" Height="100" Width="100" HorizontalAlignment="Left" Canvas.Left="42" Canvas.Top="357"></Rectangle>
-        </Canvas>
-        -->
+    
 </Page>

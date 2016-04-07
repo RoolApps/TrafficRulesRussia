@@ -34,47 +34,10 @@ namespace Tickets
                 Answer3 = String.Format("Answer 3 Q{0}", i)
             }).ToList());
 
-            //Question_ Q1 = new Question_() {
-            //    Question = "Question Q1",
-            //    Answer1 = "Answer 1 Q1",
-            //    Answer2 = "Answer 2 Q1",
-            //    Answer3 = "Answer 3 Q1",
-            //};
-
-            //Question_ Q2 = new Question_() {
-            //    Question = "Question Q2",
-            //    Answer1 = "Answer 1 Q2",
-            //    Answer2 = "Answer 2 Q2",
-            //    Answer3 = "Answer 3 Q2"
-            //};
-
-            //Question_ Q3 = new Question_() {
-            //    Question = "Question Q3",
-            //    Answer1 = "Answer 1 Q3",
-            //    Answer2 = "Answer 2 Q3",
-            //    Answer3 = "Answer 3 Q3"
-            //};
-
-            //Question_ Q4 = new Question_() {
-            //    Question = "Question Q4",
-            //    Answer1 = "Answer 1 Q4",
-            //    Answer2 = "Answer 2 Q4",
-            //    Answer3 = "Answer 3 Q4"
-            //};
-
-            ////for(int i=0)
-            
-            
-            //Questions.Add(Q1);
-            //Questions.Add(Q2);
-            //Questions.Add(Q3);
-            //Questions.Add(Q4);
-            
             this.InitializeComponent();
 
             
             paged_canvas = flipping_canvas.CanvasContent as PagedCanvas;
-            //paged_canvas.DataSource = Questions;
             PagedCollection<Question_> paged_col = new PagedCollection<Question_>(2);
             paged_col.DataSource = Questions;
             paged_canvas.DataSource = paged_col;
