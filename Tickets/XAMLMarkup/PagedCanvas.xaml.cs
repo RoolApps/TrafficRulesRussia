@@ -91,7 +91,6 @@ namespace XAMLMarkup
             }
             else if(e.Action == NotifyCollectionChangedAction.Remove)
             {
-                //RemoveCanvasItem(e.NewStartingIndex);   
                 RemoveCanvasItem(e.OldStartingIndex);   
             }
             else
@@ -140,21 +139,21 @@ namespace XAMLMarkup
         
         private void RemoveCanvasItem(int index)
         {
-            //throw new NotImplementedException("Not implemented yet");
             canvas.Children.RemoveAt(index);
         }
 
         private void ClearCanvas()
         {
-            //throw new NotImplementedException("Not implemented yet");
             canvas.Children.Clear();
         }
 
         #endregion
 
+        #region Constructor
         public PagedCanvas()
         {
             this.InitializeComponent();
         }
+        #endregion
     }
 }

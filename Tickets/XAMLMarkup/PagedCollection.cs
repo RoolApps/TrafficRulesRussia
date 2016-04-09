@@ -60,13 +60,6 @@ namespace XAMLMarkup
         }
         #endregion
 
-        #region Constructor
-        public PagedCollection(int pagingSize)
-        {
-            this.pagingSize = pagingSize;
-        }
-        #endregion
-
         #region Private Methods
         private IEnumerator<T> GetEnumerator()
         {
@@ -115,6 +108,13 @@ namespace XAMLMarkup
                 CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, list, list.IndexOf(list.First())));
                 CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, (this as IEnumerable<T>).ToList(), dataSourceFirstIndex));
             }
+        }
+        #endregion
+
+        #region Constructor
+        public PagedCollection(int pagingSize)
+        {
+            this.pagingSize = pagingSize;
         }
         #endregion
     }

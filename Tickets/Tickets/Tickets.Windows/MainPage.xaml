@@ -8,24 +8,8 @@
     x:Class="Tickets.MainPage"
     mc:Ignorable="d">
 
-
     <Grid x:Name="grid">
-        <XAMLMarkup:FlippingCanvas x:Name="flipping_canvas">
-            <XAMLMarkup:FlippingCanvas.MotionDuration>1500</XAMLMarkup:FlippingCanvas.MotionDuration>
-            <XAMLMarkup:FlippingCanvas.CanvasContent>
-                <XAMLMarkup:PagedCanvas>
-                    <XAMLMarkup:PagedCanvas.CanvasContent>
-                        <Canvas>
-                            <Rectangle Fill="Red" Height="100" Width="100" Canvas.Left="100" Canvas.Top="100"></Rectangle>
-                            <TextBlock Canvas.Top="300" Canvas.Left="58" FontSize="12" Height="100" Width="300" Text="{Binding Question}"></TextBlock>
-                            <TextBlock Canvas.Top="400" Canvas.Left="58" FontSize="12" Height="100" Width="300" Text="{Binding Answer1}"></TextBlock>
-                            <TextBlock Canvas.Top="500" Canvas.Left="58" FontSize="12" Height="100" Width="300" Text="{Binding Answer2}"></TextBlock>
-                            <TextBlock Canvas.Top="600" Canvas.Left="58" FontSize="12" Height="100" Width="300" Text="{Binding Answer3}"></TextBlock>
-                        </Canvas>
-                    </XAMLMarkup:PagedCanvas.CanvasContent>
-                </XAMLMarkup:PagedCanvas>
-            </XAMLMarkup:FlippingCanvas.CanvasContent>
-        </XAMLMarkup:FlippingCanvas>
+        
     </Grid>
     
 </Page>
