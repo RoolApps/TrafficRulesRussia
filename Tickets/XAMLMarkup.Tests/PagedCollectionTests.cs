@@ -12,13 +12,14 @@ namespace XAMLMarkup.Tests
     {
         class CollectionEntry
         {
+            public int num;
         }
 
         private IEnumerable<CollectionEntry> TestCollection
         {
             get
             {
-                return Enumerable.Range(0, 5).Select(i => new CollectionEntry()).ToArray();
+                return Enumerable.Range(0, 5).Select(i => new CollectionEntry() { num = i }).ToArray();
             }
         }
 
@@ -135,7 +136,7 @@ namespace XAMLMarkup.Tests
             Assert.AreEqual(collection.ElementAt(1), pagedCollection.ElementAt(1));
 
 
-            pagedCollection = GetPagedCollection(TestCollection, 2);
+            pagedCollection = GetPagedCollection(collection, 2);
             pagedCollection.MoveSelectedIndex(Interfaces.MoveDirection.Forward);
             //index 1
             Assert.AreEqual(4, pagedCollection.Count());
