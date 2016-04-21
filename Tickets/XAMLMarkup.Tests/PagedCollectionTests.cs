@@ -12,7 +12,6 @@ namespace XAMLMarkup.Tests
     {
         class CollectionEntry
         {
-            public int num;
         }
 
         private IEnumerable<CollectionEntry> TestCollection
