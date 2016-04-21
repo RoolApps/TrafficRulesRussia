@@ -47,9 +47,6 @@ namespace XAMLMarkup.Tests
         {
             var pagedCollection = GetPagedCollectionData(TestCollection);
             Assert.IsNotNull(pagedCollection as System.Collections.IEnumerable);
-
-            pagedCollection = GetPagedCollectionData(TestCollection, 2);
-            Assert.IsNotNull(pagedCollection as System.Collections.IEnumerable);
         }
 
         /// <summary>
