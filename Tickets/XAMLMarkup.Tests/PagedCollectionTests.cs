@@ -18,7 +18,7 @@ namespace XAMLMarkup.Tests
         {
             get
             {
-                return Enumerable.Range(0, 5).Select(i => new CollectionEntry() { num = i }).ToArray();
+                return Enumerable.Range(0, 5).Select(i => new CollectionEntry()).ToArray();
             }
         }
 
