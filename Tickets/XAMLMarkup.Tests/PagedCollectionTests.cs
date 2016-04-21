@@ -47,6 +47,9 @@ namespace XAMLMarkup.Tests
         {
             var pagedCollection = GetPagedCollectionData(TestCollection);
             Assert.IsNotNull(pagedCollection as System.Collections.IEnumerable);
+
+            pagedCollection = GetPagedCollectionData(TestCollection, 2);
+            Assert.IsNotNull(pagedCollection as System.Collections.IEnumerable);
         }
 
         /// <summary>
@@ -60,6 +63,12 @@ namespace XAMLMarkup.Tests
             Assert.AreEqual(2, pagedCollection.Count());
             Assert.AreEqual(collection.ElementAt(0), pagedCollection.ElementAt(0));
             Assert.AreEqual(collection.ElementAt(1), pagedCollection.ElementAt(1));
+
+            pagedCollection = GetPagedCollectionData(collection, 2);
+            Assert.AreEqual(3, pagedCollection.Count());
+            Assert.AreEqual(collection.ElementAt(0), pagedCollection.ElementAt(0));
+            Assert.AreEqual(collection.ElementAt(1), pagedCollection.ElementAt(1));
+            Assert.AreEqual(collection.ElementAt(2), pagedCollection.ElementAt(2));
         }
 
         /// <summary>
@@ -124,6 +133,72 @@ namespace XAMLMarkup.Tests
             Assert.AreEqual(2, pagedCollection.Count());
             Assert.AreEqual(collection.ElementAt(0), pagedCollection.ElementAt(0));
             Assert.AreEqual(collection.ElementAt(1), pagedCollection.ElementAt(1));
+
+
+            pagedCollection = GetPagedCollection(TestCollection, 2);
+            pagedCollection.MoveSelectedIndex(Interfaces.MoveDirection.Forward);
+            //index 1
+            Assert.AreEqual(4, pagedCollection.Count());
+            Assert.AreEqual(collection.ElementAt(0), pagedCollection.ElementAt(0));
+            Assert.AreEqual(collection.ElementAt(1), pagedCollection.ElementAt(1));
+            Assert.AreEqual(collection.ElementAt(2), pagedCollection.ElementAt(2));
+            Assert.AreEqual(collection.ElementAt(3), pagedCollection.ElementAt(3));
+
+            pagedCollection.MoveSelectedIndex(Interfaces.MoveDirection.Forward);
+            //index 2
+            Assert.AreEqual(5, pagedCollection.Count());
+            Assert.AreEqual(collection.ElementAt(0), pagedCollection.ElementAt(0));
+            Assert.AreEqual(collection.ElementAt(1), pagedCollection.ElementAt(1));
+            Assert.AreEqual(collection.ElementAt(2), pagedCollection.ElementAt(2));
+            Assert.AreEqual(collection.ElementAt(3), pagedCollection.ElementAt(3));
+            Assert.AreEqual(collection.ElementAt(4), pagedCollection.ElementAt(4));
+
+            pagedCollection.MoveSelectedIndex(Interfaces.MoveDirection.Forward);
+            //index 3
+            Assert.AreEqual(4, pagedCollection.Count());
+            Assert.AreEqual(collection.ElementAt(1), pagedCollection.ElementAt(0));
+            Assert.AreEqual(collection.ElementAt(2), pagedCollection.ElementAt(1));
+            Assert.AreEqual(collection.ElementAt(3), pagedCollection.ElementAt(2));
+            Assert.AreEqual(collection.ElementAt(4), pagedCollection.ElementAt(3));
+
+            pagedCollection.MoveSelectedIndex(Interfaces.MoveDirection.Forward);
+            //index 4
+            Assert.AreEqual(3, pagedCollection.Count());
+            Assert.AreEqual(collection.ElementAt(2), pagedCollection.ElementAt(0));
+            Assert.AreEqual(collection.ElementAt(3), pagedCollection.ElementAt(1));
+            Assert.AreEqual(collection.ElementAt(4), pagedCollection.ElementAt(2));
+
+            pagedCollection.MoveSelectedIndex(Interfaces.MoveDirection.Back);
+            //index 3
+            Assert.AreEqual(4, pagedCollection.Count());
+            Assert.AreEqual(collection.ElementAt(1), pagedCollection.ElementAt(0));
+            Assert.AreEqual(collection.ElementAt(2), pagedCollection.ElementAt(1));
+            Assert.AreEqual(collection.ElementAt(3), pagedCollection.ElementAt(2));
+            Assert.AreEqual(collection.ElementAt(4), pagedCollection.ElementAt(3));
+
+            pagedCollection.MoveSelectedIndex(Interfaces.MoveDirection.Back);
+            //index 2
+            Assert.AreEqual(5, pagedCollection.Count());
+            Assert.AreEqual(collection.ElementAt(0), pagedCollection.ElementAt(0));
+            Assert.AreEqual(collection.ElementAt(1), pagedCollection.ElementAt(1));
+            Assert.AreEqual(collection.ElementAt(2), pagedCollection.ElementAt(2));
+            Assert.AreEqual(collection.ElementAt(3), pagedCollection.ElementAt(3));
+            Assert.AreEqual(collection.ElementAt(4), pagedCollection.ElementAt(4));
+
+            pagedCollection.MoveSelectedIndex(Interfaces.MoveDirection.Back);
+            //index 1
+            Assert.AreEqual(4, pagedCollection.Count());
+            Assert.AreEqual(collection.ElementAt(0), pagedCollection.ElementAt(0));
+            Assert.AreEqual(collection.ElementAt(1), pagedCollection.ElementAt(1));
+            Assert.AreEqual(collection.ElementAt(2), pagedCollection.ElementAt(2));
+            Assert.AreEqual(collection.ElementAt(3), pagedCollection.ElementAt(3));
+
+            pagedCollection.MoveSelectedIndex(Interfaces.MoveDirection.Back);
+            //index 0
+            Assert.AreEqual(3, pagedCollection.Count());
+            Assert.AreEqual(collection.ElementAt(0), pagedCollection.ElementAt(0));
+            Assert.AreEqual(collection.ElementAt(1), pagedCollection.ElementAt(1));
+            Assert.AreEqual(collection.ElementAt(2), pagedCollection.ElementAt(2));
         }
 
         /// <summary>
