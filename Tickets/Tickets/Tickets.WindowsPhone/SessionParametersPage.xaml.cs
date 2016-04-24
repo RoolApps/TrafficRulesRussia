@@ -1,4 +1,5 @@
-﻿using AppLogic.Interfaces;
+﻿using AppLogic;
+using AppLogic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,56 +24,37 @@ namespace Tickets
     /// </summary>
     public sealed partial class SessionParametersPage : Page
     {
-        SessionParameters Parameters = new SessionParameters();
-
+        #region Private Members
         IEnumerable<TicketPresenter> Tickets;
+        #endregion
 
         public SessionParametersPage()
         {
             this.InitializeComponent();
-            GetTicketIds();
-            listTickets.ItemsSource = Tickets;
-            listTickets.SelectionChanged += listTickets_SelectionChanged;
-            EnableControls();
+            InitPage();
         }
 
-        private void GetTicketIds()
+        #region Private Methods
+        private void InitPage()
         {
-            using(var dataAccessor = new SQLiteShared.SQLiteDataAccessor())
+            //fetch ticket ids from database
+            using (var dataAccessor = new SQLiteShared.SQLiteDataAccessor())
             {
                 Tickets = dataAccessor.CreateQuery<SQLiteShared.Models.Tickets>().Select(ticket => new TicketPresenter(ticket)).ToArray();
             }
+            //assign them to listview
+            listTickets.ItemsSource = Tickets;
+            listTickets.SelectionChanged += listTickets_SelectionChanged;
+            //disable "start" button
+            EnableControls();
         }
 
         /// <summary>
-        /// Invoked when this page is about to be displayed in a Frame.
+        /// Method used to change controls behavior
         /// </summary>
-        /// <param name="e">Event data that describes how this page was reached.
-        /// This parameter is typically used to configure the page.</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-        }
-
-        private void chkRandomTicket_Checked(object sender, RoutedEventArgs e)
-        {
-            Parameters.Mode = AppLogic.Enums.QuestionsGenerationMode.RandomTicket;
-            EnableControls();
-        }
-
-        private void chkRandomTicket_Unchecked(object sender, RoutedEventArgs e)
-        {
-            Parameters.Mode = AppLogic.Enums.QuestionsGenerationMode.SelectedTickets;
-            EnableControls();
-        }
-
-        void listTickets_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            EnableControls();
-        }
-
         private void EnableControls()
         {
-            if(Parameters.Mode == AppLogic.Enums.QuestionsGenerationMode.RandomTicket)
+            if (chkRandomTicket.IsChecked == true)
             {
                 this.listTickets.IsEnabled = false;
                 this.btnStart.IsEnabled = true;
@@ -80,7 +62,7 @@ namespace Tickets
             else
             {
                 this.listTickets.IsEnabled = true;
-                if(listTickets.SelectedItems.Any())
+                if (listTickets.SelectedItems.Any())
                 {
                     this.btnStart.IsEnabled = true;
                 }
@@ -90,12 +72,59 @@ namespace Tickets
                 }
             }
         }
+        #endregion Private Methods
 
-        private void btnStart_Click(object sender, RoutedEventArgs e)
+        #region Event Handlers
+        /// <summary>
+        /// Invoked when this page is about to be displayed in a Frame.
+        /// </summary>
+        /// <param name="e">Event data that describes how this page was reached.
+        /// This parameter is typically used to configure the page.</param>
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
 
         }
 
+        private void chkRandomTicket_Checked(object sender, RoutedEventArgs e)
+        {
+            EnableControls();
+        }
+
+        private void chkRandomTicket_Unchecked(object sender, RoutedEventArgs e)
+        {
+            EnableControls();
+        }
+
+        private void listTickets_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            EnableControls();
+        }
+
+        private void btnStart_Click(object sender, RoutedEventArgs e)
+        {
+            //creating parameters...
+            var mode = chkRandomTicket.IsChecked == true ? AppLogic.Enums.QuestionsGenerationMode.RandomTicket : AppLogic.Enums.QuestionsGenerationMode.SelectedTickets;
+            var ticketNums = listTickets.SelectedItems.Cast<TicketPresenter>().Select(ticket => ticket.Num).ToArray();
+            var parameters = new SessionParameters(mode, ticketNums);
+            ISession session;
+            //creating session...
+            var creationResult = SessionFactory.CreateSession(parameters, out session);
+            if(creationResult == AppLogic.Enums.ParametersValidationResult.Valid)
+            {
+                //for future use: this.Frame.NavigateTo(typeof(...));
+                throw new NotImplementedException("Not implemented yet");
+            }
+            else
+            {
+                throw new Exception("This should never happen! Developers, please check parameters creation logic");
+            }
+        }
+        #endregion
+
+        #region Additional Classes
+        /// <summary>
+        /// class used to display ticket number with user-friendly caption
+        /// </summary>
         class TicketPresenter
         {
             private SQLiteShared.Models.Tickets ticket;
@@ -105,16 +134,20 @@ namespace Tickets
                 this.ticket = ticket;
             }
 
-            public int Id { get { return ticket.id; } }
+            public int Num { get { return ticket.num; } }
 
-            public string Num { get { return String.Format("Билет № {0}", ticket.num); } }
+            public string NumString { get { return String.Format("Билет № {0}", ticket.num); } }
         }
 
+        /// <summary>
+        /// class used to preserve session parameters
+        /// </summary>
         class SessionParameters : ISessionParameters
         {
-            public SessionParameters()
+            public SessionParameters(AppLogic.Enums.QuestionsGenerationMode mode, int[] ticketNums = null)
             {
-                this.Mode = AppLogic.Enums.QuestionsGenerationMode.SelectedTickets;
+                this.Mode = mode;
+                this.TicketNums = ticketNums;
             }
 
             public bool Shuffle
@@ -122,12 +155,10 @@ namespace Tickets
                 get { throw new NotImplementedException(); }
             }
 
-            public int[] TicketNums
-            {
-                get { throw new NotImplementedException(); }
-            }
+            public int[] TicketNums { get; private set; }
 
-            public AppLogic.Enums.QuestionsGenerationMode Mode { get; set; }
+            public AppLogic.Enums.QuestionsGenerationMode Mode { get; private set; }
         }
+        #endregion
     }
 }
