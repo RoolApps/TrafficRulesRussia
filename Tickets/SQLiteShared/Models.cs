@@ -29,7 +29,7 @@ namespace SQLiteShared.Models
 
         public bool is_right { get; set; }
 
-        public int questions_id { get; set; }
+        public int question_id { get; set; }
     }
 
     public abstract class BaseModel

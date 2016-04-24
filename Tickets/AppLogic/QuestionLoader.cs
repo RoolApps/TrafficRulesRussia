@@ -36,24 +36,24 @@ namespace AppLogic
 
                 var questions = dataAccessor.CreateQuery<Questions>().Where(question => selectedTicketIds.Contains(question.ticket_id));
                 var questionIds = questions.Select(question => question.id).ToArray();
-                var answers = dataAccessor.CreateQuery<Answers>().Where(answer => questionIds.Contains(answer.questions_id));
+                var answers = dataAccessor.CreateQuery<Answers>().Where(answer => questionIds.Contains(answer.question_id));
 
                 var iquestions = questions.Select(question =>
                 {
                     return new Question()
                     {
-                        Answers = answers.Where(answer => answer.questions_id == question.id).Select(answer =>
+                        Answers = answers.Where(answer => answer.question_id == question.id).Select(answer =>
                         {
                             return new Answer()
                             {
                                 IsRight = answer.is_right,
                                 Text = answer.answer
                             };
-                        }),
+                        }).ToArray(),
                         Image = question.image,
                         Text = question.question
                     };
-                }).ToArray(); //TODO: check if we really need toArray here
+                }).ToArray();
 
                 return iquestions;
             }
