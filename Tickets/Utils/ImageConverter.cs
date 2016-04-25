@@ -14,15 +14,12 @@ namespace Utils
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             //System.Diagnostics.Debug.WriteLine("value == {0}", value);
-            if (value == null || !(value is byte[]))
-            {
+            if (value == null || !(value is byte[])) {
                 return null;
             }
 
-            using (InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream())
-            {
-                using (DataWriter writer = new DataWriter(stream.GetOutputStreamAt(0)))
-                {
+            using (InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream()) {
+                using (DataWriter writer = new DataWriter(stream.GetOutputStreamAt(0))) {
                     writer.WriteBytes((byte[])value);
                     writer.StoreAsync().GetResults();
                 }
