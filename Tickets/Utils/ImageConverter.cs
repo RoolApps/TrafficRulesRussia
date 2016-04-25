@@ -13,7 +13,7 @@ namespace Utils
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            System.Diagnostics.Debug.WriteLine("value == {0}", value);
+            //System.Diagnostics.Debug.WriteLine("value == {0}", value);
             if (value == null || !(value is byte[])) {
                 return null;
             }
@@ -24,8 +24,6 @@ namespace Utils
                     writer.StoreAsync().GetResults();
                 }
                 BitmapImage image = new BitmapImage();
-                //image.DecodePixelHeight = 300;
-                //image.DecodePixelWidth = 1366;
                 image.SetSource(stream);
                 return image;
             }
