@@ -107,6 +107,9 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QuestionsContentPage.xaml.cs">
+      <DependentUpon>QuestionsContentPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -124,11 +127,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="QuestionsContentPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ApplicationResources\ApplicationResources.csproj">
       <Project>{7f7ce34f-45b2-4181-a273-565da64ba575}</Project>
       <Name>ApplicationResources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\AppLogic\AppLogic.csproj">
+      <Project>{ad57ef64-9db5-4a05-9ad8-eb85cf4f1e7e}</Project>
+      <Name>AppLogic</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\SQLiteShared\SQLiteShared.csproj">
       <Project>{ed5bdb33-53d5-49c3-803d-85637d1d8150}</Project>
