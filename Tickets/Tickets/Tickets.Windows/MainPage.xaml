@@ -6,10 +6,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:XAMLMarkup="using:XAMLMarkup"
     x:Class="Tickets.MainPage"
-    mc:Ignorable="d">
-
-    <Grid x:Name="grid">
+    mc:Ignorable="d"
+    >
+    <Grid>
         
     </Grid>
-    
 </Page>
