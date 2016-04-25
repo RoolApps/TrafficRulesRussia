@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Media.Imaging;
 
 namespace Utils
 {
@@ -13,6 +13,7 @@ namespace Utils
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
+            //System.Diagnostics.Debug.WriteLine("value == {0}", value);
             if (value == null || !(value is byte[]))
             {
                 return null;
