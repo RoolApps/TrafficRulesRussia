@@ -65,14 +65,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AppLogic\AppLogic.csproj">
-      <Project>{ad57ef64-9db5-4a05-9ad8-eb85cf4f1e7e}</Project>
-      <Name>AppLogic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SQLiteShared\SQLiteShared.csproj">
-      <Project>{ed5bdb33-53d5-49c3-803d-85637d1d8150}</Project>
-      <Name>SQLiteShared</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.csproj">
       <Project>{687cd1d3-8463-4ec1-b618-d59512678f30}</Project>
       <Name>Utils</Name>
