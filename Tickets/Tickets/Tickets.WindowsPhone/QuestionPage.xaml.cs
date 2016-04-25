@@ -25,11 +25,9 @@ namespace Tickets
     /// </summary>
     public sealed partial class QuestionPage : Page
     {
-        public QuestionPage(ISession session)
+        public QuestionPage()
         {
             this.InitializeComponent();
-            var pagedCanvas = flippingCanvas.CanvasContent as PagedCanvas;
-            pagedCanvas.DataSource = new PagedCollection<IQuestion>(2) { DataSource = session.Questions };
         }
 
         /// <summary>
@@ -39,6 +37,9 @@ namespace Tickets
         /// This parameter is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            var session = e.Parameter as ISession;
+            var pagedCanvas = flippingCanvas.CanvasContent as PagedCanvas;
+            pagedCanvas.DataSource = new PagedCollection<IQuestion>(2) { DataSource = session.Questions };
         }
     }
 }
