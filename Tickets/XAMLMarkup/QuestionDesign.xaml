@@ -10,29 +10,47 @@
     d:DesignHeight="768"
     d:DesignWidth="1366"
     >
-
-    <Grid>
-        <Grid.Resources>
-            <utils:ImageConverter x:Key="ImgConverter"></utils:ImageConverter>
-        </Grid.Resources>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0" Margin="5">
-            <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-            <Image Grid.Row="0" VerticalAlignment="Center" Source="{Binding Path=Image, Converter={StaticResource ImgConverter}}"></Image>
-            <TextBlock Grid.Row="1" VerticalAlignment="Bottom" Text="{Binding Path=Question}"></TextBlock>
+    <Canvas>
+        <Grid Height="768" Width="1366">
+            <Grid.Resources>
+                <utils:ImageConverter x:Key="ImgConverter"></utils:ImageConverter>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="256"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Image Grid.Row="0" 
+                       Source="{Binding Path=Image, Converter={StaticResource ImgConverter}}"/>
+                <TextBlock  Grid.Row="1"
+                            Margin="2,2,2,2"
+                            Padding="10"
+                            TextWrapping="WrapWholeWords"
+                            FontSize="18"
+                            MaxHeight="256"
+                            MaxWidth="683"
+                            Text="{Binding Question}"/>
+            </Grid>
+            <StackPanel Grid.Column="1">
+                <ItemsControl ItemsSource="{Binding Answers}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Text}"
+                                       Margin="2,2,2,2"
+                                       Padding="10"
+                                       TextWrapping="WrapWholeWords"
+                                       FontSize="18"
+                                       Height="256"
+                                       MaxWidth="683"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
         </Grid>
-        <ListBox Grid.Column="1" Margin="5" ItemsSource="{Binding Path=Answers}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock FontSize="14" Text="{Binding Path=Text}"/>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-    </Grid>
+    </Canvas>
+
 </UserControl>
