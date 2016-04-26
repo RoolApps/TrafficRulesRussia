@@ -19,10 +19,12 @@ namespace AppLogic.Interfaces
     public class IsSelectedChangedEventArgs : EventArgs
     {
         public bool IsSelected { get; private set; }
+        public IAnswer Answer { get; private set; }
 
-        internal IsSelectedChangedEventArgs(bool isSelected)
+        internal IsSelectedChangedEventArgs(bool isSelected, IAnswer answer)
         {
             this.IsSelected = isSelected;
+            this.Answer = answer;
         }
     }
 }

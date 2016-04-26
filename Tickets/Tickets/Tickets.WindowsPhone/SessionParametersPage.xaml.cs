@@ -111,8 +111,7 @@ namespace Tickets
             var creationResult = SessionFactory.CreateSession(parameters, out session);
             if(creationResult == AppLogic.Enums.ParametersValidationResult.Valid)
             {
-                //for future use: this.Frame.NavigateTo(typeof(...));
-                throw new NotImplementedException("Not implemented yet");
+                this.Frame.Navigate(typeof(QuestionPage), session);
             }
             else
             {
