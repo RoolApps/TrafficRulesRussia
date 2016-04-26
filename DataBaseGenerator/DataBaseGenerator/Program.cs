@@ -26,6 +26,7 @@ namespace DataBaseGenerator
 
         static Data GetData()
         {
+            CsQuery.Config.HtmlEncoder = new CsQuery.Output.HtmlEncoderNone();
             var baseDocument = CsQuery.CQ.CreateFromUrl(BaseUrl);
             var ticketLinks = baseDocument.Find("div.numbers a");
             List<Task<Ticket>> taskList = new List<Task<Ticket>>();
@@ -47,12 +48,7 @@ namespace DataBaseGenerator
                     var webClient = new WebClient();
                     webClient.Encoding = Encoding.GetEncoding(1251);
                     var documentContent = webClient.DownloadString(url);
-
-                    CsQuery.CQ document;
-                    using(var stream = GenerateStreamFromString(documentContent))
-                    {
-                        document = new CsQuery.CQ(stream, Encoding.GetEncoding(1251));
-                    }
+                    CsQuery.CQ document = new CsQuery.CQ(documentContent);
                     var questionBlocks = document.Find(".pdd-question-block");
 
                     List<Question> questions = new List<Question>();
@@ -113,6 +109,7 @@ namespace DataBaseGenerator
             using (Connection)
             {
                 CreateSchema();
+
             }
 
             Connection.Clone();
@@ -132,16 +129,6 @@ namespace DataBaseGenerator
                 command.CommandText = text;
                 command.ExecuteNonQuery();
             }
-        }
-
-        static Stream GenerateStreamFromString(string s)
-        {
-            MemoryStream stream = new MemoryStream();
-            StreamWriter writer = new StreamWriter(stream);
-            writer.Write(s);
-            writer.Flush();
-            stream.Position = 0;
-            return stream;
         }
     }
 }
