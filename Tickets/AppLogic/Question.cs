@@ -30,9 +30,12 @@ namespace AppLogic
                         }
                     }
                     answers = value;
-                    foreach(var answer in answers)
+                    if(answers != null)
                     {
-                        answer.IsSelectedChanged += answer_IsSelectedChanged;
+                        foreach (var answer in answers)
+                        {
+                            answer.IsSelectedChanged += answer_IsSelectedChanged;
+                        }
                     }
                 }
             }
