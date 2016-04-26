@@ -103,16 +103,13 @@ namespace DataBaseGenerator
         static void CreateDB(Data data)
         {
             System.IO.File.Delete("tickets.db");
-            Connection = new SQLiteConnection("tickets.db");
+            Connection = new SQLiteConnection("Data Source=tickets.db;Version=3;");
             Connection.Open();
 
-            using (Connection)
-            {
-                CreateSchema();
+            CreateSchema();
+            InsertData(data);
 
-            }
-
-            Connection.Clone();
+            Connection.Close();
         }
 
         static void CreateSchema()
@@ -120,6 +117,63 @@ namespace DataBaseGenerator
             ExecuteCommand("CREATE TABLE Tickets (id integer primary key, num integer)");
             ExecuteCommand("CREATE TABLE Questions (id integer primary key, num integer, question text, image blob, ticket_id integer)");
             ExecuteCommand("CREATE TABLE Answers (id integer primary key, answer text, is_right integer, question_id integer)");
+        }
+
+        static void InsertData(Data data)
+        {
+            using(var transaction = Connection.BeginTransaction())
+            {
+                using (var ticketCommand = Connection.CreateCommand())
+                {
+                    ticketCommand.CommandText = "INSERT INTO Tickets (num) Values (?)";
+                    ticketCommand.Parameters.Add(new SQLiteParameter() { ParameterName = "@num", DbType = System.Data.DbType.Int32 });
+                    foreach (var ticket in data.Tickets)
+                    {
+                        ticketCommand.Parameters["@num"].Value = ticket.Num;
+                        ticketCommand.ExecuteNonQuery();
+
+                        using (var questionCommand = Connection.CreateCommand())
+                        {
+                            questionCommand.CommandText = "INSERT INTO Questions (num, question, image, ticket_id) Values (?,?,?,?)";
+                            questionCommand.Parameters.Add(new SQLiteParameter() { ParameterName = "@num", DbType = System.Data.DbType.Int32 });
+                            questionCommand.Parameters.Add(new SQLiteParameter() { ParameterName = "@questions", DbType = System.Data.DbType.String });
+                            questionCommand.Parameters.Add(new SQLiteParameter() { ParameterName = "@image", DbType = System.Data.DbType.Binary });
+                            questionCommand.Parameters.Add(new SQLiteParameter() { ParameterName = "@ticket_id", DbType = System.Data.DbType.Int32, Value = ticket.Num });
+
+                            using (var answerCommand = Connection.CreateCommand())
+                            {
+                                answerCommand.CommandText = "INSERT INTO Answers (answer, is_right, question_id) Values (?,?,?)";
+                                answerCommand.Parameters.Add(new SQLiteParameter() { ParameterName = "@answer", DbType = System.Data.DbType.String });
+                                answerCommand.Parameters.Add(new SQLiteParameter() { ParameterName = "@is_right", DbType = System.Data.DbType.Int32 });
+                                answerCommand.Parameters.Add(new SQLiteParameter() { ParameterName = "@question_id", DbType = System.Data.DbType.Int32 });
+
+                                foreach (var question in ticket.Questions)
+                                {
+                                    questionCommand.Parameters["@num"].Value = question.Num;
+                                    questionCommand.Parameters["@questions"].Value = question.Text;
+                                    questionCommand.Parameters["@image"].Value = question.Image;
+                                    if (question.Image != null)
+                                    {
+                                        questionCommand.Parameters["@image"].Size = question.Image.Length;
+                                    }
+                                    questionCommand.ExecuteNonQuery();
+
+                                    answerCommand.Parameters["@question_id"].Value = (ticket.Num - 1) * 20 + question.Num;
+                                    foreach (var answer in question.Answers)
+                                    {
+                                        answerCommand.Parameters["@answer"].Value = answer.Text;
+                                        answerCommand.Parameters["@is_right"].Value = answer.IsRight;
+                                        answerCommand.ExecuteNonQuery();
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }
+                transaction.Commit();
+            }
+            
         }
 
         static void ExecuteCommand(String text)
