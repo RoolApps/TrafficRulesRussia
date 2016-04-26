@@ -8,6 +8,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Security.Cryptography.Core;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -57,8 +58,8 @@ namespace Tickets
         {
             CheckDBFile().ContinueWith(async (result) =>
             {
-                bool exists = await result;
-                if (!exists)
+                bool actual = await result;
+                if (!actual)
                 {
                     await CopyDBFile();
                 }
@@ -69,8 +70,12 @@ namespace Tickets
         {
             try
             {
-                await ApplicationData.Current.LocalFolder.GetFileAsync(AppData.Resources.DBFileName);
-                return true;
+                var currentFile = await ApplicationData.Current.LocalFolder.GetFileAsync(AppData.Resources.DBFileName);
+                var actualFile = await Package.Current.InstalledLocation.GetFileAsync(AppData.Resources.DBFileName);
+                var provider = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Md5);
+                var currentFileBuffer = await FileIO.ReadBufferAsync(currentFile);
+                var actualFileBuffer = await FileIO.ReadBufferAsync(actualFile);
+                return provider.HashData(currentFileBuffer).ToArray().SequenceEqual(provider.HashData(actualFileBuffer).ToArray());
             }
             catch (FileNotFoundException)
             {
@@ -84,7 +89,7 @@ namespace Tickets
             {
                 
                 var dbFile = await Package.Current.InstalledLocation.GetFileAsync(AppData.Resources.DBFileName);
-                await dbFile.CopyAsync(ApplicationData.Current.LocalFolder);
+                await dbFile.CopyAsync(ApplicationData.Current.LocalFolder, AppData.Resources.DBFileName, NameCollisionOption.ReplaceExisting);
                 return true;
             }
             catch (Exception)
