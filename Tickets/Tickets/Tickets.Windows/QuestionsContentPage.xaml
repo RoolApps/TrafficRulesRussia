@@ -11,9 +11,9 @@
 
     <XAMLMarkup:FlippingCanvas x:Name="flipping_canvas">
         <XAMLMarkup:FlippingCanvas.MotionDuration>1500</XAMLMarkup:FlippingCanvas.MotionDuration>
-        <XAMLMarkup:FlippingCanvas.CanvasContent>
-            <XAMLMarkup:PagedCanvas>
-                <XAMLMarkup:PagedCanvas.CanvasContent>
+        <XAMLMarkup:PagedCanvas>
+            <XAMLMarkup:PagedCanvas.ItemTemplate>
+                <DataTemplate>
                     <Canvas>
                         <Grid Height="768" Width="1366">
                             <Grid.Resources>
@@ -21,17 +21,17 @@
                             </Grid.Resources>
                             <Grid HorizontalAlignment="Left" Height="768" Width="683">
                                 <Image VerticalAlignment="Top"
-                                       MaxWidth="683"
-                                       MaxHeight="512"
-                                       Source="{Binding Path=Image, Converter={StaticResource ImgConverter}}"/>
+                                           MaxWidth="683"
+                                           MaxHeight="512"
+                                           Source="{Binding Path=Image, Converter={StaticResource ImgConverter}}"/>
                                 <TextBlock  VerticalAlignment="Bottom"
-                                            Margin="2,2,2,2"
-                                            Padding="10"
-                                            TextWrapping="WrapWholeWords"
-                                            FontSize="18"
-                                            Height="256"
-                                            Width="683"
-                                            Text="{Binding Text}"/>
+                                                Margin="2,2,2,2"
+                                                Padding="10"
+                                                TextWrapping="WrapWholeWords"
+                                                FontSize="18"
+                                                Height="256"
+                                                Width="683"
+                                                Text="{Binding Text}"/>
                             </Grid>
                             <Grid HorizontalAlignment="Right" Height="768" Width="683">
                                 <StackPanel VerticalAlignment="Center">
@@ -39,12 +39,12 @@
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <TextBlock  Text="{Binding Text}"
-                                                            Margin="2,2,2,2"
-                                                            Padding="10"
-                                                            TextWrapping="WrapWholeWords"
-                                                            FontSize="18"
-                                                            Height="256"
-                                                            Width="683"/>
+                                                                Margin="2,2,2,2"
+                                                                Padding="10"
+                                                                TextWrapping="WrapWholeWords"
+                                                                FontSize="18"
+                                                                Height="256"
+                                                                Width="683"/>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
@@ -52,8 +52,8 @@
                             </Grid>
                         </Grid>
                     </Canvas>
-                </XAMLMarkup:PagedCanvas.CanvasContent>
-            </XAMLMarkup:PagedCanvas>
-        </XAMLMarkup:FlippingCanvas.CanvasContent>
+                </DataTemplate>
+            </XAMLMarkup:PagedCanvas.ItemTemplate>
+        </XAMLMarkup:PagedCanvas>
     </XAMLMarkup:FlippingCanvas>
 </Page>

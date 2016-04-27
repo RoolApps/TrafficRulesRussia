@@ -1,32 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
+using System.Threading.Tasks;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using Windows.UI;
-using Windows.UI.Text;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Shapes;
-using Windows.UI.Input;
 using Windows.UI.Xaml.Media.Animation;
-using System.Threading;
-using System.Collections;
-using XAMLMarkup;
-
+using Windows.UI.Xaml.Shapes;
 
 namespace XAMLMarkup
 {
-    public sealed partial class FlippingCanvas : UserControl
+    public sealed class FlippingCanvas : Canvas
     {
+        Ellipse corrector;
+
         #region Private Members
         private Boolean LKMIsPressed = false;
         private static int completedAnimations = 0;
@@ -41,21 +30,6 @@ namespace XAMLMarkup
         #endregion
 
         #region Public Properties
-        public static readonly DependencyProperty ContentProperty = 
-            DependencyProperty.Register("CanvasContent", typeof(object), typeof(FlippingCanvas), null);
-
-        public object CanvasContent
-        {
-            get
-            {
-                return GetValue(ContentProperty);
-            }
-            set
-            {
-                SetValue(ContentProperty, value);
-            }
-        }
-
         public static readonly DependencyProperty DurationProperty =
             DependencyProperty.Register("MotionDuration", typeof(double), typeof(FlippingCanvas), null);
 
@@ -75,13 +49,7 @@ namespace XAMLMarkup
         #region Private Methods
         private void canvas_Loaded(object sender, RoutedEventArgs e)
         {
-            if (CanvasContent as UIElement != null) {
-                canvas.Children.Add(CanvasContent as UIElement);
-            }
-
-            if (CanvasContent is PagedCanvas) {
-                pagedCanvas = this.CanvasContent as PagedCanvas;
-            }
+            pagedCanvas = this.Children.OfType<PagedCanvas>().SingleOrDefault();
         }
 
         private void canvas_PointerPressed(object sender, PointerRoutedEventArgs e)
@@ -97,7 +65,7 @@ namespace XAMLMarkup
         private void canvas_PointerReleased(object sender, PointerRoutedEventArgs e)
         {
             LKMIsPressed = false;
-            foreach (var obj in canvas.Children.ToList()) {
+            foreach (var obj in Children.ToList()) {
                 AddMotionAnimation(obj, PxToMove(), completed);
             }
             storyboard.Begin();
@@ -122,7 +90,7 @@ namespace XAMLMarkup
 
         private void MoveObjectsOnCanvas(double px)
         {
-            var objects = canvas.Children.ToList();
+            var objects = Children.ToList();
             foreach (var obj in objects) {
                 Canvas.SetLeft(obj, Canvas.GetLeft(obj) + px);
             }
@@ -131,11 +99,16 @@ namespace XAMLMarkup
         private void completed()
         {
             completedAnimations++;
-            if (completedAnimations == canvas.Children.Count) {
-                if (direction == MoveDirection.ToNext) {
-                    pagedCanvas.LoadNext();
-                } else if (direction == MoveDirection.ToPrevious) {
-                    pagedCanvas.LoadPrevious();
+            if (completedAnimations == Children.Count) {
+                if (pagedCanvas != null) {
+                    if (direction == MoveDirection.ToNext)
+                    {
+                        pagedCanvas.LoadNext();
+                    }
+                    else if (direction == MoveDirection.ToPrevious)
+                    {
+                        pagedCanvas.LoadPrevious();
+                    }
                 }
                 completedAnimations = 0;
                 Canvas.SetLeft(corrector, 0.0);
@@ -181,13 +154,14 @@ namespace XAMLMarkup
         #region Constructor
         public FlippingCanvas()
         {
-            this.InitializeComponent();
+            corrector = new Ellipse();
+            Children.Add(corrector);
 
-            canvas.Loaded += canvas_Loaded;
-            canvas.SizeChanged += canvas_SizeChanged;
-            canvas.PointerPressed += canvas_PointerPressed;
-            canvas.PointerReleased += canvas_PointerReleased;
-            canvas.PointerMoved += canvas_PointerMoved;
+            Loaded += canvas_Loaded;
+            SizeChanged += canvas_SizeChanged;
+            PointerPressed += canvas_PointerPressed;
+            PointerReleased += canvas_PointerReleased;
+            PointerMoved += canvas_PointerMoved;
         }
         #endregion
     }

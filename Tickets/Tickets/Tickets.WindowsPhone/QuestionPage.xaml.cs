@@ -38,8 +38,8 @@ namespace Tickets
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             var session = e.Parameter as ISession;
-            var pagedCanvas = flippingCanvas.CanvasContent as PagedCanvas;
-            pagedCanvas.DataSource = new PagedCollection<IQuestion>(2) { DataSource = session.Questions };
+            var pagedCanvas = flippingCanvas.Children.OfType<PagedCanvas>().Single();
+            pagedCanvas.ItemsSource = new PagedCollection<IQuestion>(2) { DataSource = session.Questions };
         }
     }
 }

@@ -36,14 +36,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <Page Include="FlippingCanvas.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PagedCanvas.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Themes\Generic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -54,13 +46,9 @@
     <TargetPlatform Include="Windows, Version=8.1" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FlippingCanvas.xaml.cs">
-      <DependentUpon>FlippingCanvas.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Interfaces\IPagedCollection.cs" />
-    <Compile Include="PagedCanvas.xaml.cs">
-      <DependentUpon>PagedCanvas.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="FlippingCanvas.cs" />
+    <Compile Include="PagedCanvas.cs" />
     <Compile Include="PagedCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

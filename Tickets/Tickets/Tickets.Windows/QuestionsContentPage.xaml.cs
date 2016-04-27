@@ -31,10 +31,10 @@ namespace Tickets
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             ISession session = e.Parameter as ISession;
-            PagedCanvas paged_canvas = flipping_canvas.CanvasContent as PagedCanvas;
+            PagedCanvas paged_canvas = flipping_canvas.Children.OfType<PagedCanvas>().Single();
             PagedCollection<IQuestion> paged_col = new PagedCollection<IQuestion>(2);
             paged_col.DataSource = session.Questions;
-            paged_canvas.DataSource = paged_col;
+            paged_canvas.ItemsSource = paged_col;
         }
         
     }
