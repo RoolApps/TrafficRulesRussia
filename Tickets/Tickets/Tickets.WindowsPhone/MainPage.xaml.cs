@@ -27,8 +27,6 @@ namespace Tickets
             this.InitializeComponent();
             
             this.NavigationCacheMode = NavigationCacheMode.Required;
-
-            this.Loaded += (s, e) => Frame.Navigate(typeof(SessionParametersPage));
         }
 
         /// <summary>
