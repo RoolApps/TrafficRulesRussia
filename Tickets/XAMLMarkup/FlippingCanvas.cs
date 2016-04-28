@@ -64,11 +64,15 @@ namespace XAMLMarkup
 
         private void canvas_PointerReleased(object sender, PointerRoutedEventArgs e)
         {
-            LKMIsPressed = false;
-            foreach (var obj in Children.ToList()) {
-                AddMotionAnimation(obj, PxToMove(), completed);
+            if(LKMIsPressed)
+            {
+                LKMIsPressed = false;
+                foreach (var obj in Children.ToList())
+                {
+                    AddMotionAnimation(obj, PxToMove(), completed);
+                }
+                storyboard.Begin();
             }
-            storyboard.Begin();
         }
 
         private void canvas_PointerMoved(object sender, PointerRoutedEventArgs e)
