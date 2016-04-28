@@ -12,6 +12,7 @@
     <Grid>
         <Grid.Resources>
             <utils:ImageConverter x:Key="ImageConverter"></utils:ImageConverter>
+            <local:BorderColorConverter x:Key="BorderColorConverter"></local:BorderColorConverter>
         </Grid.Resources>
         <XAMLMarkup:FlippingCanvas x:Name="flippingCanvas" MotionDuration="500">
             <XAMLMarkup:FlippingCanvas.CanvasContent>
@@ -23,7 +24,9 @@
                             <ListView ItemsSource="{Binding Path=Answers}" HorizontalAlignment="Left" Height="323" Margin="10,307,0,0" VerticalAlignment="Top" Width="380">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Path=Text}" FontSize="20" Width="380" TextWrapping="WrapWholeWords"/>
+                                        <Border BorderBrush="{Binding Path=IsSelected, Mode=OneWay, Converter={StaticResource BorderColorConverter}, UpdateSourceTrigger=PropertyChanged}" BorderThickness="2" Margin="0,0,0,10">
+                                            <TextBlock Text="{Binding Path=Text}" FontSize="20" Width="380" TextWrapping="WrapWholeWords" Tapped="TextBlock_Tapped"/>
+                                        </Border>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
