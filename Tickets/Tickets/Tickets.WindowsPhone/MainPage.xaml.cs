@@ -44,5 +44,10 @@ namespace Tickets
             // Если вы используете NavigationHelper, предоставляемый некоторыми шаблонами,
             // данное событие обрабатывается для вас.
         }
+
+        private void txtNewExam_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(SessionParametersPage));
+        }
     }
 }

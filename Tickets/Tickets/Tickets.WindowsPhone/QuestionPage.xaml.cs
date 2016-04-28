@@ -41,5 +41,37 @@ namespace Tickets
             var pagedCanvas = flippingCanvas.Children.OfType<PagedCanvas>().Single();
             pagedCanvas.ItemsSource = new PagedCollection<IQuestion>(2) { DataSource = session.Questions };
         }
+
+        private void TextBlock_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var element = e.OriginalSource as FrameworkElement;
+            var answer = element.DataContext as IAnswer;
+            answer.IsSelected = !answer.IsSelected;
+        }
+    }
+
+    public class BorderColorConverter : IValueConverter
+    {
+        const String Selected = "Red";
+        const String NotSelected = "White";
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if(value == null)
+            {
+                return NotSelected;
+            }
+            else
+            {
+                bool selected;
+                bool.TryParse(value.ToString(), out selected);
+                return selected ? Selected : NotSelected;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

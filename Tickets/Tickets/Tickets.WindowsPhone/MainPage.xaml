@@ -9,6 +9,17 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="4*" />
+        </Grid.RowDefinitions>
+        
+        <Border BorderBrush="WhiteSmoke" Grid.Row="0" BorderThickness="3" Margin="10">
+            <TextBlock x:Name="txtNewExam" Text="Новый экзамен" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" Tapped="txtNewExam_Tapped" />
+        </Border>
+        <Border BorderBrush="WhiteSmoke" Grid.Row="1" BorderThickness="3" Margin="10">
+            <TextBlock x:Name="txtStatistics" Text="Статистика" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" />
+        </Border>
     </Grid>
 </Page>

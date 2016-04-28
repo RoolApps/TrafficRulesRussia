@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace AppLogic
 {
-    class Answer : IAnswer
+    class Answer : IAnswer, System.ComponentModel.INotifyPropertyChanged
     {
         private bool isSelected;
 
         public event EventHandler<IsSelectedChangedEventArgs> IsSelectedChanged;
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
         public bool IsRight { get; internal set; }
 
@@ -25,10 +26,17 @@ namespace AppLogic
             }
             set
             {
-                if(value != IsSelected && IsSelectedChanged != null)
+                if(value != IsSelected)
                 {
                     isSelected = value;
-                    IsSelectedChanged(this, new IsSelectedChangedEventArgs(IsSelected));
+                    if (IsSelectedChanged != null)
+                    {
+                        IsSelectedChanged(this, new IsSelectedChangedEventArgs(IsSelected, this));
+                    }
+                    if(PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("IsSelected"));
+                    }
                 }
             }
         }
