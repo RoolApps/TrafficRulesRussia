@@ -19,26 +19,28 @@ using AppLogic.Interfaces;
 namespace Tickets {
     public sealed partial class ExamParametersPage : Page {
         #region private Members
+        private const int maxTicketsCount = 40;
         private ISession session;
-        private int[] ticket = new int[1];
+        private int[] tickets;
         private IList<int> ticketsToFill = new List<int>();
         #endregion
 
         #region Private Methods
         private void fillTicketGrid() {
-            for (int i = 1; i <= 40; i++) {
-                ticketsToFill.Add(i);
-            }
+            ticketsToFill = Enumerable.Range(1, maxTicketsCount).ToList();
         }
 
         private void GoToQuestionPage() {
-            throw new NotImplementedException("Not implemented yet");
+            Frame root = new Frame();
+            root.Navigate(typeof(QuestionsContentPage), session);
+            Window.Current.Content = root;
+            Window.Current.Activate();
         }
 
-        private void CreateSession(QuestionsGenerationMode mode, int ticket = 0) {
+        private void CreateSession(QuestionsGenerationMode mode, int[] ticket = null) {
             SessionParameters sp = new SessionParameters() {
                 Mode = mode,
-                TicketNums = new int[] { ticket },
+                TicketNums = ticket,
             };
             var sf = SessionFactory.CreateSession(sp, out session);
         }
@@ -56,14 +58,29 @@ namespace Tickets {
         #endregion
 
         #region Event Handlers
-        private void Button_Click(object sender, RoutedEventArgs e) {
-            CreateSession(QuestionsGenerationMode.SelectedTickets, (int)(((Button)sender).Content));
+        private void Button_Start(object sender, RoutedEventArgs e) {
+            if (tickets != null) {
+                CreateSession(QuestionsGenerationMode.SelectedTickets, tickets);
+            } else {
+                CreateSession(QuestionsGenerationMode.RandomTicket);
+            }
             GoToQuestionPage();
         }
 
         private void Button_Click_Rnd(object sender, RoutedEventArgs e) {
             CreateSession(QuestionsGenerationMode.RandomTicket);
             GoToQuestionPage();
+        }
+
+        private void grdView_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            var myGridView = sender as GridView;
+            if (myGridView == null) {
+                return;
+            }
+            tickets = new int[myGridView.SelectedItems.Count];
+            for (int i = 0; i < myGridView.SelectedItems.Count; i++) {
+                tickets[i] = (int)(myGridView.SelectedItems[i]);
+            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e) {
@@ -97,5 +114,7 @@ namespace Tickets {
             DataContext = this;
         }
         #endregion
+
+
     }
 }

@@ -14,9 +14,10 @@
         </Grid.ColumnDefinitions>
         <GridView ItemsSource="{Binding TicketsToFill}"
                   Margin="10,10,10,10"
-                  SelectionMode="None"
+                  SelectionMode="Multiple"
                   Grid.Column="0"
-                  x:Name="grdView">
+                  x:Name="grdView" SelectionChanged="grdView_SelectionChanged"
+                  >
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapGrid MaximumRowsOrColumns="10" 
@@ -27,22 +28,33 @@
             </GridView.ItemsPanel>
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel>
-                        <Button Content="{Binding}" 
-                                FontSize="18" 
-                                Height="60" 
-                                Width="150" 
-                                Click="Button_Click"/>
-                    </StackPanel>
+                    <TextBlock Text="{Binding}" 
+                            FontSize="18" 
+                            Height="60" 
+                            Width="150" 
+                            />
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
-        <Button Grid.Column="1" 
-                Content="Случайный выбор" 
-                FontSize="20" 
-                Height="60" 
-                Width="220" 
-                HorizontalAlignment="Center"
-                Click="Button_Click_Rnd"/>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Button Grid.Row="0"
+                    Content="Случайный выбор" 
+                    FontSize="20" 
+                    Height="60" 
+                    Width="220" 
+                    HorizontalAlignment="Center"
+                    Click="Button_Click_Rnd"/>
+            <Button Grid.Row="1"
+                    Content="Поехали" 
+                    FontSize="20" 
+                    Height="60" 
+                    Width="220" 
+                    HorizontalAlignment="Center"
+                    Click="Button_Start"/>
+        </Grid>
     </Grid>
 </Page>
