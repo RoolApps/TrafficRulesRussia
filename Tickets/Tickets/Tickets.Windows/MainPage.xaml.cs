@@ -32,5 +32,12 @@ namespace Tickets
             this.InitializeComponent();
         }
         #endregion
+
+        private void Button_Click(object sender, RoutedEventArgs e) {
+            Frame root = new Frame();
+            root.Navigate(typeof(ExamParametersPage));
+            Window.Current.Content = root;
+            Window.Current.Activate();
+        }
     }
 }
