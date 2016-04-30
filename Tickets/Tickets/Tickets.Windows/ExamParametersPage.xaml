@@ -12,27 +12,17 @@
             <ColumnDefinition Width="2*"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <GridView ItemsSource="{Binding TicketsToFill}"
-                  Margin="10,10,10,10"
-                  SelectionMode="Multiple"
-                  Grid.Column="0"
-                  x:Name="grdView" SelectionChanged="grdView_SelectionChanged"
-                  >
+        <GridView x:Name="grdView" Grid.Column="0" ItemsSource="{Binding TicketsToFill}" Margin="10,10,10,10" SelectionMode="Multiple" SelectionChanged="grdView_SelectionChanged">
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapGrid MaximumRowsOrColumns="10" 
-                              VerticalAlignment="Center" 
-                              ItemHeight="70"
-                              ItemWidth="200"/>
+                    <WrapGrid MaximumRowsOrColumns="10" VerticalAlignment="Center" ItemHeight="70" ItemWidth="200"/>
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding}" 
-                            FontSize="18" 
-                            Height="60" 
-                            Width="150" 
-                            />
+                    <Border BorderBrush="White" BorderThickness="2" Width="190">
+                        <TextBlock  Text="{Binding}" FontSize="18" Height="60" Width="150" Padding="16" TextAlignment="Center"/>
+                    </Border>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
@@ -41,20 +31,8 @@
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            <Button Grid.Row="0"
-                    Content="Случайный выбор" 
-                    FontSize="20" 
-                    Height="60" 
-                    Width="220" 
-                    HorizontalAlignment="Center"
-                    Click="Button_Click_Rnd"/>
-            <Button Grid.Row="1"
-                    Content="Поехали" 
-                    FontSize="20" 
-                    Height="60" 
-                    Width="220" 
-                    HorizontalAlignment="Center"
-                    Click="Button_Start"/>
+            <Button Grid.Row="0" Content="Случайный выбор" FontSize="20" Height="60" Width="220" HorizontalAlignment="Center" Click="Button_Click_Rnd"/>
+            <Button Grid.Row="1" Content="Поехали" FontSize="20" Height="60" Width="220" HorizontalAlignment="Center" Click="Button_Start"/>
         </Grid>
     </Grid>
 </Page>

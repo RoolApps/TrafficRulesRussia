@@ -8,7 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-
+    
     <XAMLMarkup:FlippingCanvas x:Name="flipping_canvas">
         <XAMLMarkup:FlippingCanvas.MotionDuration>1500</XAMLMarkup:FlippingCanvas.MotionDuration>
         <XAMLMarkup:PagedCanvas>
@@ -18,33 +18,32 @@
                         <Grid Height="768" Width="1366">
                             <Grid.Resources>
                                 <utils:ImageConverter x:Key="ImgConverter"></utils:ImageConverter>
+                                <local:BorderBackgroundColorConverter x:Key="BorderBackgroundColorConverter"></local:BorderBackgroundColorConverter>
                             </Grid.Resources>
-                            <Grid HorizontalAlignment="Left" Height="768" Width="683">
-                                <Image VerticalAlignment="Top"
-                                           MaxWidth="683"
-                                           MaxHeight="512"
-                                           Source="{Binding Path=Image, Converter={StaticResource ImgConverter}}"/>
-                                <TextBlock  VerticalAlignment="Bottom"
-                                                Margin="2,2,2,2"
-                                                Padding="10"
-                                                TextWrapping="WrapWholeWords"
-                                                FontSize="18"
-                                                Height="256"
-                                                Width="683"
-                                                Text="{Binding Text}"/>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Image Grid.Row="0" Source="{Binding Path=Image, Converter={StaticResource ImgConverter}}" VerticalAlignment="Top"/>
+                                <Border Grid.Row="1" BorderBrush="White" BorderThickness="2" Margin="2,2,2,2">
+                                    <TextBlock  Text="{Binding Text}" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="WrapWholeWords" FontSize="22"/>
+                                </Border>
                             </Grid>
-                            <Grid HorizontalAlignment="Right" Height="768" Width="683">
-                                <StackPanel VerticalAlignment="Center">
+                            <Grid Grid.Column="1">
+                                <StackPanel>
                                     <ItemsControl ItemsSource="{Binding Answers}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <TextBlock  Text="{Binding Text}"
-                                                                Margin="2,2,2,2"
-                                                                Padding="10"
-                                                                TextWrapping="WrapWholeWords"
-                                                                FontSize="18"
-                                                                Height="256"
-                                                                Width="683"/>
+                                                <Border BorderBrush="Aqua" BorderThickness="2" Margin="2,2,2,2">
+                                                    <Grid Background="{Binding Path=IsSelected, Mode=TwoWay, Converter={StaticResource BorderBackgroundColorConverter}}" Tapped="Grid_Tapped" >
+                                                        <TextBlock Text="{Binding Text}" TextAlignment="Center" Padding="121" TextWrapping="WrapWholeWords" FontSize="18" Height="246" Width="683"/>
+                                                    </Grid>
+                                                </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>

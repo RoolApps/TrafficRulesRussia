@@ -14,13 +14,7 @@
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition Width="2*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Button Grid.Column="0"
-                Height="100"
-                Width="300"
-                FontSize="22"
-                HorizontalAlignment="Center"
-                Content="Перейти к экзамену"
-                Click="Button_Click">
+        <Button Grid.Column="0" Height="100" Width="300" FontSize="22" HorizontalAlignment="Center" Content="Перейти к экзамену" Click="Button_Click">
         </Button>
     </Grid>
 </Page>
