@@ -79,8 +79,8 @@ namespace AppLogic.Tests
 
             Assert.IsNotNull(session);
             Assert.AreEqual(ParametersValidationResult.Valid, creationResult);
-            Assert.IsTrue(session.Questions.Any());
-            Assert.IsTrue(questions.All(question => session.Questions.Any(q => q.Text == question)));
+            Assert.IsTrue(session.Tickets.Any());
+            Assert.IsTrue(questions.All(question => session.Tickets.SelectMany(ticket => ticket.Questions).Any(q => q.Text == question)));
         }
 
         [TestMethod]
