@@ -39,7 +39,7 @@ namespace Tickets
         {
             var session = e.Parameter as ISession;
             var pagedCanvas = flippingCanvas.Children.OfType<PagedCanvas>().Single();
-            pagedCanvas.ItemsSource = new PagedCollection<IQuestion>(2) { DataSource = session.Questions };
+            pagedCanvas.ItemsSource = new PagedCollection<IQuestion>(2) { DataSource = session.Tickets.SelectMany(ticket => ticket.Questions) };
         }
 
         private void TextBlock_Tapped(object sender, TappedRoutedEventArgs e)
