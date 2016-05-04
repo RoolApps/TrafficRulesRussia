@@ -10,6 +10,7 @@ namespace AppLogic.Interfaces
     {
         event EventHandler<IsSelectedChangedEventArgs> IsSelectedChanged;
 
+        IQuestion Question { get; }
         bool IsRight { get; }
         String Text { get; }
         bool IsSelected { get; set; }

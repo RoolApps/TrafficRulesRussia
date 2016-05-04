@@ -14,6 +14,8 @@ namespace AppLogic
         public event EventHandler<IsSelectedChangedEventArgs> IsSelectedChanged;
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
+        public IQuestion Question { get; internal set; }
+
         public bool IsRight { get; internal set; }
 
         public string Text { get; internal set; }
