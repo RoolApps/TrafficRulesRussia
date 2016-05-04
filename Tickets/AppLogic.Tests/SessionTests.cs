@@ -84,6 +84,24 @@ namespace AppLogic.Tests
         }
 
         [TestMethod]
+        public void SessionCreatesWithCorrectHierarchy()
+        {
+            ISession session;
+            var parameters = new SessionParameters() { Mode = QuestionsGenerationMode.RandomTicket };
+            var creationResult = SessionFactory.CreateSession(parameters, out session);
+            Assert.IsNotNull(session);
+            Assert.AreEqual(ParametersValidationResult.Valid, creationResult);
+            var ticket = session.Tickets.SingleOrDefault();
+            Assert.IsNotNull(ticket);
+            var question = ticket.Questions.FirstOrDefault();
+            Assert.IsNotNull(question);
+            Assert.AreEqual(question.Ticket, ticket);
+            var answer = question.Answers.FirstOrDefault();
+            Assert.IsNotNull(answer);
+            Assert.AreEqual(answer.Question, question);
+        }
+
+        [TestMethod]
         public void SessionReturnsRandomTicket()
         {
             throw new NotImplementedException();
