@@ -49,6 +49,7 @@ namespace AppLogic
                         var iquestion = new Question
                         {
                             Ticket = iticket,
+                            Number = question.num,
                             Image = question.image,
                             Text = question.question
                         };

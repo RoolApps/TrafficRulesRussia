@@ -9,6 +9,7 @@ namespace AppLogic.Interfaces
     public interface IQuestion
     {
         ITicket Ticket { get; }
+        int Number { get; }
         byte[] Image { get; }
         IEnumerable<IAnswer> Answers { get; }
         IAnswer SelectedAnswered { get; }

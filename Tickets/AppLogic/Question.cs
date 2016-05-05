@@ -11,6 +11,8 @@ namespace AppLogic
     {
         public ITicket Ticket { get; internal set; }
 
+        public int Number { get; internal set; }
+
         public byte[] Image { get; internal set; }
 
         private IEnumerable<IAnswer> answers = null;
