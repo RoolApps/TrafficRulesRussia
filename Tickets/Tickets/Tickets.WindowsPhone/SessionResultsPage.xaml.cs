@@ -79,5 +79,35 @@ namespace Tickets
         {
             public String Text { get; set; }
         }
+
+        private void semanticZoom_ViewChangeStarted(object sender, SemanticZoomViewChangedEventArgs e)
+        {
+            (Resources["IsPivotVisible"] as BooleanHolder).Value = !e.IsSourceZoomedInView;
+        }
+    }
+
+    class BooleanHolder : System.ComponentModel.INotifyPropertyChanged
+    {
+        private bool value = true;
+        public Boolean Value
+        {
+            get
+            {
+                return value;
+            }
+            set
+            {
+                if(value != this.value)
+                {
+                    this.value = value;
+                    if(PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("Value"));
+                    }
+                }
+            }
+        }
+
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
     }
 }

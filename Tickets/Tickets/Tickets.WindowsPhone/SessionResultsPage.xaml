@@ -12,6 +12,7 @@
     <Page.Resources>
         <utils:SemanticZoomVisibilityConverter x:Key="VisibilityConverter" />
         <utils:CollectionViewSourceConverter x:Key="SourceConverter" />
+        <local:BooleanHolder x:Key="IsPivotVisible" x:Name="IsPivotVisible" />
     </Page.Resources>
     
     <Grid>
@@ -22,8 +23,8 @@
         <Pivot x:Name="pivot" Grid.Row="0">
             <Pivot.ItemTemplate>
                 <DataTemplate>
-                    <PivotItem Header="{Binding Path=Number}">
-                        <SemanticZoom x:Name="semanticZoom" DataContext="{Binding Path=Questions, ConverterParameter=Answers, Converter={StaticResource SourceConverter}}" DataContextChanged="semanticZoom_DataContextChanged">
+                    <PivotItem Header="{Binding}">
+                        <SemanticZoom x:Name="semanticZoom" DataContext="{Binding Path=Questions, ConverterParameter=Answers, Converter={StaticResource SourceConverter}}" DataContextChanged="semanticZoom_DataContextChanged" ViewChangeStarted="semanticZoom_ViewChangeStarted">
                             <SemanticZoom.ZoomedInView>
                                 <ListView Visibility="{Binding ElementName=semanticZoom, Path=IsZoomedInViewActive, Converter={StaticResource VisibilityConverter}}" ItemsSource="{Binding}">
                                     <ListView.ItemTemplate>
@@ -43,7 +44,7 @@
                                 </ListView>
                             </SemanticZoom.ZoomedInView>
                             <SemanticZoom.ZoomedOutView>
-                                <GridView ScrollViewer.IsHorizontalScrollChainingEnabled="False" >
+                                <GridView ScrollViewer.IsHorizontalScrollChainingEnabled="False" Margin="0,150,0,0" >
                                     <GridView.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <WrapGrid ItemHeight="80" ItemWidth="80" HorizontalAlignment="Center" MaximumRowsOrColumns="5" />
@@ -64,7 +65,7 @@
             </Pivot.ItemTemplate>
             <Pivot.HeaderTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding}" FontSize="20"/>
+                    <TextBlock Text="{Binding Path=Number}" Visibility="{Binding Source={StaticResource IsPivotVisible}, Path=Value, Converter={StaticResource VisibilityConverter}}" FontSize="20"/>
                 </DataTemplate>
             </Pivot.HeaderTemplate>
         </Pivot>
