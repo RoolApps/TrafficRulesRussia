@@ -8,7 +8,7 @@ namespace AppLogic.Interfaces
 {
     public interface ISession
     {
-        IEnumerable<IQuestion> Questions { get; }
+        IEnumerable<ITicket> Tickets { get; }
 
         byte[] Serialize();
     }

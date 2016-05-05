@@ -14,7 +14,11 @@
             <utils:ImageConverter x:Key="ImageConverter"></utils:ImageConverter>
             <local:BorderColorConverter x:Key="BorderColorConverter"></local:BorderColorConverter>
         </Grid.Resources>
-        <XAMLMarkup:FlippingCanvas x:Name="flippingCanvas" MotionDuration="500">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <XAMLMarkup:FlippingCanvas x:Name="flippingCanvas" MotionDuration="500" Grid.Row="0">
             <XAMLMarkup:PagedCanvas>
                 <XAMLMarkup:PagedCanvas.ItemTemplate>
                     <DataTemplate>
@@ -35,5 +39,6 @@
                 </XAMLMarkup:PagedCanvas.ItemTemplate>
             </XAMLMarkup:PagedCanvas>
         </XAMLMarkup:FlippingCanvas>
+        <Button x:Name="btnEndSession" Grid.Row="1" Content="Завершить экзамен" Click="btnEndSession_Click" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed" />
     </Grid>
 </Page>

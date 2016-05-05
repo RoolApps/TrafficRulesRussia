@@ -79,8 +79,26 @@ namespace AppLogic.Tests
 
             Assert.IsNotNull(session);
             Assert.AreEqual(ParametersValidationResult.Valid, creationResult);
-            Assert.IsTrue(session.Questions.Any());
-            Assert.IsTrue(questions.All(question => session.Questions.Any(q => q.Text == question)));
+            Assert.IsTrue(session.Tickets.Any());
+            Assert.IsTrue(questions.All(question => session.Tickets.SelectMany(ticket => ticket.Questions).Any(q => q.Text == question)));
+        }
+
+        [TestMethod]
+        public void SessionCreatesWithCorrectHierarchy()
+        {
+            ISession session;
+            var parameters = new SessionParameters() { Mode = QuestionsGenerationMode.RandomTicket };
+            var creationResult = SessionFactory.CreateSession(parameters, out session);
+            Assert.IsNotNull(session);
+            Assert.AreEqual(ParametersValidationResult.Valid, creationResult);
+            var ticket = session.Tickets.SingleOrDefault();
+            Assert.IsNotNull(ticket);
+            var question = ticket.Questions.FirstOrDefault();
+            Assert.IsNotNull(question);
+            Assert.AreEqual(question.Ticket, ticket);
+            var answer = question.Answers.FirstOrDefault();
+            Assert.IsNotNull(answer);
+            Assert.AreEqual(answer.Question, question);
         }
 
         [TestMethod]

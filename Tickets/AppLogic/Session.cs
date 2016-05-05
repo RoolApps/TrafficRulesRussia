@@ -17,7 +17,7 @@ namespace AppLogic
         #endregion
 
         #region Public Methods
-        public IEnumerable<IQuestion> Questions { get; private set; }
+        public IEnumerable<ITicket> Tickets { get; private set; }
 
         public byte[] Serialize()
         {
@@ -29,8 +29,8 @@ namespace AppLogic
         private void LoadQuestions(ISessionParameters parameters)
         {
             //TODO: switch to factory pattern
-            IQuestionLoader loader = new QuestionLoader();
-            Questions = loader.LoadQuestions(parameters);
+            ITicketLoader loader = new TicketLoader();
+            Tickets = loader.LoadTickets(parameters);
         }
         #endregion
     }
