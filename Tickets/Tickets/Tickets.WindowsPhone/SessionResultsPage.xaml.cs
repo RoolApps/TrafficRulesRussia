@@ -36,45 +36,14 @@ namespace Tickets
         /// This parameter is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            //var session = e.Parameter as ISession;
-            //pivot.ItemsSource = session.Tickets;
-            pivot.ItemsSource = Enumerable.Range(0, 40).Select(t => new Ticket
-            {
-                Number = t,
-                Questions = Enumerable.Range(0, 20).Select(q => new Question
-                {
-                    Number = q,
-                    Text = String.Format("Question {0}", q),
-                    Answers = Enumerable.Range(0, 3).Select(a => new Answer
-                    {
-                        Text = String.Format("Answer {0}", a)
-                    }).ToArray()
-                }).ToArray()
-            }).ToArray();
+            var session = e.Parameter as ISession;
+            pivot.ItemsSource = session.Tickets;
         }
 
         private void semanticZoom_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
             if (args.NewValue != null)
                 ((sender as SemanticZoom).ZoomedOutView as ListViewBase).ItemsSource = (args.NewValue as ICollectionView).CollectionGroups;
-        }
-
-        class Ticket
-        {
-            public int Number { get; set; }
-            public IEnumerable<Question> Questions { get; set; }
-        }
-
-        class Question
-        {
-            public int Number { get; set; }
-            public String Text { get; set; }
-            public IEnumerable<Answer> Answers { get; set; }
-        }
-
-        class Answer
-        {
-            public String Text { get; set; }
         }
 
         private void semanticZoom_ViewChangeStarted(object sender, SemanticZoomViewChangedEventArgs e)
