@@ -12,7 +12,8 @@
     <Page.Resources>
         <utils:SemanticZoomVisibilityConverter x:Key="VisibilityConverter" />
         <utils:CollectionViewSourceConverter x:Key="SourceConverter" />
-        <local:BooleanHolder x:Key="IsPivotVisible" x:Name="IsPivotVisible" />
+        <utils:PropertyHolder x:Key="IsPivotVisible" x:Name="IsPivotVisible" />
+        <utils:StringFormatter x:Key="StringFormatter" />
     </Page.Resources>
     
     <Grid>
@@ -36,7 +37,7 @@
                                         <GroupStyle>
                                             <GroupStyle.HeaderTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock FontSize="20" Text="{Binding Number}"/>
+                                                    <TextBlock FontSize="20" Text="{Binding Converter={StaticResource StringFormatter}, ConverterParameter='Вопрос {Number}: {Text}'}"/>
                                                 </DataTemplate>
                                             </GroupStyle.HeaderTemplate>
                                         </GroupStyle>
@@ -44,17 +45,24 @@
                                 </ListView>
                             </SemanticZoom.ZoomedInView>
                             <SemanticZoom.ZoomedOutView>
-                                <GridView ScrollViewer.IsHorizontalScrollChainingEnabled="False" Margin="0,150,0,0" >
+                                <GridView ScrollViewer.IsHorizontalScrollChainingEnabled="False" VerticalAlignment="Center" HorizontalAlignment="Center" Header="Перейти к вопросу">
+                                    <GridView.HeaderTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" FontSize="20" HorizontalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </GridView.HeaderTemplate>
                                     <GridView.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <WrapGrid ItemHeight="80" ItemWidth="80" HorizontalAlignment="Center" MaximumRowsOrColumns="5" />
+                                            <VariableSizedWrapGrid MaximumRowsOrColumns="5" Orientation="Horizontal"/>
                                         </ItemsPanelTemplate>
                                     </GridView.ItemsPanel>
                                     <GridView.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Width="70" Height="70" BorderBrush="White" BorderThickness="2">
-                                                <TextBlock Text="{Binding Group.Number}" FontSize="32" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                            </Border>
+                                            <ContentControl Width="80" Height="80">
+                                                <Border Width="70" Height="70" BorderBrush="White" BorderThickness="2">
+                                                    <TextBlock Text="{Binding Group.Number}" FontSize="32" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ContentControl>
                                         </DataTemplate>
                                     </GridView.ItemTemplate>
                                 </GridView>
@@ -65,10 +73,14 @@
             </Pivot.ItemTemplate>
             <Pivot.HeaderTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Path=Number}" Visibility="{Binding Source={StaticResource IsPivotVisible}, Path=Value, Converter={StaticResource VisibilityConverter}}" FontSize="20"/>
+                    <TextBlock Text="{Binding Converter={StaticResource StringFormatter}, ConverterParameter='Билет {Number}'}" Visibility="{Binding Source={StaticResource IsPivotVisible}, Path=Value, Converter={StaticResource VisibilityConverter}}" FontSize="20"/>
                 </DataTemplate>
             </Pivot.HeaderTemplate>
         </Pivot>
-        <Button Grid.Row="1" Content="Главное меню" x:Name="btnMainMenu" HorizontalAlignment="Center"/>
+        <Grid Grid.Row="1">
+            <Button Content="Главное меню" x:Name="btnMainMenu" HorizontalAlignment="Left" Click="btnMainMenu_Click"/>
+            <Button Content="Статистика" x:Name="btnStatistics" HorizontalAlignment="Right" Click="btnStatistics_Click"/>
+        </Grid>
+        
     </Grid>
 </Page>

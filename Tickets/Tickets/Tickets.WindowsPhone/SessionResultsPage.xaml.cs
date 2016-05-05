@@ -12,6 +12,8 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using AppLogic.Interfaces;
+using Utils;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
@@ -25,21 +27,6 @@ namespace Tickets
         public SessionResultsPage()
         {
             this.InitializeComponent();
-
-            pivot.ItemsSource = Enumerable.Range(0, 3).Select(t => new Ticket
-            {
-                Number = t,
-                Questions = Enumerable.Range(0, 20).Select(q => new Question
-                {
-                    Number = q,
-                    Text = String.Format("Текст вопроса {0}", q),
-                    Answers = Enumerable.Range(0, 3).Select(a => new Answer
-                    {
-                        Text = String.Format("Ответ {0}", a)
-                    }).ToArray()
-                }).ToArray()
-            }).ToArray();
-            
         }
 
         /// <summary>
@@ -49,6 +36,21 @@ namespace Tickets
         /// This parameter is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            //var session = e.Parameter as ISession;
+            //pivot.ItemsSource = session.Tickets;
+            pivot.ItemsSource = Enumerable.Range(0, 40).Select(t => new Ticket
+            {
+                Number = t,
+                Questions = Enumerable.Range(0, 20).Select(q => new Question
+                {
+                    Number = q,
+                    Text = String.Format("Question {0}", q),
+                    Answers = Enumerable.Range(0, 3).Select(a => new Answer
+                    {
+                        Text = String.Format("Answer {0}", a)
+                    }).ToArray()
+                }).ToArray()
+            }).ToArray();
         }
 
         private void semanticZoom_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
@@ -61,11 +63,6 @@ namespace Tickets
         {
             public int Number { get; set; }
             public IEnumerable<Question> Questions { get; set; }
-
-            public override string ToString()
-            {
-                return String.Format("Билет {0}", Number);
-            }
         }
 
         class Question
@@ -82,32 +79,17 @@ namespace Tickets
 
         private void semanticZoom_ViewChangeStarted(object sender, SemanticZoomViewChangedEventArgs e)
         {
-            (Resources["IsPivotVisible"] as BooleanHolder).Value = !e.IsSourceZoomedInView;
+            (Resources["IsPivotVisible"] as PropertyHolder).Value = !e.IsSourceZoomedInView;
         }
-    }
 
-    class BooleanHolder : System.ComponentModel.INotifyPropertyChanged
-    {
-        private bool value = true;
-        public Boolean Value
+        private void btnMainMenu_Click(object sender, RoutedEventArgs e)
         {
-            get
-            {
-                return value;
-            }
-            set
-            {
-                if(value != this.value)
-                {
-                    this.value = value;
-                    if(PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("Value"));
-                    }
-                }
-            }
+            Frame.Navigate(typeof(MainPage));
         }
 
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        private void btnStatistics_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
