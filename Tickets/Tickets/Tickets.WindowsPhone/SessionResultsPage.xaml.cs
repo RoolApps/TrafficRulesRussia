@@ -22,47 +22,24 @@ namespace Tickets
     /// </summary>
     public sealed partial class SessionResultsPage : Page
     {
-        public class GroupInfoList<T> : List<object>
-        {
-
-            public object Key { get; set; }
-
-
-            public new IEnumerator<object> GetEnumerator()
-            {
-                return (System.Collections.Generic.IEnumerator<object>)base.GetEnumerator();
-            }
-        } 
-
-        class Ticket
-        {
-            public int Num { get; set; }
-
-            public IEnumerable<Question> Questions { get; set; }
-
-            public override string ToString()
-            {
-                return Num.ToString();
-            }
-        }
-
-        class Question
-        {
-            public int Num { get; set; }
-
-            public IEnumerable<Answer> Answers { get; set; }
-        }
-
-        class Answer
-        {
-            public String Text { get; set; }
-        }
-
         public SessionResultsPage()
         {
             this.InitializeComponent();
 
-            this.pivot.ItemsSource = Enumerable.Range(1, 40).Select(i => new Ticket { Num = i, Questions = Enumerable.Range(1, 20).Select(j => new Question { Num = j, Answers = Enumerable.Range(1, 3).Select(h => new Answer { Text = String.Format("Answer {0}", h) }) }) });
+            pivot.ItemsSource = Enumerable.Range(0, 3).Select(t => new Ticket
+            {
+                Number = t,
+                Questions = Enumerable.Range(0, 20).Select(q => new Question
+                {
+                    Number = q,
+                    Text = String.Format("Текст вопроса {0}", q),
+                    Answers = Enumerable.Range(0, 3).Select(a => new Answer
+                    {
+                        Text = String.Format("Ответ {0}", a)
+                    }).ToArray()
+                }).ToArray()
+            }).ToArray();
+            
         }
 
         /// <summary>
@@ -74,9 +51,33 @@ namespace Tickets
         {
         }
 
-        private void SemanticZoom_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        private void semanticZoom_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
-            (sender as SemanticZoom).ToggleActiveView();
+            if (args.NewValue != null)
+                ((sender as SemanticZoom).ZoomedOutView as ListViewBase).ItemsSource = (args.NewValue as ICollectionView).CollectionGroups;
+        }
+
+        class Ticket
+        {
+            public int Number { get; set; }
+            public IEnumerable<Question> Questions { get; set; }
+
+            public override string ToString()
+            {
+                return String.Format("Билет {0}", Number);
+            }
+        }
+
+        class Question
+        {
+            public int Number { get; set; }
+            public String Text { get; set; }
+            public IEnumerable<Answer> Answers { get; set; }
+        }
+
+        class Answer
+        {
+            public String Text { get; set; }
         }
     }
 }
