@@ -44,7 +44,7 @@ namespace AppLogic
                     {
                         Number = ticket.num
                     };
-                    iticket.Questions = questions.Select(question =>
+                    iticket.Questions = questions.Where(question => question.ticket_id == ticket.id).Select(question =>
                     {
                         var iquestion = new Question
                         {
