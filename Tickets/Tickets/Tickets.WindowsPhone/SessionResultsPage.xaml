@@ -30,14 +30,14 @@
                                 <ListView Visibility="{Binding ElementName=semanticZoom, Path=IsZoomedInViewActive, Converter={StaticResource VisibilityConverter}}" ItemsSource="{Binding}">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock FontSize="12" Text="{Binding Text}" />
+                                            <TextBlock FontSize="12" Text="{Binding Text}" TextWrapping="WrapWholeWords"/>
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
                                     <ListView.GroupStyle>
                                         <GroupStyle>
                                             <GroupStyle.HeaderTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock FontSize="20" Text="{Binding Converter={StaticResource StringFormatter}, ConverterParameter='Вопрос {Number}: {Text}'}"/>
+                                                    <TextBlock FontSize="20" Text="{Binding Converter={StaticResource StringFormatter}, ConverterParameter='Вопрос {Number}: {Text}'}" TextWrapping="WrapWholeWords"/>
                                                 </DataTemplate>
                                             </GroupStyle.HeaderTemplate>
                                         </GroupStyle>
