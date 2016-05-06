@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace AppLogic.Interfaces
 {
-    interface IQuestionLoader
+    interface ITicketLoader
     {
-        IEnumerable<IQuestion> LoadQuestions(ISessionParameters parameters);
+        IEnumerable<ITicket> LoadTickets(ISessionParameters parameters);
     }
 }

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace AppLogic.Interfaces
 {
-    public interface ISession
+    public interface ITicket
     {
-        IEnumerable<ITicket> Tickets { get; }
+        int Number { get; }
 
-        byte[] Serialize();
+        IEnumerable<IQuestion> Questions { get; }
     }
 }

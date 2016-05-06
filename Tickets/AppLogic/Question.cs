@@ -9,6 +9,10 @@ namespace AppLogic
 {
     class Question : IQuestion
     {
+        public ITicket Ticket { get; internal set; }
+
+        public int Number { get; internal set; }
+
         public byte[] Image { get; internal set; }
 
         private IEnumerable<IAnswer> answers = null;
@@ -55,11 +59,11 @@ namespace AppLogic
             }
         }
 
-        public bool IsAnswered 
+        public IAnswer SelectedAnswered 
         {
             get
             {
-                return Answers.Any(answer => answer.IsSelected);
+                return Answers.SingleOrDefault(answer => answer.IsSelected);
             }
         }
 

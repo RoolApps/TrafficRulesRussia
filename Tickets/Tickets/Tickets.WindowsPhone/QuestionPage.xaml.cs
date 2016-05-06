@@ -25,6 +25,8 @@ namespace Tickets
     /// </summary>
     public sealed partial class QuestionPage : Page
     {
+        ISession Session;
+
         public QuestionPage()
         {
             this.InitializeComponent();
@@ -37,9 +39,9 @@ namespace Tickets
         /// This parameter is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var session = e.Parameter as ISession;
+            Session = e.Parameter as ISession;
             var pagedCanvas = flippingCanvas.Children.OfType<PagedCanvas>().Single();
-            pagedCanvas.ItemsSource = new PagedCollection<IQuestion>(2) { DataSource = session.Questions };
+            pagedCanvas.ItemsSource = new PagedCollection<IQuestion>(2) { DataSource = Session.Tickets.SelectMany(ticket => ticket.Questions) };
         }
 
         private void TextBlock_Tapped(object sender, TappedRoutedEventArgs e)
@@ -47,6 +49,13 @@ namespace Tickets
             var element = e.OriginalSource as FrameworkElement;
             var answer = element.DataContext as IAnswer;
             answer.IsSelected = !answer.IsSelected;
+
+            btnEndSession.Visibility = Session.Tickets.SelectMany(ticket => ticket.Questions).All(question => question.SelectedAnswered != null) ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
+        }
+
+        private void btnEndSession_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(SessionResultsPage), Session);
         }
     }
 
