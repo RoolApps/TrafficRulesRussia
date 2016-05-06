@@ -14,6 +14,8 @@
         <utils:CollectionViewSourceConverter x:Key="SourceConverter" />
         <utils:PropertyHolder x:Key="IsPivotVisible" x:Name="IsPivotVisible" />
         <utils:StringFormatter x:Key="StringFormatter" />
+        <local:QuestionColorConverter x:Key="QuestionColorConverter" />
+        <local:AnswerColorConverter x:Key="AnswerColorConverter"/>
     </Page.Resources>
     
     <Grid>
@@ -25,19 +27,31 @@
             <Pivot.ItemTemplate>
                 <DataTemplate>
                     <PivotItem Header="{Binding}">
-                        <SemanticZoom x:Name="semanticZoom" DataContext="{Binding Path=Questions, ConverterParameter=Answers, Converter={StaticResource SourceConverter}}" DataContextChanged="semanticZoom_DataContextChanged" ViewChangeStarted="semanticZoom_ViewChangeStarted">
+                        <SemanticZoom 
+                            x:Name="semanticZoom"
+                            DataContext="{Binding Path=Questions, ConverterParameter=Answers, Converter={StaticResource SourceConverter}}"
+                            DataContextChanged="semanticZoom_DataContextChanged" 
+                            ViewChangeStarted="semanticZoom_ViewChangeStarted">
                             <SemanticZoom.ZoomedInView>
-                                <ListView Visibility="{Binding ElementName=semanticZoom, Path=IsZoomedInViewActive, Converter={StaticResource VisibilityConverter}}" ItemsSource="{Binding}">
+                                <ListView Visibility="{Binding ElementName=semanticZoom, Path=IsZoomedInViewActive, Converter={StaticResource VisibilityConverter}}"
+                                          ItemsSource="{Binding}">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock FontSize="12" Text="{Binding Text}" TextWrapping="WrapWholeWords"/>
+                                            <TextBlock
+                                                FontSize="12" 
+                                                Text="{Binding Text}" 
+                                                TextWrapping="WrapWholeWords"
+                                                Foreground="{Binding Converter={StaticResource AnswerColorConverter}}"/>
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
                                     <ListView.GroupStyle>
                                         <GroupStyle>
                                             <GroupStyle.HeaderTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock FontSize="20" Text="{Binding Converter={StaticResource StringFormatter}, ConverterParameter='Вопрос {Number}: {Text}'}" TextWrapping="WrapWholeWords"/>
+                                                    <TextBlock
+                                                        FontSize="20" 
+                                                        Text="{Binding Converter={StaticResource StringFormatter}, ConverterParameter='Вопрос {Number}: {Text}'}"
+                                                        TextWrapping="WrapWholeWords"/>
                                                 </DataTemplate>
                                             </GroupStyle.HeaderTemplate>
                                         </GroupStyle>
@@ -45,22 +59,41 @@
                                 </ListView>
                             </SemanticZoom.ZoomedInView>
                             <SemanticZoom.ZoomedOutView>
-                                <GridView ScrollViewer.IsHorizontalScrollChainingEnabled="False" VerticalAlignment="Center" HorizontalAlignment="Center" Header="Перейти к вопросу">
+                                <GridView 
+                                    ScrollViewer.IsHorizontalScrollChainingEnabled="False" 
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Header="Перейти к вопросу">
                                     <GridView.HeaderTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding}" FontSize="20" HorizontalAlignment="Center"/>
+                                            <TextBlock 
+                                                Text="{Binding}"
+                                                FontSize="20"
+                                                HorizontalAlignment="Center"/>
                                         </DataTemplate>
                                     </GridView.HeaderTemplate>
                                     <GridView.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <VariableSizedWrapGrid MaximumRowsOrColumns="5" Orientation="Horizontal"/>
+                                            <VariableSizedWrapGrid
+                                                MaximumRowsOrColumns="5" 
+                                                Orientation="Horizontal"/>
                                         </ItemsPanelTemplate>
                                     </GridView.ItemsPanel>
                                     <GridView.ItemTemplate>
                                         <DataTemplate>
-                                            <ContentControl Width="80" Height="80">
-                                                <Border Width="70" Height="70" BorderBrush="White" BorderThickness="2">
-                                                    <TextBlock Text="{Binding Group.Number}" FontSize="32" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            <ContentControl 
+                                                Width="80"
+                                                Height="80">
+                                                <Border
+                                                    Width="70" 
+                                                    Height="70" 
+                                                    BorderBrush="{Binding Group, Converter={StaticResource QuestionColorConverter}}"
+                                                    BorderThickness="2">
+                                                    <TextBlock 
+                                                        Text="{Binding Group.Number}"
+                                                        FontSize="32"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"/>
                                                 </Border>
                                             </ContentControl>
                                         </DataTemplate>

@@ -61,4 +61,50 @@ namespace Tickets
 
         }
     }
+
+    public class QuestionColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            var question = value as IQuestion;
+            if(question.SelectedAnswered.IsRight)
+            {
+                return "Green";
+            }
+            else
+            {
+                return "Red";
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class AnswerColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            var answer = value as IAnswer;
+            if(answer.IsRight)
+            {
+                return "Green";
+            }
+            else if(answer.IsSelected)
+            {
+                return "Red";
+            } 
+            else
+            {
+                return "White";
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
