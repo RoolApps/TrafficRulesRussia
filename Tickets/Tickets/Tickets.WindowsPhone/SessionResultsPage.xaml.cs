@@ -58,7 +58,7 @@ namespace Tickets
 
         private void btnStatistics_Click(object sender, RoutedEventArgs e)
         {
-
+            popupStatistics.IsOpen = true;
         }
     }
 
