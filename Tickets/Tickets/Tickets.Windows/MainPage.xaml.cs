@@ -35,7 +35,8 @@ namespace Tickets
 
         private void Button_Click(object sender, RoutedEventArgs e) {
             Frame root = new Frame();
-            root.Navigate(typeof(ExamParametersPage));
+            //root.Navigate(typeof(ExamParametersPage));
+            root.Navigate(typeof(ResultsPage));
             Window.Current.Content = root;
             Window.Current.Activate();
         }
