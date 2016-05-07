@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using AppLogic.Interfaces;
 using Utils;
+using AppLogic;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
@@ -36,19 +37,33 @@ namespace Tickets
         /// This parameter is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            InitResources();
             var session = e.Parameter as ISession;
             pivot.ItemsSource = session.Tickets;
+            ISessionStatistics statistics;
+            var creationResult = SessionStatisticsFactory.CreateSessionStatistics(session, out statistics);
+            if(creationResult != AppLogic.Enums.SessionValidationResult.Valid)
+            {
+                btnStatistics.IsEnabled = false;
+            }
+            else
+            {
+                popupStatistics.DataContext = statistics;
+            }
         }
 
+        #region EventHandlers
         private void semanticZoom_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
             if (args.NewValue != null)
+            {
                 ((sender as SemanticZoom).ZoomedOutView as ListViewBase).ItemsSource = (args.NewValue as ICollectionView).CollectionGroups;
+            }
         }
 
         private void semanticZoom_ViewChangeStarted(object sender, SemanticZoomViewChangedEventArgs e)
         {
-            (Resources["IsPivotVisible"] as PropertyHolder).Value = !e.IsSourceZoomedInView;
+            Resources.GetPropertyHolder("IsPivotVisible").Value = !e.IsSourceZoomedInView;
         }
 
         private void btnMainMenu_Click(object sender, RoutedEventArgs e)
@@ -60,51 +75,41 @@ namespace Tickets
         {
             popupStatistics.IsOpen = true;
         }
-    }
+        #endregion
 
-    public class QuestionColorConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, string language)
+        #region Private Methods
+        private void InitResources()
         {
-            var question = value as IQuestion;
-            if(question.SelectedAnswered.IsRight)
+            Resources.GetPropertyHolder("QuestionColorLambda").Value = new Func<object, object>(question =>
             {
-                return "Green";
-            }
-            else
-            {
-                return "Red";
-            }
-        }
+                var iquestion = question as IQuestion;
+                if (iquestion.SelectedAnswered.IsRight)
+                {
+                    return "Green";
+                }
+                else
+                {
+                    return "Red";
+                }
+            });
 
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class AnswerColorConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, string language)
-        {
-            var answer = value as IAnswer;
-            if(answer.IsRight)
+            Resources.GetPropertyHolder("AnswerColorLambda").Value = new Func<object, object>(answer =>
             {
-                return "Green";
-            }
-            else if(answer.IsSelected)
-            {
-                return "Red";
-            } 
-            else
-            {
-                return "White";
-            }
+                var ianswer = answer as IAnswer;
+                if (ianswer.IsRight)
+                {
+                    return "Green";
+                }
+                else if (ianswer.IsSelected)
+                {
+                    return "Red";
+                }
+                else
+                {
+                    return "White";
+                }
+            });
         }
-
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
     }
 }

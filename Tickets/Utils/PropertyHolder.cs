@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 
 namespace Utils
 {
@@ -29,5 +30,13 @@ namespace Utils
         }
 
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+    }
+
+    public static class PropertyHolderExtensions
+    {
+        public static PropertyHolder GetPropertyHolder(this ResourceDictionary resourceDictionary, String propertyHolderName)
+        {
+            return resourceDictionary[propertyHolderName] as PropertyHolder;
+        }
     }
 }
