@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Data;
 
 namespace Utils
 {
-    public class SemanticZoomVisibilityConverter : IValueConverter
+    public class VisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

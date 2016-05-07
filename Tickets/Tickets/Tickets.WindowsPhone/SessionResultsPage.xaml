@@ -10,7 +10,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        <utils:SemanticZoomVisibilityConverter x:Key="VisibilityConverter" />
+        <utils:VisibilityConverter x:Key="VisibilityConverter" />
         <utils:CollectionViewSourceConverter x:Key="SourceConverter" />
         <utils:PropertyHolder x:Key="IsPivotVisible" />
         <utils:PropertyHolder x:Key="QuestionColorLambda" />
@@ -162,7 +162,6 @@
                                                 Text="{Binding Text}" 
                                                 TextWrapping="WrapWholeWords"
                                                 Foreground="{Binding Converter={StaticResource LambdaConverter}, ConverterParameter={Binding Path=Value, Source={StaticResource AnswerColorLambda}}}" />
-                                                <!--Foreground="{Binding Converter={StaticResource AnswerColorConverter}}"/> -->
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
                                     <ListView.GroupStyle>
@@ -210,7 +209,6 @@
                                                     Height="70" 
                                                     BorderThickness="2"
                                                     BorderBrush="{Binding Group, Converter={StaticResource LambdaConverter}, ConverterParameter={Binding Path=Value, Source={StaticResource QuestionColorLambda}}}">
-                                                    <!--BorderBrush="{Binding Group, Converter={StaticResource QuestionColorConverter}}"-->
                                                     <TextBlock 
                                                         Text="{Binding Group.Number}"
                                                         FontSize="32"
