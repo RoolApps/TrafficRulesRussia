@@ -17,8 +17,6 @@
         <utils:PropertyHolder x:Key="AnswerColorLambda" />
         <utils:StringFormatter x:Key="StringFormatter" />
         <utils:LambdaConverter x:Key="LambdaConverter" />
-        <local:QuestionColorConverter x:Key="QuestionColorConverter" />
-        <local:AnswerColorConverter x:Key="AnswerColorConverter"/>
     </Page.Resources>
     
     <Grid>
