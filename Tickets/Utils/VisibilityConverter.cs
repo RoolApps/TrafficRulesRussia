@@ -11,8 +11,7 @@ namespace Utils
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            bool IsZoomedInViewActive = (bool)value;
-            return IsZoomedInViewActive ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
+            return ((bool)value) ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
