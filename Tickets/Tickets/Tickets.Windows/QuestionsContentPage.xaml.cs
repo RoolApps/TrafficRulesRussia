@@ -24,12 +24,14 @@ namespace Tickets
 {
     public sealed partial class QuestionsContentPage : Page
     {
+        ISession session;
+
         public QuestionsContentPage() {
             this.InitializeComponent();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e) {
-            ISession session = e.Parameter as ISession;
+            session = e.Parameter as ISession;
             PagedCanvas paged_canvas = flipping_canvas.Children.OfType<PagedCanvas>().Single();
             PagedCollection<IQuestion> paged_col = new PagedCollection<IQuestion>(2);
             paged_col.DataSource = session.Tickets.SelectMany(ticket => ticket.Questions);
@@ -42,6 +44,13 @@ namespace Tickets
                 IAnswer answer = ((tb).DataContext) as IAnswer;
                 answer.IsSelected = !answer.IsSelected;
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e) {
+            Frame root = new Frame();
+            root.Navigate(typeof(ResultsPage), session);
+            Window.Current.Content = root;
+            Window.Current.Activate();
         }
     }
 

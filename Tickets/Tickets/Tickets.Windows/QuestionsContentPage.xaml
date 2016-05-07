@@ -31,7 +31,10 @@
                                 </Grid.RowDefinitions>
                                 <Image Grid.Row="0" Source="{Binding Path=Image, Converter={StaticResource ImgConverter}}" VerticalAlignment="Top"/>
                                 <Border Grid.Row="1" BorderBrush="White" BorderThickness="2" Margin="2,2,2,2">
-                                    <TextBlock  Text="{Binding Text}" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="WrapWholeWords" FontSize="22"/>
+                                    <StackPanel>
+                                        <TextBlock  Text="{Binding Text}" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="WrapWholeWords" FontSize="22"/>
+                                        <Button Content="CLICK" Click="Button_Click"></Button>
+                                    </StackPanel>
                                 </Border>
                             </Grid>
                             <Grid Grid.Column="1">

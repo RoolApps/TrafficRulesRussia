@@ -7,12 +7,42 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     >
-
+    
+    <Page.Resources>
+        <local:IsAnsweredQuestion x:Key="IsAnsweredQuestion"></local:IsAnsweredQuestion>
+        <local:AnswersConverter x:Key="AnswersConverter"></local:AnswersConverter>
+    </Page.Resources>
+    
     <Grid>
         <GridView x:Name="firstGrid">
+            <GridView.ItemContainerStyle>
+                <Style TargetType="GridViewItem">
+                    <Setter Property="Margin" Value="4" />
+                    <Setter Property="Padding" Value="5" />
+                    <Setter Property="BorderBrush" Value="Aquamarine"></Setter>
+                    <Setter Property="BorderThickness" Value="2"></Setter>
+                </Style>
+            </GridView.ItemContainerStyle>
             <GridView.ItemTemplate>
                 <DataTemplate>
-                <TextBlock Text="{Binding Number}" FontSize="50" Padding="100"></TextBlock>
+                    <SemanticZoom IsZoomedInViewActive="False">
+                        <SemanticZoom.ZoomedInView>
+                            <GridView ItemsSource="{Binding Questions, ConverterParameter=Answers, Converter={StaticResource AnswersConverter}}">
+                                
+                                            <TextBlock Text="{Binding Text}"></TextBlock>
+                                        
+                            </GridView>
+                        </SemanticZoom.ZoomedInView>
+                        <SemanticZoom.ZoomedOutView>
+                            <GridView ItemsSource="{Binding Questions}">
+                                <GridView.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Number}" Foreground="{Binding Converter={StaticResource IsAnsweredQuestion}}"></TextBlock>
+                                    </DataTemplate>
+                                </GridView.ItemTemplate>
+                            </GridView>
+                        </SemanticZoom.ZoomedOutView>
+                    </SemanticZoom>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
