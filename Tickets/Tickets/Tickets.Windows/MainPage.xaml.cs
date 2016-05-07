@@ -34,11 +34,34 @@ namespace Tickets
         #endregion
 
         private void Button_Click(object sender, RoutedEventArgs e) {
+            ISession session;
+            SessionParameters sp = new SessionParameters() {
+                Mode = QuestionsGenerationMode.SelectedTickets,
+                TicketNums = new int[] {1,2,3},
+            };
+            var sf = SessionFactory.CreateSession(sp, out session);
             Frame root = new Frame();
             //root.Navigate(typeof(ExamParametersPage));
-            root.Navigate(typeof(ResultsPage));
+            root.Navigate(typeof(ResultsPage), session);
             Window.Current.Content = root;
             Window.Current.Activate();
+        }
+    }
+
+    class SessionParameters : ISessionParameters {
+        public bool Shuffle {
+            get;
+            set;
+        }
+
+        public int[] TicketNums {
+            get;
+            set;
+        }
+
+        public QuestionsGenerationMode Mode {
+            get;
+            set;
         }
     }
 }

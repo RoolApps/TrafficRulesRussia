@@ -22,52 +22,21 @@ using System.Collections.ObjectModel;
 
 namespace Tickets {
     public sealed partial class ResultsPage : Page {
-        private ObservableCollection<Ticket> _tickets;
-        private ObservableCollection<TicketGroup> _groups;
+        private ISession session;
 
         #region Constructor
         public ResultsPage() {
             this.InitializeComponent();
-            loadTickets();
         }
         #endregion
 
         private void loadTickets() {
-            _tickets = new ObservableCollection<Ticket>();
 
-            List<Question> tmpListOfQuestions = new List<Question>();
-            for ( int i = 1; i <= 3; i++ ) {
-                TicketGroup tmpGroup = new TicketGroup();
-                tmpListOfQuestions.Clear();
-                for ( int j = 1; j <= 20; j++ ) {
-                    tmpListOfQuestions.Add(new Question {
-                        Number = j,
-                        Text = "q" + j.ToString(),
-                        Image = "i" + j.ToString(),
-                        Answers = new List<Answer> { 
-                            new Answer { Text = "a", isRight = true }, 
-                            new Answer { Text = "b", isRight = false }, 
-                            new Answer { Text = "v", isRight = false }
-                        },
-                        isAnswered = (j % 3 == 0) ? true : false
-                    });
-                }
-
-                _tickets.Add(new Ticket { Number = i, Questions = tmpListOfQuestions });
-            }
-
-            _groups = new ObservableCollection<TicketGroup>();
-            var groups = _tickets.OrderBy(x => x.Number).GroupBy(x => x.Number);
-            foreach(System.Linq.IGrouping<int, Ticket> item in groups){
-                _groups.Add(new TicketGroup{ GroupName = item.Key, Tickets = new ObservableCollection<Ticket>(item)});
-            }
-
-            cvsMain.Source = _groups;
-            zoomedOutDridView.ItemsSource = _groups;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e) {
-
+            session = e.Parameter as ISession;
+            firstGrid.ItemsSource = session.Tickets;
         }
 
         private void SemanticZoom_ViewChangeStarted(object sender, SemanticZoomViewChangedEventArgs e) {
@@ -79,39 +48,6 @@ namespace Tickets {
             };
         }
 
-    }
-
-
-    public class Ticket {
-        public int Number { get; set; }
-        public List<Question> Questions { get; set; }
-    }
-
-    public class Question {
-        public int Number { get; set; }
-        public string Text { get; set; }
-        public List<Answer> Answers { get; set; }
-        public string Image { get; set; }
-        public Boolean isAnswered { get; set; }
-    }
-
-    public class Answer {
-        public string Text { get; set; }
-        public Boolean isRight { get; set; }
-        public Boolean isSelected { get; set; }
-    }
-
-    public class TicketGroup {
-        public int GroupName { get; set; }
-        public ObservableCollection<Ticket> Tickets { get; set; }
-
-        public TicketGroup(){
-            Tickets = new ObservableCollection<Ticket>();
-        }
-
-        public override string ToString() {
-            return "Билет №" + GroupName.ToString();
-        }
     }
 
     public class IsAnsweredQuestion : IValueConverter {
