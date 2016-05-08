@@ -5,46 +5,56 @@
     xmlns:local="using:Tickets"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    >
+    mc:Ignorable="d">
     
     <Page.Resources>
-        <local:IsAnsweredQuestion x:Key="IsAnsweredQuestion"></local:IsAnsweredQuestion>
-        <local:AnswersConverter x:Key="AnswersConverter"></local:AnswersConverter>
+        <local:QuestionStateConverter x:Key="QuestionStateConverter"></local:QuestionStateConverter>
+        <local:QuestionErrorsConverter x:Key="QuestionErrorsConverter"></local:QuestionErrorsConverter>
+        <local:QuestionBorderConverter x:Key="QuestionBorderConverter"></local:QuestionBorderConverter>
+        <DataTemplate x:Key="QuestionState250x250ItemTemplate">
+            <Border BorderBrush="{Binding Converter={StaticResource QuestionBorderConverter}}" BorderThickness="5">
+                <Grid HorizontalAlignment="Left" Width="250" Height="250" Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                        <TextBlock Text="{Binding Number}" VerticalAlignment="Center" TextAlignment="Center" FontSize="40"/>
+                    </Border>
+                    <StackPanel Grid.Row="1" VerticalAlignment="Bottom" Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
+                        <TextBlock Text="{Binding Converter={StaticResource QuestionStateConverter}}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Margin="15,0,15,0" FontSize="20" Height="40"/>
+                        <TextBlock Text="{Binding Converter={StaticResource QuestionErrorsConverter}}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Margin="15,0,15,5" FontSize="16"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </DataTemplate>
     </Page.Resources>
-    
+
     <Grid>
-        <GridView x:Name="firstGrid">
-            <GridView.ItemContainerStyle>
-                <Style TargetType="GridViewItem">
-                    <Setter Property="Margin" Value="4" />
-                    <Setter Property="Padding" Value="5" />
-                    <Setter Property="BorderBrush" Value="Aquamarine"></Setter>
-                    <Setter Property="BorderThickness" Value="2"></Setter>
-                </Style>
-            </GridView.ItemContainerStyle>
-            <GridView.ItemTemplate>
-                <DataTemplate>
-                    <SemanticZoom IsZoomedInViewActive="False">
-                        <SemanticZoom.ZoomedInView>
-                            <GridView ItemsSource="{Binding Questions, ConverterParameter=Answers, Converter={StaticResource AnswersConverter}}">
-                                
-                                            <TextBlock Text="{Binding Text}"></TextBlock>
-                                        
-                            </GridView>
-                        </SemanticZoom.ZoomedInView>
-                        <SemanticZoom.ZoomedOutView>
-                            <GridView ItemsSource="{Binding Questions}">
-                                <GridView.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Number}" Foreground="{Binding Converter={StaticResource IsAnsweredQuestion}}"></TextBlock>
-                                    </DataTemplate>
-                                </GridView.ItemTemplate>
-                            </GridView>
-                        </SemanticZoom.ZoomedOutView>
-                    </SemanticZoom>
-                </DataTemplate>
-            </GridView.ItemTemplate>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <AppBarButton Grid.Column="0" Icon="Home" Click="goHomePage" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="1" Text="Home Page" Style="{StaticResource HeaderTextBlockStyle}" IsHitTestVisible="false" VerticalAlignment="Center"/>
+            </Grid>
+        </Grid>
+        <GridView x:Name="gridView" Grid.Row="1" Margin="50,50,10,10" SelectionMode="Single" SelectionChanged="grdView_SelectionChanged" ItemTemplate="{StaticResource QuestionState250x250ItemTemplate}">
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VariableSizedWrapGrid MaximumRowsOrColumns="5" Orientation="Horizontal"></VariableSizedWrapGrid>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
         </GridView>
     </Grid>
 </Page>

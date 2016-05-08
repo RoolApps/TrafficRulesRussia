@@ -33,37 +33,10 @@ namespace Tickets
         }
         #endregion
 
+        #region Event Handlers
         private void Button_Click(object sender, RoutedEventArgs e) {
-            /*
-            ISession session;
-            SessionParameters sp = new SessionParameters() {
-                Mode = QuestionsGenerationMode.SelectedTickets,
-                TicketNums = new int[] {1},
-            };
-            var sf = SessionFactory.CreateSession(sp, out session);
-            */
-            Frame root = new Frame();
-            root.Navigate(typeof(ExamParametersPage));
-            //root.Navigate(typeof(ResultsPage), session);
-            Window.Current.Content = root;
-            Window.Current.Activate();
+            this.Frame.Navigate(typeof(ExamParametersPage));
         }
-    }
-
-    class SessionParameters : ISessionParameters {
-        public bool Shuffle {
-            get;
-            set;
-        }
-
-        public int[] TicketNums {
-            get;
-            set;
-        }
-
-        public QuestionsGenerationMode Mode {
-            get;
-            set;
-        }
+        #endregion
     }
 }

@@ -31,10 +31,7 @@ namespace Tickets {
         }
 
         private void GoToQuestionPage() {
-            Frame root = new Frame();
-            root.Navigate(typeof(QuestionsContentPage), session);
-            Window.Current.Content = root;
-            Window.Current.Activate();
+            this.Frame.Navigate(typeof(QuestionsContentPage), session);
         }
 
         private void CreateSession(QuestionsGenerationMode mode, int[] ticket = null) {

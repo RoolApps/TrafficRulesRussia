@@ -43,14 +43,16 @@ namespace Tickets
             if (tb != null) {
                 IAnswer answer = ((tb).DataContext) as IAnswer;
                 answer.IsSelected = !answer.IsSelected;
+                Boolean allQuestionsIsAnswered = session.Tickets.SelectMany(ticket => ticket.Questions).All(question => question.SelectedAnswered != null);
+                if ( allQuestionsIsAnswered ) {
+                    flipping_canvas.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                    endExamButton.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                }
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e) {
-            Frame root = new Frame();
-            root.Navigate(typeof(ResultsPage), session);
-            Window.Current.Content = root;
-            Window.Current.Activate();
+        private void endExamButton_Tapped(object sender, TappedRoutedEventArgs e) {
+            this.Frame.Navigate(typeof(ResultsPage), session);
         }
     }
 

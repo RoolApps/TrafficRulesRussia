@@ -22,68 +22,44 @@ using System.Collections.ObjectModel;
 
 namespace Tickets {
     public sealed partial class ResultsPage : Page {
-        private ISession session;
-
         #region Constructor
         public ResultsPage() {
             this.InitializeComponent();
-            //loadTickets();
         }
         #endregion
 
-        private void loadTickets() {
-            
-        }
-
         protected override void OnNavigatedTo(NavigationEventArgs e) {
-            session = e.Parameter as ISession;
-            
-
-            var tickets = session.Tickets;
-            var questions = tickets.SelectMany(q => q.Questions);
-            var numbers = questions.Select(n => n.Number);
-            var selectedAnswers = questions.Select(a => a.SelectedAnswered);
-            int i =0;
-            foreach ( var a in selectedAnswers ) {
-                if ( a != null ) {
-                    i++;
-                    System.Diagnostics.Debug.WriteLine("is selected: {0}:{1}", i, a.IsSelected.ToString());
-                }
-            }
-            foreach ( int n in numbers ) {
-                System.Diagnostics.Debug.WriteLine("n: {0}", n);
-            }
-
-            firstGrid.ItemsSource = session.Tickets;
-            
-        }
-
-        private void SemanticZoom_ViewChangeStarted(object sender, SemanticZoomViewChangedEventArgs e) {
-            if (e.SourceItem.Item == null)
+            ISession session = e.Parameter as ISession;
+            if ( session == null ) {
                 return;
-
-            e.DestinationItem = new SemanticZoomLocation {
-                Item = e.SourceItem.Item
-            };
+            }
+            gridView.ItemsSource = session.Tickets;
         }
 
+        private void grdView_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            var myGridView = sender as GridView;
+            if ( myGridView == null ) {
+                return;
+            }
+            this.Frame.Navigate(typeof(QuestionResultPage), myGridView.SelectedItem as ITicket);
+        }
+
+        private void goHomePage(object sender, RoutedEventArgs e) {
+            this.Frame.Navigate(typeof(MainPage));
+        }
     }
 
-    public class IsAnsweredQuestion : IValueConverter {
-        const string Answered = "Green";
-        const string NotAnswered = "Red";
+    public class QuestionStateConverter : IValueConverter {
+        private const int rightAnswersToPassExam = 18;
 
         public object Convert(object value, Type targetType, object parameter, string language) {
-            string state = NotAnswered;
-            var selectedAnswer = (value as IQuestion).SelectedAnswered;
-            if ( selectedAnswer != null ) {
-                if ( selectedAnswer.IsRight ) {
-                    state = Answered;
-                } else {
-                    state = NotAnswered;
+            string state = "Билет не сдан";
+            IEnumerable<IQuestion> questions = (value as ITicket).Questions;
+            if ( questions != null ) {
+                int rightAnsweredQuestions = questions.Where(q => q.SelectedAnswered != null && q.SelectedAnswered.IsRight).Count();
+                if ( rightAnsweredQuestions >= rightAnswersToPassExam ) {
+                    state = "Билет сдан";
                 }
-            } else {
-                state = "Yellow";
             }
             return state;
         }
@@ -93,21 +69,37 @@ namespace Tickets {
         }
     }
 
-    public class AnswersConverter : IValueConverter {
-        const string Answered = "Green";
-        const string NotAnswered = "Red";
+    public class QuestionErrorsConverter : IValueConverter {
+        public object Convert(object value, Type targetType, object parameter, string language) {
+            string state = "";
+            IEnumerable<IQuestion> questions = (value as ITicket).Questions;
+            if ( questions != null ) {
+                int notRightAnsweredQuestions = questions.Where(q => q.SelectedAnswered != null && !q.SelectedAnswered.IsRight).Count();
+                state = String.Format("Ошибок: {0}", notRightAnsweredQuestions);
+            }
+            return state;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language) {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class QuestionBorderConverter : IValueConverter {
+        const string Passed = "Green";
+        const string NotPassed = "Red";
+        private const int rightAnswersToPassExam = 18;
 
         public object Convert(object value, Type targetType, object parameter, string language) {
-            string state = NotAnswered;
-            var selectedAnswer = (value as IQuestion).SelectedAnswered;
-            if ( selectedAnswer != null ) {
-                if ( selectedAnswer.IsRight ) {
-                    state = Answered;
+            string state = "White";
+            IEnumerable<IQuestion> questions = (value as ITicket).Questions;
+            if ( questions != null ) {
+                int rightAnsweredQuestions = questions.Where(q => q.SelectedAnswered != null && q.SelectedAnswered.IsRight).Count();
+                if ( rightAnsweredQuestions >= rightAnswersToPassExam ) {
+                    state = Passed;
                 } else {
-                    state = NotAnswered;
+                    state = NotPassed;
                 }
-            } else {
-                state = "Yellow";
             }
             return state;
         }
