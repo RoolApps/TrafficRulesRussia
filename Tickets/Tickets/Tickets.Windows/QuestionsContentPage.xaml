@@ -9,50 +9,53 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     
-    <XAMLMarkup:FlippingCanvas x:Name="flipping_canvas">
-        <XAMLMarkup:FlippingCanvas.MotionDuration>1500</XAMLMarkup:FlippingCanvas.MotionDuration>
-        <XAMLMarkup:PagedCanvas>
-            <XAMLMarkup:PagedCanvas.ItemTemplate>
-                <DataTemplate>
-                    <Canvas>
-                        <Grid Height="768" Width="1366">
-                            <Grid.Resources>
-                                <utils:ImageConverter x:Key="ImgConverter"></utils:ImageConverter>
-                                <local:BorderBackgroundColorConverter x:Key="BorderBackgroundColorConverter"></local:BorderBackgroundColorConverter>
-                            </Grid.Resources>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition></ColumnDefinition>
-                                <ColumnDefinition></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid Grid.Column="0">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition></RowDefinition>
-                                    <RowDefinition></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <Image Grid.Row="0" Source="{Binding Path=Image, Converter={StaticResource ImgConverter}}" VerticalAlignment="Top"/>
-                                <Border Grid.Row="1" BorderBrush="White" BorderThickness="2" Margin="2,2,2,2">
-                                    <TextBlock  Text="{Binding Text}" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="WrapWholeWords" FontSize="22"/>
-                                </Border>
+    <Grid>
+        <Button x:Name="endExamButton" Content="ЗАВЕРШИТЬ" Height="100" Width="200" Visibility="Collapsed" VerticalAlignment="Center" HorizontalAlignment="Center" Tapped="endExamButton_Tapped"/>
+        <XAMLMarkup:FlippingCanvas x:Name="flipping_canvas" Visibility="Visible">
+            <XAMLMarkup:FlippingCanvas.MotionDuration>500</XAMLMarkup:FlippingCanvas.MotionDuration>
+            <XAMLMarkup:PagedCanvas>
+                <XAMLMarkup:PagedCanvas.ItemTemplate>
+                    <DataTemplate>
+                        <Canvas>
+                            <Grid Height="768" Width="1366">
+                                <Grid.Resources>
+                                    <utils:ImageConverter x:Key="ImgConverter"></utils:ImageConverter>
+                                    <local:BorderBackgroundColorConverter x:Key="BorderBackgroundColorConverter"></local:BorderBackgroundColorConverter>
+                                </Grid.Resources>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Image Grid.Row="0" Source="{Binding Path=Image, Converter={StaticResource ImgConverter}}" VerticalAlignment="Top"/>
+                                    <Border Grid.Row="1" BorderBrush="White" BorderThickness="2" Margin="2,2,2,2">
+                                        <TextBlock Text="{Binding Text}" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="WrapWholeWords" FontSize="22"/>
+                                    </Border>
+                                </Grid>
+                                <Grid Grid.Column="1">
+                                    <StackPanel>
+                                        <ItemsControl ItemsSource="{Binding Answers}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border BorderBrush="Aqua" BorderThickness="2" Margin="2,2,2,2">
+                                                        <Grid Background="{Binding Path=IsSelected, Mode=TwoWay, Converter={StaticResource BorderBackgroundColorConverter}}" Tapped="Grid_Tapped" >
+                                                            <TextBlock Text="{Binding Text}" TextAlignment="Center" Padding="121" TextWrapping="WrapWholeWords" FontSize="18" Height="246" Width="683"/>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Grid>
                             </Grid>
-                            <Grid Grid.Column="1">
-                                <StackPanel>
-                                    <ItemsControl ItemsSource="{Binding Answers}">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <Border BorderBrush="Aqua" BorderThickness="2" Margin="2,2,2,2">
-                                                    <Grid Background="{Binding Path=IsSelected, Mode=TwoWay, Converter={StaticResource BorderBackgroundColorConverter}}" Tapped="Grid_Tapped" >
-                                                        <TextBlock Text="{Binding Text}" TextAlignment="Center" Padding="121" TextWrapping="WrapWholeWords" FontSize="18" Height="246" Width="683"/>
-                                                    </Grid>
-                                                </Border>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                </StackPanel>
-                            </Grid>
-                        </Grid>
-                    </Canvas>
-                </DataTemplate>
-            </XAMLMarkup:PagedCanvas.ItemTemplate>
-        </XAMLMarkup:PagedCanvas>
-    </XAMLMarkup:FlippingCanvas>
+                        </Canvas>
+                    </DataTemplate>
+                </XAMLMarkup:PagedCanvas.ItemTemplate>
+            </XAMLMarkup:PagedCanvas>
+        </XAMLMarkup:FlippingCanvas>
+    </Grid>
 </Page>

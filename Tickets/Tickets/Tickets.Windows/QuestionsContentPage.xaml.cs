@@ -24,12 +24,14 @@ namespace Tickets
 {
     public sealed partial class QuestionsContentPage : Page
     {
+        ISession session;
+
         public QuestionsContentPage() {
             this.InitializeComponent();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e) {
-            ISession session = e.Parameter as ISession;
+            session = e.Parameter as ISession;
             PagedCanvas paged_canvas = flipping_canvas.Children.OfType<PagedCanvas>().Single();
             PagedCollection<IQuestion> paged_col = new PagedCollection<IQuestion>(2);
             paged_col.DataSource = session.Tickets.SelectMany(ticket => ticket.Questions);
@@ -41,7 +43,16 @@ namespace Tickets
             if (tb != null) {
                 IAnswer answer = ((tb).DataContext) as IAnswer;
                 answer.IsSelected = !answer.IsSelected;
+                Boolean allQuestionsIsAnswered = session.Tickets.SelectMany(ticket => ticket.Questions).All(question => question.SelectedAnswered != null);
+                if ( allQuestionsIsAnswered ) {
+                    flipping_canvas.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                    endExamButton.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                }
             }
+        }
+
+        private void endExamButton_Tapped(object sender, TappedRoutedEventArgs e) {
+            this.Frame.Navigate(typeof(ResultsPage), session);
         }
     }
 
