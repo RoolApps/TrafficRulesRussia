@@ -22,12 +22,7 @@ using System.Collections.ObjectModel;
 
 namespace Tickets {
     public sealed partial class ResultsPage : Page {
-        #region Constructor
-        public ResultsPage() {
-            this.InitializeComponent();
-        }
-        #endregion
-
+        #region Event Handlers
         protected override void OnNavigatedTo(NavigationEventArgs e) {
             ISession session = e.Parameter as ISession;
             if ( session == null ) {
@@ -47,8 +42,16 @@ namespace Tickets {
         private void goHomePage(object sender, RoutedEventArgs e) {
             this.Frame.Navigate(typeof(MainPage));
         }
+        #endregion
+
+        #region Constructor
+        public ResultsPage() {
+            this.InitializeComponent();
+        }
+        #endregion
     }
 
+    #region Additional Classes
     public class QuestionStateConverter : IValueConverter {
         private const int rightAnswersToPassExam = 18;
 
@@ -108,4 +111,5 @@ namespace Tickets {
             throw new NotImplementedException();
         }
     }
+    #endregion
 }

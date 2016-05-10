@@ -22,12 +22,11 @@ using System.Collections.ObjectModel;
 
 namespace Tickets {
     public sealed partial class QuestionResultPage : Page {
-        ObservableCollection<ITicket> ticket;
-        public QuestionResultPage() {
-            this.InitializeComponent();
-            ticket = new ObservableCollection<ITicket>();
-        }
+        #region private Members
+        private ObservableCollection<ITicket> ticket;
+        #endregion
 
+        #region Event Handlers
         protected override void OnNavigatedTo(NavigationEventArgs e) {
             if ( e.Parameter as ITicket != null ) {
                 ticket.Add(e.Parameter as ITicket);
@@ -48,8 +47,17 @@ namespace Tickets {
                 Item = e.SourceItem.Item
             };
         }
+        #endregion
+
+        #region Constructor
+        public QuestionResultPage() {
+            this.InitializeComponent();
+            ticket = new ObservableCollection<ITicket>();
+        }
+        #endregion
     }
 
+    #region Additional Classes
     public class AnswersConverter : IValueConverter {
         const string Answered = "Green";
         const string NotAnswered = "Red";
@@ -109,4 +117,5 @@ namespace Tickets {
             throw new NotImplementedException();
         }
     }
+    #endregion
 }

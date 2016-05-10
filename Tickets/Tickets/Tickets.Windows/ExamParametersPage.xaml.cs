@@ -69,6 +69,11 @@ namespace Tickets {
             GoToQuestionPage();
         }
 
+        private void backButton_Click(object sender, RoutedEventArgs e) {
+            if ( this.Frame != null && this.Frame.CanGoBack )
+                this.Frame.GoBack();
+        }
+
         private void grdView_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             var myGridView = sender as GridView;
             if (myGridView == null) {

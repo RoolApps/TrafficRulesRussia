@@ -17,11 +17,16 @@
                 <XAMLMarkup:PagedCanvas.ItemTemplate>
                     <DataTemplate>
                         <Canvas>
-                            <Grid Height="768" Width="1366">
+                            <Grid Height="768" Width="1366" x:Name="myGrid">
                                 <Grid.Resources>
                                     <utils:ImageConverter x:Key="ImgConverter"></utils:ImageConverter>
                                     <local:BorderBackgroundColorConverter x:Key="BorderBackgroundColorConverter"></local:BorderBackgroundColorConverter>
                                 </Grid.Resources>
+                                <Grid.ChildrenTransitions>
+                                    <TransitionCollection>
+                                        <EntranceThemeTransition/>
+                                    </TransitionCollection>
+                                </Grid.ChildrenTransitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition></ColumnDefinition>
                                     <ColumnDefinition></ColumnDefinition>
@@ -43,7 +48,7 @@
                                                 <DataTemplate>
                                                     <Border BorderBrush="Aqua" BorderThickness="2" Margin="2,2,2,2">
                                                         <Grid Background="{Binding Path=IsSelected, Mode=TwoWay, Converter={StaticResource BorderBackgroundColorConverter}}" Tapped="Grid_Tapped" >
-                                                            <TextBlock Text="{Binding Text}" TextAlignment="Center" Padding="121" TextWrapping="WrapWholeWords" FontSize="18" Height="246" Width="683"/>
+                                                            <TextBlock x:Name="answerButton" Text="{Binding Text}" TextAlignment="Center" Padding="121" TextWrapping="WrapWholeWords" FontSize="18" Height="246" Width="683"/>
                                                         </Grid>
                                                     </Border>
                                                 </DataTemplate>
