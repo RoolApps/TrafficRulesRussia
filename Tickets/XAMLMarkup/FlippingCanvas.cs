@@ -9,19 +9,20 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
+using XAMLMarkup.Enums;
 
 namespace XAMLMarkup
 {
+    
     public sealed class FlippingCanvas : Canvas
     {
-        Ellipse corrector;
-
         #region Private Members
+        private Ellipse corrector;
         private Boolean LKMIsPressed = false;
+        private Boolean onSliding = false;
         private static int completedAnimations = 0;
         private double winHeight = Window.Current.Bounds.Height;
         private double winWidth = Window.Current.Bounds.Width;
-        private enum MoveDirection : int { NoWhere, ToPrevious, ToNext };
         private MoveDirection direction;
         private Point lastPoint;
         private Point initialPoint;
@@ -46,39 +47,45 @@ namespace XAMLMarkup
         }
         #endregion
 
-        #region Private Methods
-        private void canvas_Loaded(object sender, RoutedEventArgs e)
-        {
+        #region Public Methods
+        public void SlideCanvas(MoveDirection direction) {
+            if ( Canvas.GetLeft(corrector) == 0 ) {
+                onSliding = true;
+                RestartStoryboard();
+                this.direction = direction;
+                double delta = this.direction == MoveDirection.ToNext ? -ActualWidth : ActualWidth;
+                foreach ( var obj in Children.ToList() ) {
+                    AddMotionAnimation(obj, delta, completed);
+                }
+                storyboard.Begin();
+            }
+        }
+        #endregion
+
+        #region Event Handlers
+        private void canvas_Loaded(object sender, RoutedEventArgs e) {
             pagedCanvas = this.Children.OfType<PagedCanvas>().SingleOrDefault();
         }
 
-        private void canvas_PointerPressed(object sender, PointerRoutedEventArgs e)
-        {
+        private void canvas_PointerPressed(object sender, PointerRoutedEventArgs e) {
             LKMIsPressed = true;
             lastPoint = initialPoint = e.GetCurrentPoint(this).Position;
-            if (storyboard != null) {
-                storyboard.Pause();
-            }
-            storyboard = new Storyboard();
+            RestartStoryboard();
         }
 
-        private void canvas_PointerReleased(object sender, PointerRoutedEventArgs e)
-        {
-            if(LKMIsPressed)
-            {
+        private void canvas_PointerReleased(object sender, PointerRoutedEventArgs e) {
+            if ( LKMIsPressed && !onSliding ) {
                 LKMIsPressed = false;
-                foreach (var obj in Children.ToList())
-                {
+                foreach ( var obj in Children.ToList() ) {
                     AddMotionAnimation(obj, PxToMove(), completed);
                 }
                 storyboard.Begin();
             }
         }
 
-        private void canvas_PointerMoved(object sender, PointerRoutedEventArgs e)
-        {
+        private void canvas_PointerMoved(object sender, PointerRoutedEventArgs e) {
             double px = 0;
-            if (LKMIsPressed) {
+            if ( LKMIsPressed ) {
                 Point current_point = e.GetCurrentPoint(this).Position;
                 px = current_point.X - lastPoint.X;
                 MoveObjectsOnCanvas(px);
@@ -86,41 +93,45 @@ namespace XAMLMarkup
             }
         }
 
-        private void canvas_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
+        private void canvas_SizeChanged(object sender, SizeChangedEventArgs e) {
             winHeight = e.NewSize.Height;
             winWidth = e.NewSize.Width;
         }
+        #endregion
 
-        private void MoveObjectsOnCanvas(double px)
-        {
+        #region Private Methods
+        private void RestartStoryboard() {
+            if ( storyboard != null ) {
+                storyboard.Pause();
+            }
+            storyboard = new Storyboard();
+        }
+
+        private void MoveObjectsOnCanvas(double px) {
             var objects = Children.ToList();
             foreach (var obj in objects) {
                 Canvas.SetLeft(obj, Canvas.GetLeft(obj) + px);
             }
         }
 
-        private void completed()
-        {
+        private void completed() {
             completedAnimations++;
             if (completedAnimations == Children.Count) {
                 if (pagedCanvas != null) {
-                    if (direction == MoveDirection.ToNext)
-                    {
+                    if (direction == MoveDirection.ToNext) {
                         pagedCanvas.LoadNext();
                     }
-                    else if (direction == MoveDirection.ToPrevious)
-                    {
+                    else if (direction == MoveDirection.ToPrevious) {
                         pagedCanvas.LoadPrevious();
                     }
                 }
                 completedAnimations = 0;
                 Canvas.SetLeft(corrector, 0.0);
+                onSliding = false;
             }
         }
 
-        private double PxToMove()
-        {
+        private double PxToMove() {
             double delta = 0;
             double currentPosition = Canvas.GetLeft(corrector);
             if (currentPosition > -winWidth / 2 && currentPosition < winWidth / 2) {
@@ -138,8 +149,7 @@ namespace XAMLMarkup
             return delta;
         }
 
-        private void AddMotionAnimation(DependencyObject obj, double delta, Action completed = null)
-        {
+        private void AddMotionAnimation(DependencyObject obj, double delta, Action completed = null) {
             DoubleAnimation animation = new DoubleAnimation();
             animation.EasingFunction = new ExponentialEase();
             animation.EasingFunction.EasingMode = EasingMode.EaseInOut;
@@ -156,8 +166,7 @@ namespace XAMLMarkup
         #endregion
 
         #region Constructor
-        public FlippingCanvas()
-        {
+        public FlippingCanvas() {
             corrector = new Ellipse();
             Children.Add(corrector);
 

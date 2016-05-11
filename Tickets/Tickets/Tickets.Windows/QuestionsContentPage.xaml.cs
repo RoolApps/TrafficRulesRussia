@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using XAMLMarkup;
+using XAMLMarkup.Enums;
 using Utils;
 using AppLogic;
 using AppLogic.Enums;
@@ -26,30 +27,7 @@ namespace Tickets
     public sealed partial class QuestionsContentPage : Page {
         #region private Members
         private ISession session;
-        private Storyboard storyboard;
         private PagedCanvas pagedCanvas;
-        #endregion
-
-        #region Private Methods
-        private void AnimateFlipping() {
-            storyboard = new Storyboard();
-            PagedCanvas paged_canvas = flipping_canvas.Children.OfType<PagedCanvas>().Single();
-            DoubleAnimation animation = new DoubleAnimation();
-            animation.EasingFunction = new SineEase();
-            animation.EasingFunction.EasingMode = EasingMode.EaseOut;
-            animation.Duration = TimeSpan.FromMilliseconds(500);
-            animation.EnableDependentAnimation = true;
-            animation.By = -ActualWidth;
-            Storyboard.SetTarget(animation, paged_canvas);
-            Storyboard.SetTargetProperty(animation, "(Canvas.Left)");
-            storyboard.Children.Add(animation);
-            storyboard.Begin();
-            storyboard.Completed += (s, e) => completed();
-        }
-
-        private void completed() {
-            pagedCanvas.LoadNext();
-        }
         #endregion
 
         #region Event Handlers
@@ -71,7 +49,7 @@ namespace Tickets
                     flipping_canvas.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
                     endExamButton.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 }
-                AnimateFlipping();
+                flipping_canvas.SlideCanvas(MoveDirection.ToNext);
             }
         }
 
