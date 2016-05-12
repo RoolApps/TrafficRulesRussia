@@ -30,9 +30,11 @@
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <Button Grid.Row="0" Content="Случайный выбор" FontSize="20" Height="60" Width="220" HorizontalAlignment="Center" Click="Button_Click_Rnd"/>
             <Button Grid.Row="1" Content="Поехали" FontSize="20" Height="60" Width="220" HorizontalAlignment="Center" Click="Button_Start"/>
+            <Button Grid.Row="2" Content="Назад" FontSize="20" Height="60" Width="220" HorizontalAlignment="Center" Click="backButton_Click"/>
         </Grid>
     </Grid>
 </Page>

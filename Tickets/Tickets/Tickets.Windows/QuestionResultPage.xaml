@@ -1,0 +1,81 @@
+﻿<Page
+    x:Class="Tickets.QuestionResultPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Tickets"
+    xmlns:utils="using:Utils"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <CollectionViewSource x:Name="cvsMain" IsSourceGrouped="True" ItemsPath="Questions"/>
+        <local:AnswersConverter x:Key="AnswersConverter"></local:AnswersConverter>
+        <local:QuestionsConverter x:Key="QuestionsConverter"></local:QuestionsConverter>
+        <local:TicketToStringConverter x:Key="TicketToStringConverter"></local:TicketToStringConverter>
+        <utils:ImageConverter x:Key="ImgConverter"></utils:ImageConverter>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <AppBarButton Grid.Column="0" Icon="Back" Click="backButton_Click" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="1" Text="Back To Tickets" Style="{StaticResource HeaderTextBlockStyle}" IsHitTestVisible="false" VerticalAlignment="Center"/>
+        </Grid>
+        <SemanticZoom IsZoomedInViewActive="False" Grid.Row="1" ViewChangeStarted="SemanticZoom_ViewChangeStarted">
+            <SemanticZoom.ZoomedInView>
+                <GridView ItemsSource="{Binding Source={StaticResource cvsMain}}" ScrollViewer.IsHorizontalScrollChainingEnabled="False" SelectionMode="None">
+                    <GridView.ItemContainerStyle>
+                        <Style TargetType="GridViewItem">
+                            <Setter Property="Margin" Value="4" />
+                            <Setter Property="BorderBrush" Value="Aqua"/>
+                            <Setter Property="BorderThickness" Value="2"/>
+                        </Style>
+                    </GridView.ItemContainerStyle>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Height="600" Width="655">
+                                <TextBlock Text="{Binding Text}" TextAlignment="Center" TextWrapping="WrapWholeWords" FontSize="18" Height="100"/>
+                                <Image Source="{Binding Path=Image, Converter={StaticResource ImgConverter}}" />
+                                <StackPanel Margin="0,10,0,0">
+                                    <ItemsControl ItemsSource="{Binding Answers}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="{Binding Converter={StaticResource AnswersConverter}}" BorderThickness="2" Margin="0,0,0,15">
+                                                    <TextBlock Text="{Binding Text}" TextAlignment="Center" TextWrapping="WrapWholeWords" FontSize="18"/>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>    
+                            </StackPanel>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </SemanticZoom.ZoomedInView>
+            <SemanticZoom.ZoomedOutView>
+                <GridView x:Name="zoomedOutGridView" ItemsSource="{Binding Source={StaticResource cvsMain}}" SelectionMode="None" ScrollViewer.IsHorizontalScrollChainingEnabled="False" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VariableSizedWrapGrid ItemHeight="100" ItemWidth="100" MaximumRowsOrColumns="5" Orientation="Horizontal"></VariableSizedWrapGrid>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="{Binding Converter={StaticResource QuestionsConverter}}" BorderThickness="2" Height="80" Width="80">
+                                <TextBlock Text="{Binding Number}" TextAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                            </Border>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </SemanticZoom.ZoomedOutView>
+        </SemanticZoom>
+    </Grid>
+</Page>

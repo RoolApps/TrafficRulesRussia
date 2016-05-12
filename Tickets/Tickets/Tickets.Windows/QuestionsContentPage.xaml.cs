@@ -13,27 +13,30 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using XAMLMarkup;
+using XAMLMarkup.Enums;
 using Utils;
 using AppLogic;
 using AppLogic.Enums;
 using AppLogic.Interfaces;
 using Tickets;
 using Windows.UI;
+using Windows.UI.Xaml.Media.Animation;
 
 namespace Tickets
 {
-    public sealed partial class QuestionsContentPage : Page
-    {
-        public QuestionsContentPage() {
-            this.InitializeComponent();
-        }
+    public sealed partial class QuestionsContentPage : Page {
+        #region private Members
+        private ISession session;
+        private PagedCanvas pagedCanvas;
+        #endregion
 
+        #region Event Handlers
         protected override void OnNavigatedTo(NavigationEventArgs e) {
-            ISession session = e.Parameter as ISession;
-            PagedCanvas paged_canvas = flipping_canvas.Children.OfType<PagedCanvas>().Single();
+            session = e.Parameter as ISession;
+            pagedCanvas = flipping_canvas.Children.OfType<PagedCanvas>().Single();
             PagedCollection<IQuestion> paged_col = new PagedCollection<IQuestion>(2);
             paged_col.DataSource = session.Tickets.SelectMany(ticket => ticket.Questions);
-            paged_canvas.ItemsSource = paged_col;
+            pagedCanvas.ItemsSource = paged_col;
         }
 
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -41,10 +44,28 @@ namespace Tickets
             if (tb != null) {
                 IAnswer answer = ((tb).DataContext) as IAnswer;
                 answer.IsSelected = !answer.IsSelected;
+                Boolean allQuestionsIsAnswered = session.Tickets.SelectMany(ticket => ticket.Questions).All(question => question.SelectedAnswered != null);
+                if ( allQuestionsIsAnswered ) {
+                    flipping_canvas.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                    endExamButton.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                }
+                flipping_canvas.SlideCanvas(MoveDirection.ToNext);
             }
         }
+
+        private void endExamButton_Tapped(object sender, TappedRoutedEventArgs e) {
+            this.Frame.Navigate(typeof(ResultsPage), session);
+        }
+        #endregion
+
+        #region Constructor
+        public QuestionsContentPage() {
+            this.InitializeComponent();
+        }
+        #endregion
     }
 
+    #region Additional Classes
     public class BorderBackgroundColorConverter : IValueConverter {
         const String Selected = "Gray";
         const String NotSelected = "Black";
@@ -57,4 +78,5 @@ namespace Tickets
             throw new NotImplementedException();
         }
     }
+    #endregion
 }

@@ -3,12 +3,240 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Tickets"
+    xmlns:utils="using:Utils"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.Resources>
+        <utils:VisibilityConverter x:Key="VisibilityConverter" />
+        <utils:CollectionViewSourceConverter x:Key="SourceConverter" />
+        <utils:PropertyHolder x:Key="IsPivotVisible" />
+        <utils:PropertyHolder x:Key="QuestionColorLambda" />
+        <utils:PropertyHolder x:Key="AnswerColorLambda" />
+        <utils:StringFormatter x:Key="StringFormatter" />
+        <utils:LambdaConverter x:Key="LambdaConverter" />
+    </Page.Resources>
+    
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9*" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Popup x:Name="popupStatistics"
+            Margin="50,50,50,50"
+            IsOpen="False" 
+            IsLightDismissEnabled="True">
+            <Border
+                BorderBrush="{StaticResource ApplicationForegroundThemeBrush}"
+                BorderThickness="2"
+                Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
+                Width="{Binding ElementName=popupStatistics, Path=ActualWidth}"
+                Height="{Binding ElementName=popupStatistics, Path=ActualHeight}">
+                <Grid 
+                    Margin="10,0,10,0"
+                    Width="Auto" 
+                    Height="Auto">
+                    <Grid.Resources>
+                        <Style x:Key="TitleStyle"
+                            TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="40"/>
+                            <Setter Property="Grid.ColumnSpan" Value="2"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                        <Style x:Key="EntryStyle"
+                            TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="20"/>
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1.5*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="1.5*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0" 
+                        Text="Билеты"
+                        Style="{StaticResource TitleStyle}"/>
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Text="Билетов отвечено"
+                        Style="{StaticResource EntryStyle}"/>
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Text="Правильно"
+                        Style="{StaticResource EntryStyle}"/>
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Text="Правильно (%)"
+                        Style="{StaticResource EntryStyle}"/>
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Text="Вопросы"
+                        Style="{StaticResource TitleStyle}"/>
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Text="Вопросов отвечено"
+                        Style="{StaticResource EntryStyle}"/>
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Text="Правильно"
+                        Style="{StaticResource EntryStyle}"/>
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="0"
+                        Text="Правильно (%)"
+                        Style="{StaticResource EntryStyle}"/>
+                    
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Text="{Binding Path=TakenTickets}"
+                        Style="{StaticResource EntryStyle}"/>
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Text="{Binding Path=PassedTickets}"
+                        Style="{StaticResource EntryStyle}"/>
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Text="{Binding Path=PassedTickets}"
+                        Style="{StaticResource EntryStyle}"/>
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        Text="{Binding Path=TakenQuestions}"
+                        Style="{StaticResource EntryStyle}"/>
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        Text="{Binding Path=PassedQuestions}"
+                        Style="{StaticResource EntryStyle}"/>
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="1"
+                        Text="{Binding Path=PassedQuestionsPercentage}"
+                        Style="{StaticResource EntryStyle}"/>
+                </Grid>
+            </Border>
+        </Popup>
+        <Pivot x:Name="pivot" 
+               Grid.Row="0">
+            <Pivot.ItemTemplate>
+                <DataTemplate>
+                    <PivotItem Header="{Binding}">
+                        <SemanticZoom x:Name="semanticZoom"
+                            DataContext="{Binding Path=Questions, ConverterParameter=Answers, Converter={StaticResource SourceConverter}}"
+                            DataContextChanged="semanticZoom_DataContextChanged" 
+                            ViewChangeStarted="semanticZoom_ViewChangeStarted">
+                            <SemanticZoom.ZoomedInView>
+                                <ListView 
+                                    Visibility="{Binding ElementName=semanticZoom, Path=IsZoomedInViewActive, Converter={StaticResource VisibilityConverter}}"
+                                    ItemsSource="{Binding}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock
+                                                FontSize="12" 
+                                                Text="{Binding Text}" 
+                                                TextWrapping="WrapWholeWords"
+                                                Foreground="{Binding Converter={StaticResource LambdaConverter}, ConverterParameter={Binding Path=Value, Source={StaticResource AnswerColorLambda}}}" />
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                    <ListView.GroupStyle>
+                                        <GroupStyle>
+                                            <GroupStyle.HeaderTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock
+                                                        FontSize="20" 
+                                                        Text="{Binding Converter={StaticResource StringFormatter}, ConverterParameter='Вопрос {Number}: {Text}'}"
+                                                        TextWrapping="WrapWholeWords"/>
+                                                </DataTemplate>
+                                            </GroupStyle.HeaderTemplate>
+                                        </GroupStyle>
+                                    </ListView.GroupStyle>
+                                </ListView>
+                            </SemanticZoom.ZoomedInView>
+                            <SemanticZoom.ZoomedOutView>
+                                <GridView 
+                                    ScrollViewer.IsHorizontalScrollChainingEnabled="False" 
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Header="Перейти к вопросу">
+                                    <GridView.HeaderTemplate>
+                                        <DataTemplate>
+                                            <TextBlock 
+                                                Text="{Binding}"
+                                                FontSize="20"
+                                                HorizontalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </GridView.HeaderTemplate>
+                                    <GridView.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VariableSizedWrapGrid
+                                                MaximumRowsOrColumns="5" 
+                                                Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </GridView.ItemsPanel>
+                                    <GridView.ItemTemplate>
+                                        <DataTemplate>
+                                            <ContentControl 
+                                                Width="80"
+                                                Height="80">
+                                                <Border
+                                                    Width="70" 
+                                                    Height="70" 
+                                                    BorderThickness="2"
+                                                    BorderBrush="{Binding Group, Converter={StaticResource LambdaConverter}, ConverterParameter={Binding Path=Value, Source={StaticResource QuestionColorLambda}}}">
+                                                    <TextBlock 
+                                                        Text="{Binding Group.Number}"
+                                                        FontSize="32"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ContentControl>
+                                        </DataTemplate>
+                                    </GridView.ItemTemplate>
+                                </GridView>
+                            </SemanticZoom.ZoomedOutView>
+                        </SemanticZoom>
+                    </PivotItem>
+                </DataTemplate>
+            </Pivot.ItemTemplate>
+            <Pivot.HeaderTemplate>
+                <DataTemplate>
+                    <TextBlock 
+                        Text="{Binding Converter={StaticResource StringFormatter}, ConverterParameter='Билет {Number}'}" 
+                        Visibility="{Binding Source={StaticResource IsPivotVisible}, Path=Value, Converter={StaticResource VisibilityConverter}}" 
+                        FontSize="20"/>
+                </DataTemplate>
+            </Pivot.HeaderTemplate>
+        </Pivot>
+        <Grid Grid.Row="1">
+            <Button Content="Главное меню" x:Name="btnMainMenu" HorizontalAlignment="Left" Click="btnMainMenu_Click"/>
+            <Button Content="Статистика" x:Name="btnStatistics" HorizontalAlignment="Right" Click="btnStatistics_Click"/>
+        </Grid>
+        
     </Grid>
 </Page>

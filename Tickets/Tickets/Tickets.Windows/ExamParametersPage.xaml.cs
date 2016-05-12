@@ -31,10 +31,7 @@ namespace Tickets {
         }
 
         private void GoToQuestionPage() {
-            Frame root = new Frame();
-            root.Navigate(typeof(QuestionsContentPage), session);
-            Window.Current.Content = root;
-            Window.Current.Activate();
+            this.Frame.Navigate(typeof(QuestionsContentPage), session);
         }
 
         private void CreateSession(QuestionsGenerationMode mode, int[] ticket = null) {
@@ -70,6 +67,11 @@ namespace Tickets {
         private void Button_Click_Rnd(object sender, RoutedEventArgs e) {
             CreateSession(QuestionsGenerationMode.RandomTicket);
             GoToQuestionPage();
+        }
+
+        private void backButton_Click(object sender, RoutedEventArgs e) {
+            if ( this.Frame != null && this.Frame.CanGoBack )
+                this.Frame.GoBack();
         }
 
         private void grdView_SelectionChanged(object sender, SelectionChangedEventArgs e) {

@@ -24,20 +24,22 @@ using AppLogic.Interfaces;
 
 namespace Tickets
 {
-    public sealed partial class MainPage : Page
-    {
-        #region Constructor
-        public MainPage()
-        {
-            this.InitializeComponent();
+    public sealed partial class MainPage : Page {
+        #region Event Handlers
+        private void Button_Click(object sender, RoutedEventArgs e) {
+            this.Frame.Navigate(typeof(ExamParametersPage));
+        }
+        
+        private void backButton_Click(object sender, RoutedEventArgs e) {
+            if ( this.Frame != null && this.Frame.CanGoBack )
+                this.Frame.GoBack();
         }
         #endregion
 
-        private void Button_Click(object sender, RoutedEventArgs e) {
-            Frame root = new Frame();
-            root.Navigate(typeof(ExamParametersPage));
-            Window.Current.Content = root;
-            Window.Current.Activate();
+        #region Constructor
+        public MainPage() {
+            this.InitializeComponent();
         }
+        #endregion
     }
 }
