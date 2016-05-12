@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationResources", "App
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppLogic.Tests", "AppLogic.Tests\AppLogic.Tests.csproj", "{10F6C2BC-6853-45E2-A7ED-62585D2C8A79}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tickets.WindowsPhone.Tests", "Tickets.WindowsPhone.Tests\Tickets.WindowsPhone.Tests.csproj", "{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Tickets\Tickets.Shared\Tickets.Shared.projitems*{ee978e81-ae21-4f1f-851f-63d4530dbf30}*SharedItemsImports = 4
@@ -237,6 +239,28 @@ Global
 		{10F6C2BC-6853-45E2-A7ED-62585D2C8A79}.Release|x86.ActiveCfg = Release|x86
 		{10F6C2BC-6853-45E2-A7ED-62585D2C8A79}.Release|x86.Build.0 = Release|x86
 		{10F6C2BC-6853-45E2-A7ED-62585D2C8A79}.Release|x86.Deploy.0 = Release|x86
+		{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6}.Debug|ARM.ActiveCfg = Debug|ARM
+		{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6}.Debug|ARM.Build.0 = Debug|ARM
+		{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6}.Debug|ARM.Deploy.0 = Debug|ARM
+		{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6}.Debug|Mixed Platforms.Deploy.0 = Debug|x86
+		{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6}.Debug|x64.ActiveCfg = Debug|x86
+		{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6}.Debug|x86.ActiveCfg = Debug|x86
+		{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6}.Debug|x86.Build.0 = Debug|x86
+		{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6}.Debug|x86.Deploy.0 = Debug|x86
+		{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6}.Release|Any CPU.ActiveCfg = Release|x86
+		{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6}.Release|ARM.ActiveCfg = Release|ARM
+		{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6}.Release|ARM.Build.0 = Release|ARM
+		{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6}.Release|ARM.Deploy.0 = Release|ARM
+		{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6}.Release|Mixed Platforms.Build.0 = Release|x86
+		{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6}.Release|Mixed Platforms.Deploy.0 = Release|x86
+		{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6}.Release|x64.ActiveCfg = Release|x86
+		{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6}.Release|x86.ActiveCfg = Release|x86
+		{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6}.Release|x86.Build.0 = Release|x86
+		{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -247,5 +271,6 @@ Global
 		{EE978E81-AE21-4F1F-851F-63D4530DBF30} = {4F2CD18A-F694-4C96-8C96-B86CCAFB506D}
 		{2D795327-4DF5-4917-BEC6-DF048FA9472F} = {DA931765-7ACF-43C9-B42A-BAF2C6F1C718}
 		{10F6C2BC-6853-45E2-A7ED-62585D2C8A79} = {DA931765-7ACF-43C9-B42A-BAF2C6F1C718}
+		{CE1315D8-8F9B-4E9F-B12A-412561D7D2C6} = {DA931765-7ACF-43C9-B42A-BAF2C6F1C718}
 	EndGlobalSection
 EndGlobal
