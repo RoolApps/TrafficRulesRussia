@@ -99,6 +99,10 @@
       <Project>{ad57ef64-9db5-4a05-9ad8-eb85cf4f1e7e}</Project>
       <Name>AppLogic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SQLiteShared\SQLiteShared.csproj">
+      <Project>{ed5bdb33-53d5-49c3-803d-85637d1d8150}</Project>
+      <Name>SQLiteShared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Tickets\Tickets.WindowsPhone\Tickets.WindowsPhone.csproj">
       <Project>{ee978e81-ae21-4f1f-851f-63d4530dbf30}</Project>
       <Name>Tickets.WindowsPhone</Name>

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
+using Windows.Foundation;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -14,7 +15,9 @@ using AppData;
 using AppLogic;
 using AppLogic.Interfaces;
 using XAMLMarkup;
-using Windows.Foundation;
+using SQLiteShared;
+
+
 
 namespace Tickets.WindowsPhone.Tests
 {
@@ -31,7 +34,13 @@ namespace Tickets.WindowsPhone.Tests
 
             public int[] TicketNums
             {
-                get { return Enumerable.Range(1, 40).ToArray(); }
+                get 
+                {
+                    using (var accessor = new SQLiteDataAccessor())
+                    {
+                        return accessor.CreateQuery<SQLiteShared.Models.Tickets>().Select(ticket => ticket.num).ToArray();
+                    }
+                }
             }
 
             public AppLogic.Enums.QuestionsGenerationMode Mode
