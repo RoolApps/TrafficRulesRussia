@@ -67,6 +67,14 @@ namespace AppLogic
                     }).ToArray();
                     return iticket;
                 }).ToArray();
+                if(parameters.Shuffle)
+                {
+                    Random rand = new Random();
+                    foreach(var iticket in itickets)
+                    {
+                        iticket.Questions = iticket.Questions.OrderBy(iquestion => rand.Next()).ToArray();
+                    }
+                }
                 return itickets;
             }
             catch
