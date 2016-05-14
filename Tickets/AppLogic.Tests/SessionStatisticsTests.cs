@@ -39,7 +39,7 @@ namespace AppLogic.Tests
         {
             public bool Shuffle
             {
-                get { throw new NotImplementedException(); }
+                get { return false; }
             }
 
             public int[] TicketNums

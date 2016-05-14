@@ -8,6 +8,7 @@ using AppLogic.Enums;
 using AppData;
 using Windows.ApplicationModel;
 using System.IO;
+using System.Diagnostics;
 
 namespace AppLogic.Tests
 {
@@ -112,7 +113,30 @@ namespace AppLogic.Tests
         [Ignore]
         public void SessionShufflesQuestions()
         {
-            throw new NotImplementedException();
+            ISession session;
+            var parameters = new SessionParameters() { Mode = QuestionsGenerationMode.RandomTicket, Shuffle = true };
+            Stopwatch sw = new Stopwatch();
+            var maxExecutionTime = 10;
+            sw.Start();
+            bool shuffled = false;
+            while(sw.Elapsed.TotalSeconds < maxExecutionTime)
+            {
+                var creationResult = SessionFactory.CreateSession(parameters, out session);
+                Assert.IsNotNull(session);
+                Assert.AreEqual(ParametersValidationResult.Valid, creationResult);
+                var questions = session.Tickets.Single().Questions;
+                if (!questions.OrderBy(question => question.Number).SequenceEqual(questions))
+                {
+                    shuffled = true;
+                    break;
+                }
+            }
+            sw.Stop();
+
+            if(!shuffled)
+            {
+                Assert.Fail("Questions wasn't shuffled");
+            }
         }
     }
 }
