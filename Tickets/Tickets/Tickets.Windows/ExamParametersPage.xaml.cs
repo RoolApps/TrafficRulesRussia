@@ -36,6 +36,7 @@ namespace Tickets {
 
         private void CreateSession(QuestionsGenerationMode mode, int[] ticket = null) {
             SessionParameters sp = new SessionParameters() {
+                Shuffle = shuffleQuestionCB.IsChecked ?? false,
                 Mode = mode,
                 TicketNums = ticket,
             };
