@@ -105,7 +105,7 @@ namespace Tickets
             //creating parameters...
             var mode = chkRandomTicket.IsChecked == true ? AppLogic.Enums.QuestionsGenerationMode.RandomTicket : AppLogic.Enums.QuestionsGenerationMode.SelectedTickets;
             var ticketNums = listTickets.SelectedItems.Cast<TicketPresenter>().Select(ticket => ticket.Num).ToArray();
-            var parameters = new SessionParameters(mode, ticketNums);
+            var parameters = new SessionParameters(mode, chkShuffleQuestions.IsChecked ?? false, ticketNums);
             ISession session;
             //creating session...
             var creationResult = SessionFactory.CreateSession(parameters, out session);
@@ -143,16 +143,14 @@ namespace Tickets
         /// </summary>
         class SessionParameters : ISessionParameters
         {
-            public SessionParameters(AppLogic.Enums.QuestionsGenerationMode mode, int[] ticketNums = null)
+            public SessionParameters(AppLogic.Enums.QuestionsGenerationMode mode, bool shuffle, int[] ticketNums = null)
             {
                 this.Mode = mode;
+                this.Shuffle = shuffle;
                 this.TicketNums = ticketNums;
             }
 
-            public bool Shuffle
-            {
-                get { throw new NotImplementedException(); }
-            }
+            public bool Shuffle { get; private set; }
 
             public int[] TicketNums { get; private set; }
 
