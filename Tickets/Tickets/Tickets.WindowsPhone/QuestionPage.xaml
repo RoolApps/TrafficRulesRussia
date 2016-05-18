@@ -20,7 +20,10 @@
         </Grid.RowDefinitions>
         <XAMLMarkup:FlippingCanvas x:Name="flippingCanvas" 
                                    MotionDuration="500"
-                                   Grid.Row="0">
+                                   Grid.Row="0"
+                                   Background="Transparent"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Stretch">
             <XAMLMarkup:PagedCanvas x:Name="pagedCanvas">
                 <XAMLMarkup:PagedCanvas.ItemTemplate>
                     <DataTemplate>
@@ -45,8 +48,7 @@
                                 Margin="10,211,0,0"/>
                             <ScrollViewer
                                 HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                Height="285"
+                                VerticalAlignment="Stretch"
                                 Width="380"
                                 Margin="10,365,0,0">
                                 <ListView 
