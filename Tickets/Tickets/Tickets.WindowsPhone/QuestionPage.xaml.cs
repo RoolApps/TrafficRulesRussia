@@ -42,6 +42,7 @@ namespace Tickets
             Session = e.Parameter as ISession;
             var pagedCanvas = flippingCanvas.Children.OfType<PagedCanvas>().Single();
             pagedCanvas.ItemsSource = new PagedCollection<IQuestion>(2) { DataSource = Session.Tickets.SelectMany(ticket => ticket.Questions) };
+            flippingCanvas.MaxSlidesCount = Session.Tickets.SelectMany(x => x.Questions).Count();
         }
 
         private void TextBlock_Tapped(object sender, TappedRoutedEventArgs e)

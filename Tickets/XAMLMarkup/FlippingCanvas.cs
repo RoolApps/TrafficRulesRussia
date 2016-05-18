@@ -21,6 +21,7 @@ namespace XAMLMarkup
         private Boolean LKMIsPressed = false;
         private Boolean onSliding = false;
         private static int completedAnimations = 0;
+        private int remainedSlides = 0;
         private double winHeight = Window.Current.Bounds.Height;
         private double winWidth = Window.Current.Bounds.Width;
         private MoveDirection direction;
@@ -28,6 +29,7 @@ namespace XAMLMarkup
         private Point initialPoint;
         Storyboard storyboard;
         PagedCanvas pagedCanvas = null;
+        
         #endregion
 
         #region Public Properties
@@ -45,11 +47,13 @@ namespace XAMLMarkup
                 SetValue(DurationProperty, value);
             }
         }
+
+        public int MaxSlidesCount { get; set; }
         #endregion
 
         #region Public Methods
         public void SlideCanvas(MoveDirection direction) {
-            if ( Canvas.GetLeft(corrector) == 0 ) {
+            if ( Canvas.GetLeft(corrector) == 0 && remainedSlides > 1) {
                 onSliding = true;
                 RestartStoryboard();
                 this.direction = direction;
@@ -65,6 +69,7 @@ namespace XAMLMarkup
         #region Event Handlers
         private void canvas_Loaded(object sender, RoutedEventArgs e) {
             pagedCanvas = this.Children.OfType<PagedCanvas>().SingleOrDefault();
+            remainedSlides = MaxSlidesCount;
         }
 
         private void canvas_PointerPressed(object sender, PointerRoutedEventArgs e) {
@@ -120,9 +125,11 @@ namespace XAMLMarkup
                 if (pagedCanvas != null) {
                     if (direction == MoveDirection.ToNext) {
                         pagedCanvas.LoadNext();
+                        remainedSlides--;
                     }
                     else if (direction == MoveDirection.ToPrevious) {
                         pagedCanvas.LoadPrevious();
+                        remainedSlides++;
                     }
                 }
                 completedAnimations = 0;
@@ -134,7 +141,9 @@ namespace XAMLMarkup
         private double PxToMove() {
             double delta = 0;
             double currentPosition = Canvas.GetLeft(corrector);
-            if (currentPosition > -winWidth / 2 && currentPosition < winWidth / 2) {
+            if ((currentPosition > -winWidth / 2 && currentPosition < winWidth / 2) ||
+                (currentPosition > winWidth / 2 && remainedSlides == MaxSlidesCount) ||
+                (currentPosition < -winWidth / 2 && remainedSlides == 1)){
                 delta = -currentPosition;
                 direction = MoveDirection.NoWhere;
             } else {
@@ -142,8 +151,8 @@ namespace XAMLMarkup
                     direction = MoveDirection.ToNext;
                     delta = -(winWidth - Math.Abs(currentPosition));
                 } else {
-                    direction = MoveDirection.ToPrevious;
-                    delta = winWidth - currentPosition;
+                        direction = MoveDirection.ToPrevious;
+                        delta = winWidth - currentPosition;
                 }
             }
             return delta;

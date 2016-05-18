@@ -36,6 +36,7 @@ namespace Tickets
             pagedCanvas = flipping_canvas.Children.OfType<PagedCanvas>().Single();
             PagedCollection<IQuestion> paged_col = new PagedCollection<IQuestion>(2);
             paged_col.DataSource = session.Tickets.SelectMany(ticket => ticket.Questions);
+            flipping_canvas.MaxSlidesCount = session.Tickets.SelectMany(x => x.Questions).Count();
             pagedCanvas.ItemsSource = paged_col;
         }
 
