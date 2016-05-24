@@ -10,10 +10,10 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
 using XAMLMarkup.Enums;
+using XAMLMarkup.EventHandlers;
 
 namespace XAMLMarkup
 {
-    
     public sealed class FlippingCanvas : Canvas
     {
         #region Private Members
@@ -30,8 +30,6 @@ namespace XAMLMarkup
         private Point lastPoint;
         private Point initialPoint;
         Storyboard storyboard;
-        PagedCanvas pagedCanvas = null;
-        
         #endregion
 
         #region Public Properties
@@ -67,8 +65,10 @@ namespace XAMLMarkup
         #endregion
 
         #region Event Handlers
+
+        public event EventHandler<OnFlipCompleted> OnCompleted;
+
         private void canvas_Loaded(object sender, RoutedEventArgs e) {
-            pagedCanvas = this.Children.OfType<PagedCanvas>().SingleOrDefault();
             RemainSliding();
         }
 
@@ -122,15 +122,13 @@ namespace XAMLMarkup
         private void Completed(object sender, object e) {
             completedAnimations++;
             if (completedAnimations == Children.Count) {
-                if (pagedCanvas != null) {
-                    if (direction == MoveDirection.ToNext) {
-                        pagedCanvas.LoadNext();
-                        currentScreen++;
-                    }
-                    else if (direction == MoveDirection.ToPrevious) {
-                        pagedCanvas.LoadPrevious();
-                        currentScreen--;
-                    }
+                if ( OnCompleted != null ) {
+                    OnCompleted(this, new OnFlipCompleted(direction));
+                }
+                if ( direction == MoveDirection.ToNext ) {
+                    currentScreen++;
+                } else if ( direction == MoveDirection.ToPrevious ) {
+                    currentScreen--;
                 }
                 completedAnimations = 0;
                 Canvas.SetLeft(corrector, 0.0);
@@ -142,11 +140,15 @@ namespace XAMLMarkup
         private void RemainSliding() {
             int toPrev = 0;
             int toNext = 0;
-            foreach ( var c in pagedCanvas.Children.ToList() ) {
-                if ( (int)(Canvas.GetLeft(c) / ActualWidth) < currentScreen) {
-                    toPrev++;
-                } else if ( (int)(Canvas.GetLeft(c) / ActualWidth) > currentScreen ) {
-                    toNext++;
+            foreach ( var child in this.Children.ToList() ) {
+                if ( child is Panel ) {
+                    foreach ( var item in (child as Panel).Children.ToList() ) {
+                        if ( (int)(Canvas.GetLeft(item) / ActualWidth) < currentScreen ) {
+                            toPrev++;
+                        } else if ( (int)(Canvas.GetLeft(item) / ActualWidth) > currentScreen ) {
+                            toNext++;
+                        }
+                    }
                 }
             }
             remainSlidingToPrevious = toPrev;
