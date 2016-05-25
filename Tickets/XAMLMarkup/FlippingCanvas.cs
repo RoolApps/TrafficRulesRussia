@@ -10,10 +10,11 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
 using XAMLMarkup.Enums;
+using XAMLMarkup.EventHandlers;
+using Utils.Extensions;
 
 namespace XAMLMarkup
 {
-    
     public sealed class FlippingCanvas : Canvas
     {
         #region Private Members
@@ -27,7 +28,6 @@ namespace XAMLMarkup
         private Point lastPoint;
         private Point initialPoint;
         Storyboard storyboard;
-        PagedCanvas pagedCanvas = null;
         #endregion
 
         #region Public Properties
@@ -49,13 +49,14 @@ namespace XAMLMarkup
 
         #region Public Methods
         public void SlideCanvas(MoveDirection direction) {
-            if ( Canvas.GetLeft(corrector) == 0 ) {
+            var availableDirections = GetAvailableDirections(new Point(0, 0));
+            if ( (availableDirections & direction) == direction && Canvas.GetLeft(corrector) == 0 ) {
                 onSliding = true;
                 RestartStoryboard();
                 this.direction = direction;
                 double delta = this.direction == MoveDirection.ToNext ? -ActualWidth : ActualWidth;
                 foreach ( var obj in Children.ToList() ) {
-                    AddMotionAnimation(obj, delta, completed);
+                    AddMotionAnimation(obj, delta);
                 }
                 storyboard.Begin();
             }
@@ -63,9 +64,8 @@ namespace XAMLMarkup
         #endregion
 
         #region Event Handlers
-        private void canvas_Loaded(object sender, RoutedEventArgs e) {
-            pagedCanvas = this.Children.OfType<PagedCanvas>().SingleOrDefault();
-        }
+
+        public event EventHandler<OnFlipCompleted> OnCompleted;
 
         private void canvas_PointerPressed(object sender, PointerRoutedEventArgs e) {
             LKMIsPressed = true;
@@ -76,8 +76,9 @@ namespace XAMLMarkup
         private void canvas_PointerReleased(object sender, PointerRoutedEventArgs e) {
             if ( LKMIsPressed && !onSliding ) {
                 LKMIsPressed = false;
+                var pxToMove = PxToMove();
                 foreach ( var obj in Children.ToList() ) {
-                    AddMotionAnimation(obj, PxToMove(), completed);
+                    AddMotionAnimation(obj, pxToMove);
                 }
                 storyboard.Begin();
             }
@@ -114,16 +115,11 @@ namespace XAMLMarkup
             }
         }
 
-        private void completed() {
+        private void Completed(object sender, object e) {
             completedAnimations++;
             if (completedAnimations == Children.Count) {
-                if (pagedCanvas != null) {
-                    if (direction == MoveDirection.ToNext) {
-                        pagedCanvas.LoadNext();
-                    }
-                    else if (direction == MoveDirection.ToPrevious) {
-                        pagedCanvas.LoadPrevious();
-                    }
+                if ( OnCompleted != null ) {
+                    OnCompleted(this, new OnFlipCompleted(direction));
                 }
                 completedAnimations = 0;
                 Canvas.SetLeft(corrector, 0.0);
@@ -131,25 +127,49 @@ namespace XAMLMarkup
             }
         }
 
+        private MoveDirection GetAvailableDirections(Point offset) 
+        {
+            MoveDirection availableDirections = MoveDirection.NoWhere;
+
+            var allChildren = this.AllChildren();
+            var childrenPositions = allChildren.Select(child =>
+            {
+                var transform = child.TransformToVisual(Window.Current.Content);
+                return transform.TransformPoint(offset).X;
+            });
+            var maxPosition = childrenPositions.Max();
+            var minPosition = childrenPositions.Min();
+
+            if(maxPosition > ActualWidth)
+            {
+                availableDirections |= MoveDirection.ToNext;
+            }
+            if(minPosition < 0)
+            {
+                availableDirections |= MoveDirection.ToPrevious;
+            }
+            return availableDirections;
+        }
+
+
         private double PxToMove() {
             double delta = 0;
             double currentPosition = Canvas.GetLeft(corrector);
-            if (currentPosition > -winWidth / 2 && currentPosition < winWidth / 2) {
+            var availableDirections = GetAvailableDirections(new Point(-currentPosition, Canvas.GetTop(corrector)));
+            if (currentPosition < -winWidth /2 && (availableDirections & MoveDirection.ToNext) == MoveDirection.ToNext) {
+                direction = MoveDirection.ToNext;
+                delta = -(winWidth - Math.Abs(currentPosition));
+            } else if(currentPosition > winWidth / 2 && (availableDirections & MoveDirection.ToPrevious) == MoveDirection.ToPrevious){
+                direction = MoveDirection.ToPrevious;
+                delta = winWidth - currentPosition;
+            } else {
                 delta = -currentPosition;
                 direction = MoveDirection.NoWhere;
-            } else {
-                if (currentPosition < 0) {
-                    direction = MoveDirection.ToNext;
-                    delta = -(winWidth - Math.Abs(currentPosition));
-                } else {
-                    direction = MoveDirection.ToPrevious;
-                    delta = winWidth - currentPosition;
-                }
             }
             return delta;
         }
 
-        private void AddMotionAnimation(DependencyObject obj, double delta, Action completed = null) {
+        private void AddMotionAnimation(DependencyObject obj, double delta) {
             DoubleAnimation animation = new DoubleAnimation();
             animation.EasingFunction = new ExponentialEase();
             animation.EasingFunction.EasingMode = EasingMode.EaseInOut;
@@ -159,9 +179,7 @@ namespace XAMLMarkup
             Storyboard.SetTarget(animation, obj);
             Storyboard.SetTargetProperty(animation, "(Canvas.Left)");
             storyboard.Children.Add(animation);
-            if (completed != null) {
-                storyboard.Completed += (s, e) => completed();
-            }
+            storyboard.Completed += Completed;
         }
         #endregion
 
@@ -170,7 +188,6 @@ namespace XAMLMarkup
             corrector = new Ellipse();
             Children.Add(corrector);
 
-            Loaded += canvas_Loaded;
             SizeChanged += canvas_SizeChanged;
             PointerPressed += canvas_PointerPressed;
             PointerReleased += canvas_PointerReleased;
