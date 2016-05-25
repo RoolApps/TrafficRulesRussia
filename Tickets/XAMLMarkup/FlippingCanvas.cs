@@ -11,6 +11,7 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
 using XAMLMarkup.Enums;
 using XAMLMarkup.EventHandlers;
+using Utils.Extensions;
 
 namespace XAMLMarkup
 {
@@ -21,9 +22,6 @@ namespace XAMLMarkup
         private Boolean LKMIsPressed = false;
         private Boolean onSliding = false;
         private static int completedAnimations = 0;
-        private int currentScreen = 0;
-        private int remainSlidingToPrevious = 0;
-        private int remainSlidingToNext = 0;
         private double winHeight = Window.Current.Bounds.Height;
         private double winWidth = Window.Current.Bounds.Width;
         private MoveDirection direction;
@@ -51,7 +49,8 @@ namespace XAMLMarkup
 
         #region Public Methods
         public void SlideCanvas(MoveDirection direction) {
-            if ( Canvas.GetLeft(corrector) == 0 && remainSlidingToNext > 0) {
+            var availableDirections = GetAvailableDirections(new Point(0, 0));
+            if ( (availableDirections & direction) == direction && Canvas.GetLeft(corrector) == 0 ) {
                 onSliding = true;
                 RestartStoryboard();
                 this.direction = direction;
@@ -68,10 +67,6 @@ namespace XAMLMarkup
 
         public event EventHandler<OnFlipCompleted> OnCompleted;
 
-        private void canvas_Loaded(object sender, RoutedEventArgs e) {
-            RemainSliding();
-        }
-
         private void canvas_PointerPressed(object sender, PointerRoutedEventArgs e) {
             LKMIsPressed = true;
             lastPoint = initialPoint = e.GetCurrentPoint(this).Position;
@@ -81,8 +76,9 @@ namespace XAMLMarkup
         private void canvas_PointerReleased(object sender, PointerRoutedEventArgs e) {
             if ( LKMIsPressed && !onSliding ) {
                 LKMIsPressed = false;
+                var pxToMove = PxToMove();
                 foreach ( var obj in Children.ToList() ) {
-                    AddMotionAnimation(obj, PxToMove());
+                    AddMotionAnimation(obj, pxToMove);
                 }
                 storyboard.Begin();
             }
@@ -125,53 +121,50 @@ namespace XAMLMarkup
                 if ( OnCompleted != null ) {
                     OnCompleted(this, new OnFlipCompleted(direction));
                 }
-                if ( direction == MoveDirection.ToNext ) {
-                    currentScreen++;
-                } else if ( direction == MoveDirection.ToPrevious ) {
-                    currentScreen--;
-                }
                 completedAnimations = 0;
                 Canvas.SetLeft(corrector, 0.0);
                 onSliding = false;
-                RemainSliding();
             }
         }
 
-        private void RemainSliding() {
-            int toPrev = 0;
-            int toNext = 0;
-            foreach ( var child in this.Children.ToList() ) {
-                if ( child is Panel ) {
-                    foreach ( var item in (child as Panel).Children.ToList() ) {
-                        if ( (int)(Canvas.GetLeft(item) / ActualWidth) < currentScreen ) {
-                            toPrev++;
-                        } else if ( (int)(Canvas.GetLeft(item) / ActualWidth) > currentScreen ) {
-                            toNext++;
-                        }
-                    }
-                }
+        private MoveDirection GetAvailableDirections(Point offset) 
+        {
+            MoveDirection availableDirections = MoveDirection.NoWhere;
+
+            var allChildren = this.AllChildren();
+            var childrenPositions = allChildren.Select(child =>
+            {
+                var transform = child.TransformToVisual(Window.Current.Content);
+                return transform.TransformPoint(offset).X;
+            });
+            var maxPosition = childrenPositions.Max();
+            var minPosition = childrenPositions.Min();
+
+            if(maxPosition > ActualWidth)
+            {
+                availableDirections |= MoveDirection.ToNext;
             }
-            remainSlidingToPrevious = toPrev;
-            remainSlidingToNext = toNext;
+            if(minPosition < 0)
+            {
+                availableDirections |= MoveDirection.ToPrevious;
+            }
+            return availableDirections;
         }
 
 
         private double PxToMove() {
             double delta = 0;
             double currentPosition = Canvas.GetLeft(corrector);
-            if ((currentPosition > -winWidth / 2 && currentPosition < winWidth / 2) ||
-                (currentPosition > winWidth / 2 && remainSlidingToPrevious == 0) ||
-                (currentPosition < -winWidth / 2 && remainSlidingToNext == 0)){
+            var availableDirections = GetAvailableDirections(new Point(-currentPosition, Canvas.GetTop(corrector)));
+            if (currentPosition < -winWidth /2 && (availableDirections & MoveDirection.ToNext) == MoveDirection.ToNext) {
+                direction = MoveDirection.ToNext;
+                delta = -(winWidth - Math.Abs(currentPosition));
+            } else if(currentPosition > winWidth / 2 && (availableDirections & MoveDirection.ToPrevious) == MoveDirection.ToPrevious){
+                direction = MoveDirection.ToPrevious;
+                delta = winWidth - currentPosition;
+            } else {
                 delta = -currentPosition;
                 direction = MoveDirection.NoWhere;
-            } else {
-                if (currentPosition < 0) {
-                    direction = MoveDirection.ToNext;
-                    delta = -(winWidth - Math.Abs(currentPosition));
-                } else {
-                        direction = MoveDirection.ToPrevious;
-                        delta = winWidth - currentPosition;
-                }
             }
             return delta;
         }
@@ -195,7 +188,6 @@ namespace XAMLMarkup
             corrector = new Ellipse();
             Children.Add(corrector);
 
-            Loaded += canvas_Loaded;
             SizeChanged += canvas_SizeChanged;
             PointerPressed += canvas_PointerPressed;
             PointerReleased += canvas_PointerReleased;

@@ -26,6 +26,7 @@ namespace Tickets
     public sealed partial class QuestionPage : Page
     {
         ISession Session;
+        PagedCanvas PagedCanvas;
 
         public QuestionPage()
         {
@@ -40,8 +41,21 @@ namespace Tickets
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             Session = e.Parameter as ISession;
-            var pagedCanvas = flippingCanvas.Children.OfType<PagedCanvas>().Single();
-            pagedCanvas.ItemsSource = new PagedCollection<IQuestion>(2) { DataSource = Session.Tickets.SelectMany(ticket => ticket.Questions) };
+            PagedCanvas = flippingCanvas.Children.OfType<PagedCanvas>().Single();
+            PagedCanvas.ItemsSource = new PagedCollection<IQuestion>(2) { DataSource = Session.Tickets.SelectMany(ticket => ticket.Questions) };
+            flippingCanvas.OnCompleted += flippingCanvas_OnCompleted;
+        }
+
+        void flippingCanvas_OnCompleted(object sender, XAMLMarkup.EventHandlers.OnFlipCompleted e)
+        {
+            if (e.Direction == XAMLMarkup.Enums.MoveDirection.ToNext)
+            {
+                PagedCanvas.LoadNext();
+            }
+            else if(e.Direction == XAMLMarkup.Enums.MoveDirection.ToPrevious)
+            {
+                PagedCanvas.LoadPrevious();
+            }
         }
 
         private void TextBlock_Tapped(object sender, TappedRoutedEventArgs e)
