@@ -2,20 +2,29 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AppLogic
 {
-    class Question : IQuestion
+    [DataContract(IsReference=true)]
+    [KnownType(typeof(Answer))]
+    public class Question : IQuestion
     {
+        [DataMember]
         public ITicket Ticket { get; internal set; }
 
+        [DataMember]
         public int Number { get; internal set; }
 
+        [DataMember]
         public byte[] Image { get; internal set; }
 
+        [DataMember]
         private IEnumerable<IAnswer> answers = null;
+
+        [DataMember]
         public IEnumerable<IAnswer> Answers 
         {
             get
@@ -67,6 +76,7 @@ namespace AppLogic
             }
         }
 
+        [DataMember]
         public String Text { get; internal set; }
     }
 }

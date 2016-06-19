@@ -18,6 +18,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using Utils;
 
 // Шаблон пустого приложения задокументирован по адресу http://go.microsoft.com/fwlink/?LinkId=234227
 
@@ -104,7 +105,7 @@ namespace Tickets
         /// результатов поиска и т. д.
         /// </summary>
         /// <param name="e">Сведения о запросе и обработке запуска.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
@@ -128,6 +129,8 @@ namespace Tickets
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
                     // TODO: Загрузить состояние из ранее приостановленного приложения
+                    string navigationState = await SettingSaver.TakeSettingFromFile("NavigationState");
+                    rootFrame.SetNavigationState(navigationState);
                 }
 
                 // Размещение фрейма в текущем окне
@@ -185,11 +188,12 @@ namespace Tickets
         /// </summary>
         /// <param name="sender">Источник запроса приостановки.</param>
         /// <param name="e">Сведения о запросе приостановки.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
+        private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
 
             // TODO: Сохранить состояние приложения и остановить все фоновые операции
+            await SettingSaver.SaveSettingToFile("NavigationState", (Window.Current.Content as Frame).GetNavigationState());
             deferral.Complete();
         }
     }

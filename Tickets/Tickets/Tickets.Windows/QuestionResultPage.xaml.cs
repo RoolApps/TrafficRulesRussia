@@ -28,9 +28,7 @@ namespace Tickets {
 
         #region Event Handlers
         protected override void OnNavigatedTo(NavigationEventArgs e) {
-            if ( e.Parameter as ITicket != null ) {
-                ticket.Add(e.Parameter as ITicket);
-            }
+            ticket.Add(Serializer.DeserializeFromString<Ticket>(e.Parameter as string));
             cvsMain.Source = ticket;
         }
 

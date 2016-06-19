@@ -2,12 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AppLogic
 {
-    class Session : ISession
+    [DataContract]
+    [KnownType(typeof(Ticket))]
+    public class Session : ISession
     {
         #region Constructor
         internal Session(ISessionParameters parameters)
@@ -17,6 +20,8 @@ namespace AppLogic
         #endregion
 
         #region Public Methods
+
+        [DataMember]
         public IEnumerable<ITicket> Tickets { get; private set; }
 
         public byte[] Serialize()

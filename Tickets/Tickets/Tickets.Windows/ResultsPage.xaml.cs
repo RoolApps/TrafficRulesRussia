@@ -22,13 +22,26 @@ using System.Collections.ObjectModel;
 
 namespace Tickets {
     public sealed partial class ResultsPage : Page {
+        #region private Members
+        private ISession session;
+        #endregion
+
         #region Event Handlers
-        protected override void OnNavigatedTo(NavigationEventArgs e) {
-            ISession session = e.Parameter as ISession;
+        protected override async void OnNavigatedTo(NavigationEventArgs e) {
+            if(e.NavigationMode != NavigationMode.New) {
+                string sessionState = await SettingSaver.TakeSettingFromFile("SessionState");
+                session = Serializer.DeserializeFromString<Session>(sessionState);
+            } else {
+                session = Serializer.DeserializeFromString<Session>(e.Parameter as string);
+            }
             if ( session == null ) {
                 return;
             }
             gridView.ItemsSource = session.Tickets;
+        }
+
+        protected override async void OnNavigatedFrom( NavigationEventArgs e ) {
+            await SettingSaver.SaveSettingToFile("SessionState", Serializer.SerializeToString(session));
         }
 
         private void grdView_SelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -36,7 +49,7 @@ namespace Tickets {
             if ( myGridView == null ) {
                 return;
             }
-            this.Frame.Navigate(typeof(QuestionResultPage), myGridView.SelectedItem as ITicket);
+            this.Frame.Navigate(typeof(QuestionResultPage), Serializer.SerializeToString(myGridView.SelectedItem as ITicket));
         }
 
         private void goHomePage(object sender, RoutedEventArgs e) {

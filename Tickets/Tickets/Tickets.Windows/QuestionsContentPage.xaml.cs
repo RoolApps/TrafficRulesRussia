@@ -31,12 +31,21 @@ namespace Tickets
         #endregion
 
         #region Event Handlers
-        protected override void OnNavigatedTo(NavigationEventArgs e) {
-            session = e.Parameter as ISession;
+        protected override async void OnNavigatedTo(NavigationEventArgs e) {
+            if(e.NavigationMode != NavigationMode.New) {
+                string sessionState = await SettingSaver.TakeSettingFromFile("SessionState");
+                session = Serializer.DeserializeFromString<Session>(sessionState);
+            } else {
+                session = Serializer.DeserializeFromString<Session>(e.Parameter as string);
+            }
             pagedCanvas = flipping_canvas.Children.OfType<PagedCanvas>().Single();
             PagedCollection<IQuestion> paged_col = new PagedCollection<IQuestion>(2);
             paged_col.DataSource = session.Tickets.SelectMany(ticket => ticket.Questions);
             pagedCanvas.ItemsSource = paged_col;
+        }
+
+        protected override async void OnNavigatedFrom( NavigationEventArgs e ) {
+            await SettingSaver.SaveSettingToFile("SessionState", Serializer.SerializeToString(session));
         }
 
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -54,7 +63,7 @@ namespace Tickets
         }
 
         private void endExamButton_Tapped(object sender, TappedRoutedEventArgs e) {
-            this.Frame.Navigate(typeof(ResultsPage), session);
+            this.Frame.Navigate(typeof(ResultsPage), Serializer.SerializeToString(session));
         }
         #endregion
 

@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using AppLogic;
 using AppLogic.Enums;
 using AppLogic.Interfaces;
+using Utils;
 
 namespace Tickets {
     public sealed partial class ExamParametersPage : Page {
@@ -31,7 +32,7 @@ namespace Tickets {
         }
 
         private void GoToQuestionPage() {
-            this.Frame.Navigate(typeof(QuestionsContentPage), session);
+            this.Frame.Navigate(typeof(QuestionsContentPage), Serializer.SerializeToString(session));
         }
 
         private void CreateSession(QuestionsGenerationMode mode, int[] ticket = null) {
@@ -56,6 +57,12 @@ namespace Tickets {
         #endregion
 
         #region Event Handlers
+        protected override void OnNavigatedTo( NavigationEventArgs e ) {
+        }
+
+        protected override void OnNavigatedFrom( NavigationEventArgs e ) {
+        }
+
         private void Button_Start(object sender, RoutedEventArgs e) {
             if (tickets != null) {
                 CreateSession(QuestionsGenerationMode.SelectedTickets, tickets);
@@ -86,9 +93,7 @@ namespace Tickets {
             }
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e) {
 
-        }
         #endregion
 
         #region Additional Classes

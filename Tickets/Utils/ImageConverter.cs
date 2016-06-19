@@ -13,7 +13,6 @@ namespace Utils
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            //System.Diagnostics.Debug.WriteLine("value == {0}", value);
             if (value == null || !(value is byte[])) {
                 return null;
             }
