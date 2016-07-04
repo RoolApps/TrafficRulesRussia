@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using AppLogic;
 using AppLogic.Interfaces;
 using XAMLMarkup;
+using Utils;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
@@ -37,11 +38,20 @@ namespace Tickets
         /// </summary>
         /// <param name="e">Event data that describes how this page was reached.
         /// This parameter is typically used to configure the page.</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            Session = e.Parameter as ISession;
+            if(e.NavigationMode != NavigationMode.New) {
+                string sessionState = await SettingSaver.GetSettingFromFile("SessionState");
+                Session = Serializer.DeserializeFromString<Session>(sessionState);
+            } else {
+                Session = Serializer.DeserializeFromString<Session>(e.Parameter as string);
+            }
             var pagedCanvas = flippingCanvas.Children.OfType<PagedCanvas>().Single();
             pagedCanvas.ItemsSource = new PagedCollection<IQuestion>(2) { DataSource = Session.Tickets.SelectMany(ticket => ticket.Questions) };
+        }
+
+        protected override async void OnNavigatedFrom( NavigationEventArgs e ) {
+            await SettingSaver.SaveSettingToFile("SessionState", Serializer.SerializeToString(Session));
         }
 
         private void TextBlock_Tapped(object sender, TappedRoutedEventArgs e)
@@ -55,7 +65,7 @@ namespace Tickets
 
         private void btnEndSession_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(SessionResultsPage), Session);
+            this.Frame.Navigate(typeof(SessionResultsPage), Serializer.SerializeToString(Session));
         }
     }
 

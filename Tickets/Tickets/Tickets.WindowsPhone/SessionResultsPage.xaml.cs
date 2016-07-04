@@ -25,6 +25,10 @@ namespace Tickets
     /// </summary>
     public sealed partial class SessionResultsPage : Page
     {
+        #region private Members
+        private ISession session;
+        #endregion
+
         public SessionResultsPage()
         {
             this.InitializeComponent();
@@ -35,10 +39,15 @@ namespace Tickets
         /// </summary>
         /// <param name="e">Event data that describes how this page was reached.
         /// This parameter is typically used to configure the page.</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             InitResources();
-            var session = e.Parameter as ISession;
+            if(e.NavigationMode != NavigationMode.New) {
+                string sessionState = await SettingSaver.GetSettingFromFile("SessionState");
+                session = Serializer.DeserializeFromString<Session>(sessionState);
+            } else {
+                session = Serializer.DeserializeFromString<Session>(e.Parameter as string);
+            }
             pivot.ItemsSource = session.Tickets;
             ISessionStatistics statistics;
             var creationResult = SessionStatisticsFactory.CreateSessionStatistics(session, out statistics);
@@ -50,6 +59,10 @@ namespace Tickets
             {
                 popupStatistics.DataContext = statistics;
             }
+        }
+
+        protected override async void OnNavigatedFrom( NavigationEventArgs e ) {
+            await SettingSaver.SaveSettingToFile("SessionState", Serializer.SerializeToString(session));
         }
 
         #region EventHandlers

@@ -29,7 +29,7 @@ namespace Tickets {
         #region Event Handlers
         protected override async void OnNavigatedTo(NavigationEventArgs e) {
             if(e.NavigationMode != NavigationMode.New) {
-                string sessionState = await SettingSaver.TakeSettingFromFile("SessionState");
+                string sessionState = await SettingSaver.GetSettingFromFile("SessionState");
                 session = Serializer.DeserializeFromString<Session>(sessionState);
             } else {
                 session = Serializer.DeserializeFromString<Session>(e.Parameter as string);

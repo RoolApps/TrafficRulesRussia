@@ -129,7 +129,7 @@ namespace Tickets
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
                     // TODO: Загрузить состояние из ранее приостановленного приложения
-                    string navigationState = await SettingSaver.TakeSettingFromFile("NavigationState");
+                    string navigationState = await SettingSaver.GetSettingFromFile("NavigationState");
                     rootFrame.SetNavigationState(navigationState);
                 }
 

@@ -17,7 +17,7 @@ namespace Utils {
             }
         }
 
-        public static async Task<string> TakeSettingFromFile( string fileName ) {
+        public static async Task<string> GetSettingFromFile( string fileName ) {
             try {
                 StorageFolder sFolder = ApplicationData.Current.LocalFolder;
                 StorageFile sFile = await sFolder.GetFileAsync(fileName);
@@ -33,7 +33,7 @@ namespace Utils {
             appData.Values[key] = obj;
         }
 
-        public static string TakeSetting( string key ) {
+        public static string GetSetting( string key ) {
             string setting = "";
             ApplicationDataContainer appData = ApplicationData.Current.LocalSettings;
             if(appData.Values.ContainsKey(key)) {
