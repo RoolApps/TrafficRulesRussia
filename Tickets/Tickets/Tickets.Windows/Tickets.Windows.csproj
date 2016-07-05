@@ -130,6 +130,13 @@
     <Content Include="Assets\SmallLogo.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\StoreLogo.scale-100.png" />
+    <Content Include="Image\Errors_btn.png" />
+    <Content Include="Image\Exam_btn.png" />
+    <Content Include="Image\MainPageBackground.png" />
+    <Content Include="Image\Message_btn.png" />
+    <Content Include="Image\Rules_btn.png" />
+    <Content Include="Image\Statistic_btn.png" />
+    <Content Include="Image\Ticket_btn.png" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="ExamParametersPage.xaml">

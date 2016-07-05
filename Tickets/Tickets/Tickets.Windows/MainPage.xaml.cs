@@ -41,5 +41,17 @@ namespace Tickets
             this.InitializeComponent();
         }
         #endregion
+
+        private void Image_PointerEntered( object sender, PointerRoutedEventArgs e ) {
+            if(sender as Image != null) {
+                (sender as Image).Opacity = 1;
+            }
+        }
+
+        private void Image_PointerExited( object sender, PointerRoutedEventArgs e ) {
+            if(sender as Image != null) {
+                (sender as Image).Opacity = 0.5;
+            }
+        }
     }
 }

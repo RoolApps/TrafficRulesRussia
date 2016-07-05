@@ -9,12 +9,53 @@
     mc:Ignorable="d"
     NavigationCacheMode="Required"
     >
-    <Grid>
+    
+    <Page.TopAppBar>
+        <AppBar IsOpen="True" IsSticky="True" Background="DarkGray">
+            <StackPanel Orientation="Horizontal">
+                <AppBarButton Icon="Back" Label="Назад"></AppBarButton>
+                <AppBarButton Icon="Forward" Label="Вперед"></AppBarButton>
+                <TextBlock Text="Правила дорожного движения 2016 РФ" Foreground="White" VerticalAlignment="Center" FontSize="40"></TextBlock>
+            </StackPanel>
+        </AppBar>
+    </Page.TopAppBar>
+
+    <Grid Margin="0,80,0,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Button Grid.Column="0" Height="100" Width="30011111" FontSize="22" HorizontalAlignment="Center" Content="Перейти к экзамену" Click="Button_Click"/>
-        <Button Grid.Column="1" Height="100" Width="300" FontSize="22" HorizontalAlignment="Center" Content="НАЗАД" Click="backButton_Click"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.Background>
+            <ImageBrush ImageSource="Image/MainPageBackground.png" Stretch="UniformToFill"></ImageBrush>
+        </Grid.Background>
+        <StackPanel Grid.Column="0" Grid.Row="0">
+            <TextBlock Text="Билеты" Margin="0,50,0,0" HorizontalAlignment="Center" FontSize="32" Foreground="Black" FontWeight="Bold"></TextBlock>
+            <Image Source="Image/Ticket_btn.png" Height="260" Width="200" Opacity="0.5" Stretch="Uniform" PointerEntered="Image_PointerEntered" PointerExited="Image_PointerExited"></Image>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="0">
+            <TextBlock Text="Экзамен" Margin="0,50,0,0" HorizontalAlignment="Center" FontSize="32" Foreground="Black" FontWeight="Bold"></TextBlock>
+            <Image Source="Image/Exam_btn.png" Height="260" Width="200" Opacity="0.5" Stretch="Uniform" PointerEntered="Image_PointerEntered" PointerExited="Image_PointerExited"></Image>
+        </StackPanel>
+        <StackPanel Grid.Column="2" Grid.Row="0">
+            <TextBlock Text="Правила" Margin="0,50,0,0" HorizontalAlignment="Center" FontSize="32" Foreground="Black" FontWeight="Bold"></TextBlock>
+            <Image Source="Image/Rules_btn.png" Height="260" Width="200" Opacity="0.5" Stretch="Uniform" PointerEntered="Image_PointerEntered" PointerExited="Image_PointerExited"></Image>
+        </StackPanel>
+        <StackPanel Grid.Column="0" Grid.Row="1">
+            <TextBlock Text="Статистика" Margin="0,50,0,0" HorizontalAlignment="Center" FontSize="32" Foreground="Black" FontWeight="Bold"></TextBlock>
+            <Image Source="Image/Statistic_btn.png" Height="260" Width="200" Opacity="0.5" Stretch="Uniform" PointerEntered="Image_PointerEntered" PointerExited="Image_PointerExited"></Image>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="1">
+            <TextBlock Text="Сообщить об ошибке" Margin="0,50,0,0" HorizontalAlignment="Center" FontSize="32" Foreground="Black" FontWeight="Bold"></TextBlock>
+            <Image Source="Image/Errors_btn.png" Height="260" Width="200" Opacity="0.5" Stretch="Uniform" PointerEntered="Image_PointerEntered" PointerExited="Image_PointerExited"></Image>
+        </StackPanel>
+        <StackPanel Grid.Column="2" Grid.Row="1">
+            <TextBlock Text="Оцените приложение" Margin="0,50,0,0" HorizontalAlignment="Center" FontSize="32" Foreground="Black" FontWeight="Bold"></TextBlock>
+            <Image Source="Image/Message_btn.png" Height="260" Width="200" Opacity="0.5" Stretch="Uniform" PointerEntered="Image_PointerEntered" PointerExited="Image_PointerExited"></Image>
+        </StackPanel>
     </Grid>
 </Page>
