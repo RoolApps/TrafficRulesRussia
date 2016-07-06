@@ -29,7 +29,7 @@ namespace Tickets {
         #region Event Handlers
         protected override async void OnNavigatedTo(NavigationEventArgs e) {
             if(e.NavigationMode != NavigationMode.New) {
-                string sessionState = await SettingSaver.GetSettingFromFile("SessionState");
+                string sessionState = await SettingSaver.GetSettingFromFile(GlobalConstants.sesstionState);
                 session = Serializer.DeserializeFromString<Session>(sessionState);
             } else {
                 session = Serializer.DeserializeFromString<Session>(e.Parameter as string);
@@ -41,7 +41,7 @@ namespace Tickets {
         }
 
         protected override async void OnNavigatedFrom( NavigationEventArgs e ) {
-            await SettingSaver.SaveSettingToFile("SessionState", Serializer.SerializeToString(session));
+            await SettingSaver.SaveSettingToFile(GlobalConstants.sesstionState, Serializer.SerializeToString(session));
         }
 
         private void grdView_SelectionChanged(object sender, SelectionChangedEventArgs e) {

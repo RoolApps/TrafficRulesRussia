@@ -41,7 +41,7 @@ namespace Tickets
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             if(e.NavigationMode != NavigationMode.New) {
-                string sessionState = await SettingSaver.GetSettingFromFile("SessionState");
+                string sessionState = await SettingSaver.GetSettingFromFile(GlobalConstants.sesstionState);
                 Session = Serializer.DeserializeFromString<Session>(sessionState);
             } else {
                 Session = Serializer.DeserializeFromString<Session>(e.Parameter as string);
@@ -51,7 +51,7 @@ namespace Tickets
         }
 
         protected override async void OnNavigatedFrom( NavigationEventArgs e ) {
-            await SettingSaver.SaveSettingToFile("SessionState", Serializer.SerializeToString(Session));
+            await SettingSaver.SaveSettingToFile(GlobalConstants.sesstionState, Serializer.SerializeToString(Session));
         }
 
         private void TextBlock_Tapped(object sender, TappedRoutedEventArgs e)
