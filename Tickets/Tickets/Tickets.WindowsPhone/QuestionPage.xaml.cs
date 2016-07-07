@@ -47,8 +47,8 @@ namespace Tickets
             } else {
                 Session = Serializer.DeserializeFromString<Session>(e.Parameter as string);
             }
-            var pagedCanvas = flippingCanvas.Children.OfType<PagedCanvas>().Single();
-            pagedCanvas.ItemsSource = new PagedCollection<IQuestion>(2) { DataSource = Session.Tickets.SelectMany(ticket => ticket.Questions) };
+            PagedCanvas = flippingCanvas.Children.OfType<PagedCanvas>().Single();
+            PagedCanvas.ItemsSource = new PagedCollection<IQuestion>(2) { DataSource = Session.Tickets.SelectMany(ticket => ticket.Questions) };
             flippingCanvas.OnCompleted += flippingCanvas_OnCompleted;
         }
 

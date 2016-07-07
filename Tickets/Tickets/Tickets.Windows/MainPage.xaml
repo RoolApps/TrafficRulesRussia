@@ -7,7 +7,6 @@
     xmlns:XAMLMarkup="using:XAMLMarkup"
     x:Class="Tickets.MainPage"
     mc:Ignorable="d"
-    NavigationCacheMode="Required"
     >
     <Grid>
         <Grid.ColumnDefinitions>
