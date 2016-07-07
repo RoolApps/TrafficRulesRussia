@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using XAMLMarkup;
 using XAMLMarkup.Enums;
+using XAMLMarkup.EventHandlers;
 using Utils;
 using AppLogic;
 using AppLogic.Enums;
@@ -44,6 +45,16 @@ namespace Tickets
             pagedCanvas.ItemsSource = paged_col;
         }
 
+        private void flipping_canvas_OnCompleted(object sender, OnFlipCompleted e) {
+            if ( pagedCanvas != null ) {
+                if ( e.Direction == MoveDirection.ToNext ) {
+                    pagedCanvas.LoadNext();
+                } else if ( e.Direction == MoveDirection.ToPrevious ) {
+                    pagedCanvas.LoadPrevious();
+                }
+            }
+        }
+
         protected override async void OnNavigatedFrom( NavigationEventArgs e ) {
             await SettingSaver.SaveSettingToFile(GlobalConstants.sesstionState, Serializer.SerializeToString(session));
         }
@@ -70,6 +81,7 @@ namespace Tickets
         #region Constructor
         public QuestionsContentPage() {
             this.InitializeComponent();
+            flipping_canvas.OnCompleted += flipping_canvas_OnCompleted;
         }
         #endregion
     }
