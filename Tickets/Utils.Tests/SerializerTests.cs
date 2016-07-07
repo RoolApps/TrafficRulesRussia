@@ -40,10 +40,11 @@ namespace Utils.Tests
             Resources.ConnectionString = Path.Combine(Package.Current.InstalledLocation.Path, Resources.DBFileName);
         }
 
-        private void Serialize<T>(object obj) {
+        private T Serialize<T>(object obj){
             // arrange
             string serializedObj = null;
             T deserializedObj = default(T);
+            
 
             // act
             if(obj != null) {
@@ -55,6 +56,9 @@ namespace Utils.Tests
             // assert
             Assert.IsNotNull(serializedObj, "serializedObj == null");
             Assert.IsNotNull(deserializedObj, "deserializedObj == null");
+            Assert.IsInstanceOfType(serializedObj, typeof(string), "serializedObj != string");
+            //Assert.AreEqual(obj, deserializedObj);
+            return deserializedObj;
         }
 
         [TestMethod]
@@ -66,9 +70,20 @@ namespace Utils.Tests
 
         [TestMethod]
         public void CanSerializeUserObject() {
-            ISession session;
-            SessionFactory.CreateSession(new SP() { Mode = QuestionsGenerationMode.RandomTicket}, out session);
-            Serialize<Session>(session);
+            ISession sSession;
+            SessionFactory.CreateSession(new SP() { Mode = QuestionsGenerationMode.RandomTicket}, out sSession);
+            ISession dSession = Serialize<Session>(sSession);
+
+            var ticketNumberEquals = sSession.Tickets.SelectMany(t1 => (dSession.Tickets.Where(t2 => t2.Number == t1.Number)).Select(item => item.Number)).Any();
+            Assert.IsTrue(ticketNumberEquals, "ticketNumbers are not equal");
+
+            var sSessionTicketQuestions = sSession.Tickets.SelectMany(t => t.Questions.Select(q => q.Text));
+            var dSessionTicketQuestions = dSession.Tickets.SelectMany(t => t.Questions.Select(q => q.Text));
+            Assert.IsTrue(sSessionTicketQuestions.SequenceEqual(dSessionTicketQuestions), "ticketQuestions are not equal");
+
+            var sSessionTicketAnswers = sSession.Tickets.SelectMany(t => t.Questions.SelectMany(q => q.Answers.Select(a => a.Text)));
+            var dSessionTicketAnswers = dSession.Tickets.SelectMany(t => t.Questions.SelectMany(q => q.Answers.Select(a => a.Text)));
+            Assert.IsTrue(sSessionTicketAnswers.SequenceEqual(dSessionTicketAnswers), "ticketAnswers are not equal");
         }
     }
 }
