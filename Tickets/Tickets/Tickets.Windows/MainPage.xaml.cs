@@ -26,32 +26,69 @@ namespace Tickets
 {
     public sealed partial class MainPage : Page {
         #region Event Handlers
-        private void Button_Click(object sender, RoutedEventArgs e) {
-            this.Frame.Navigate(typeof(ExamParametersPage));
+        protected override void OnNavigatedTo( NavigationEventArgs e ) {
+            if(this.Frame.CanGoBack) {
+                BackButton.IsEnabled = true;
+            } else {
+                BackButton.IsEnabled = false;
+            }
+
+            if(this.Frame.CanGoForward) {
+                ForwardButton.IsEnabled = true;
+            } else {
+                ForwardButton.IsEnabled = false;
+            }
+            base.OnNavigatedTo(e);
         }
-        
-        private void backButton_Click(object sender, RoutedEventArgs e) {
-            if ( this.Frame != null && this.Frame.CanGoBack )
+
+        private void AppBarBackButton_Click( object sender, RoutedEventArgs e ) {
+            if(this.Frame.CanGoBack) {
                 this.Frame.GoBack();
+            }
+        }
+
+        private void AppBarForwardButton_Click( object sender, RoutedEventArgs e ) {
+            if(this.Frame.CanGoForward) {
+                this.Frame.GoForward();
+            }
+        }
+
+        void MessageBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
+            System.Diagnostics.Debug.WriteLine("MESSAGE BUTTON TAPPED");
+        }
+
+        void ErrorsBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
+            System.Diagnostics.Debug.WriteLine("ERRORS BUTTON TAPPED");
+        }
+
+        void StatisticsBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
+            System.Diagnostics.Debug.WriteLine("STATISTICS BUTTON TAPPED");
+        }
+
+        void RulesBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
+            System.Diagnostics.Debug.WriteLine("RULES BUTTON TAPPED");
+        }
+
+        void ExamBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
+            System.Diagnostics.Debug.WriteLine("EXAM BUTTON TAPPED");
+        }
+
+        void ticketBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
+            System.Diagnostics.Debug.WriteLine("TICKET BUTTON TAPPED");
+            this.Frame.Navigate(typeof(ExamParametersPage));
         }
         #endregion
 
         #region Constructor
         public MainPage() {
             this.InitializeComponent();
+            ticketsBtn.Tapped += ticketBtn_Tapped;
+            ExamBtn.Tapped += ExamBtn_Tapped;
+            RulesBtn.Tapped += RulesBtn_Tapped;
+            StatisticsBtn.Tapped += StatisticsBtn_Tapped;
+            ErrorsBtn.Tapped += ErrorsBtn_Tapped;
+            MessageBtn.Tapped += MessageBtn_Tapped;
         }
         #endregion
-
-        private void Image_PointerEntered( object sender, PointerRoutedEventArgs e ) {
-            if(sender as Image != null) {
-                (sender as Image).Opacity = 1;
-            }
-        }
-
-        private void Image_PointerExited( object sender, PointerRoutedEventArgs e ) {
-            if(sender as Image != null) {
-                (sender as Image).Opacity = 0.5;
-            }
-        }
     }
 }
