@@ -11,6 +11,12 @@ namespace AppLogic
 {
     class TicketLoader : ITicketLoader
     {
+    #region private Members
+        IEnumerable<Questions> questionList;
+        IEnumerable<int> questionIdList;
+        IEnumerable<Answers> answerList;
+    #endregion
+
         public IEnumerable<ITicket> LoadTickets(ISessionParameters parameters)
         {
             SQLiteDataAccessor dataAccessor = null;
@@ -19,24 +25,34 @@ namespace AppLogic
                 dataAccessor = new SQLiteDataAccessor();
 
                 Tickets[] selectedTickets;
-                if (parameters.Mode == Enums.QuestionsGenerationMode.RandomTicket)
+                if (parameters.Mode == Enums.QuestionsGenerationMode.RandomTicket || parameters.Mode == Enums.QuestionsGenerationMode.SelectedTickets)
                 {
+                    if(parameters.Mode == Enums.QuestionsGenerationMode.RandomTicket) {
+                        var tickets = dataAccessor.CreateQuery<Tickets>();
+                        Random rand = new Random();
+                        selectedTickets = new Tickets[] { tickets.ElementAt(rand.Next(tickets.Count())) };
+                    } else {
+                        selectedTickets = dataAccessor.CreateQuery<Tickets>().Where(ticket => parameters.TicketNums.Contains(ticket.num)).ToArray();
+                    }
+                    questionList = dataAccessor.CreateQuery<Questions>().Where(question => selectedTickets.Any(ticket => ticket.id == question.ticket_id));
+                } else if(parameters.Mode == Enums.QuestionsGenerationMode.ExamTicket) {
                     var tickets = dataAccessor.CreateQuery<Tickets>();
-                    Random rand = new Random();
-                    selectedTickets = new Tickets[] { tickets.ElementAt(rand.Next(tickets.Count())) };
-                }
-                else if (parameters.Mode == Enums.QuestionsGenerationMode.SelectedTickets)
-                {
-                    selectedTickets = dataAccessor.CreateQuery<Tickets>().Where(ticket => parameters.TicketNums.Contains(ticket.num)).ToArray();
+                    selectedTickets = new Tickets[] { tickets.ElementAt(0) };
+
+                    Random rnd = new Random();
+                    // Сформировали 20 рандомных билетов
+                    var randomTickets = Enumerable.Range(1, 40).OrderBy(i => rnd.Next()).Select(( item, index ) => new { id = index, num = item }).Where(t => t.id < 20).ToArray();
+                    var randomQuestions = Enumerable.Range(1, 20).OrderBy(i => rnd.Next()).Select(( item, index ) => new { id = index, num = item}).ToArray();
+
+                    questionList = dataAccessor.CreateQuery<Questions>().Join(randomTickets, question => question.ticket_id, ticket => ticket.num, ( question, ticket ) => new { Id = ticket.id, Question = question }).OrderBy(i => i.Id).Where(question => question.Question.num == randomQuestions.ElementAt(question.Id).num).OrderBy(item => item.Question.num).Select(i => i.Question);
                 }
                 else
                 {
                     throw new NotImplementedException(String.Format("Not supported mode", parameters.Mode));
                 }
 
-                var questions = dataAccessor.CreateQuery<Questions>().Where(question => selectedTickets.Any(ticket => ticket.id == question.ticket_id));
-                var questionIds = questions.Select(question => question.id).ToArray();
-                var answers = dataAccessor.CreateQuery<Answers>().Where(answer => questionIds.Contains(answer.question_id));
+                questionIdList = questionList.Select(question => question.id).ToArray();
+                answerList = dataAccessor.CreateQuery<Answers>().Where(answer => questionIdList.Contains(answer.question_id));
 
                 var itickets = selectedTickets.Select(ticket =>
                 {
@@ -44,7 +60,8 @@ namespace AppLogic
                     {
                         Number = ticket.num
                     };
-                    iticket.Questions = questions.Where(question => question.ticket_id == ticket.id).Select(question =>
+                    var iticketQuestion = parameters.Mode != Enums.QuestionsGenerationMode.ExamTicket ? questionList.Where(question => question.ticket_id == ticket.id) : questionList;
+                    iticket.Questions = iticketQuestion.Select(question =>
                     {
                         var iquestion = new Question
                         {
@@ -53,7 +70,7 @@ namespace AppLogic
                             Image = question.image,
                             Text = question.question
                         };
-                        iquestion.Answers = answers.Where(answer => answer.question_id == question.id).Select(answer =>
+                        iquestion.Answers = answerList.Where(answer => answer.question_id == question.id).Select(answer =>
                         {
                             var ianswer = new Answer()
                             {
@@ -67,6 +84,7 @@ namespace AppLogic
                     }).ToArray();
                     return iticket;
                 }).ToArray();
+
                 if(parameters.Shuffle)
                 {
                     Random rand = new Random();

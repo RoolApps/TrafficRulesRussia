@@ -17,6 +17,7 @@ namespace AppLogic
             if(validationResult == ParametersValidationResult.Valid)
             {
                 session = new Session(parameters);
+                System.Diagnostics.Debug.WriteLine("validtionResult: {0}", validationResult);
             }
             else
             {
@@ -47,6 +48,9 @@ namespace AppLogic
                 }
                 else if(parameters.Mode == QuestionsGenerationMode.RandomTicket)
                 {
+                    return ParametersValidationResult.Valid;
+                }
+                else if(parameters.Mode == QuestionsGenerationMode.ExamTicket) {
                     return ParametersValidationResult.Valid;
                 }
                 else if(parameters.TicketNums == null || !parameters.TicketNums.Any())

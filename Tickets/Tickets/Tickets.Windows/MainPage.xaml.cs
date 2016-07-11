@@ -25,6 +25,7 @@ using AppLogic.Interfaces;
 namespace Tickets
 {
     public sealed partial class MainPage : Page {
+
         #region Event Handlers
         protected override void OnNavigatedTo( NavigationEventArgs e ) {
             if(this.Frame.CanGoBack) {
@@ -71,6 +72,10 @@ namespace Tickets
 
         void ExamBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
             System.Diagnostics.Debug.WriteLine("EXAM BUTTON TAPPED");
+            SessionParameters sp = new SessionParameters() { Mode = QuestionsGenerationMode.ExamTicket};
+            ISession session;
+            var sf = SessionFactory.CreateSession(sp, out session);
+            this.Frame.Navigate(typeof(QuestionsContentPage), session);
         }
 
         void ticketBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
@@ -91,4 +96,23 @@ namespace Tickets
         }
         #endregion
     }
+
+    #region Additional Classes
+    class SessionParameters : ISessionParameters {
+        public bool Shuffle {
+            get;
+            set;
+        }
+
+        public int[] TicketNums {
+            get;
+            set;
+        }
+
+        public QuestionsGenerationMode Mode {
+            get;
+            set;
+        }
+    }
+    #endregion
 }

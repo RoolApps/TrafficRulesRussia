@@ -9,6 +9,7 @@ namespace AppLogic.Enums
     public enum QuestionsGenerationMode
     {
         RandomTicket,
-        SelectedTickets
+        SelectedTickets,
+        ExamTicket
     }
 }
