@@ -49,6 +49,9 @@ namespace AppLogic
                 {
                     return ParametersValidationResult.Valid;
                 }
+                else if(parameters.Mode == QuestionsGenerationMode.ExamTicket) {
+                    return ParametersValidationResult.Valid;
+                }
                 else if(parameters.TicketNums == null || !parameters.TicketNums.Any())
                 {
                     return ParametersValidationResult.NoTickets;
