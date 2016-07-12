@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Answer.cs" />
+    <Compile Include="Constants\GlobalConstants.cs" />
     <Compile Include="Enums\ParamsValidationResult.cs" />
     <Compile Include="Enums\SessionRestoreResult.cs" />
     <Compile Include="Enums\QuestionsGenerationMode.cs" />

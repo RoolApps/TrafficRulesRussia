@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SQLiteShared;
 using SQLiteShared.Models;
 using AppLogic.Interfaces;
+using AppLogic.Constants;
 
 namespace AppLogic {
     class TicketLoader : ITicketLoader {
@@ -19,9 +20,9 @@ namespace AppLogic {
             SQLiteDataAccessor dataAccessor = null;
             try {
                 dataAccessor = new SQLiteDataAccessor();
-
+                
                 Tickets[] selectedTickets;
-                if(parameters.Mode == Enums.QuestionsGenerationMode.RandomTicket || parameters.Mode == Enums.QuestionsGenerationMode.SelectedTickets) {
+                if(new Enums.QuestionsGenerationMode[] {Enums.QuestionsGenerationMode.RandomTicket, Enums.QuestionsGenerationMode.SelectedTickets}.Contains(parameters.Mode)) {
                     if(parameters.Mode == Enums.QuestionsGenerationMode.RandomTicket) {
                         var tickets = dataAccessor.CreateQuery<Tickets>();
                         Random rand = new Random();
@@ -33,13 +34,11 @@ namespace AppLogic {
                 } else if(parameters.Mode == Enums.QuestionsGenerationMode.ExamTicket) {
                     var tickets = dataAccessor.CreateQuery<Tickets>();
                     selectedTickets = new Tickets[] { tickets.ElementAt(0) };
-
                     Random rnd = new Random();
-                    // Сформировали 20 рандомных билетов
-                    var randomTickets = Enumerable.Range(1, 40).OrderBy(i => rnd.Next()).Select(( item, index ) => new { id = index, num = item }).Where(t => t.id < 20).ToArray();
-                    var randomQuestions = Enumerable.Range(1, 20).OrderBy(i => rnd.Next()).Select(( item, index ) => new { id = index, num = item }).ToArray();
 
-                    questionList = dataAccessor.CreateQuery<Questions>().Join(randomTickets, question => question.ticket_id, ticket => ticket.num, ( question, ticket ) => new { Id = ticket.id, Question = question }).OrderBy(i => i.Id).Where(question => question.Question.num == randomQuestions.ElementAt(question.Id).num).OrderBy(item => item.Question.num).Select(i => i.Question);
+                    var randomTickets = Enumerable.Range(1, GlobalConstants.ticketsCount).OrderBy(i => rnd.Next()).Select(( item, index ) => new { id = index, num = item }).Take(GlobalConstants.questionsCount).ToArray();
+                    var randomQuestions = Enumerable.Range(1, GlobalConstants.questionsCount).OrderBy(i => rnd.Next()).Select(( item, index ) => new { id = index, num = item }).ToArray();
+                    questionList = dataAccessor.CreateQuery<Questions>().Join(randomTickets, question => question.ticket_id, ticket => ticket.num, ( question, ticket ) => new { Id = ticket.id, Question = question }).Where(question => question.Question.num == randomQuestions.ElementAt(question.Id).num).OrderBy(item => item.Question.num).Select(i => i.Question);
                 } else {
                     throw new NotImplementedException(String.Format("Not supported mode", parameters.Mode));
                 }
