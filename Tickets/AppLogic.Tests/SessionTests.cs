@@ -103,6 +103,19 @@ namespace AppLogic.Tests
         }
 
         [TestMethod]
+        public void SessionCreateCorrectQuestionsInExamMode() {
+            ISession session;
+            var parameters = new SessionParameters() { Mode = QuestionsGenerationMode.ExamTicket };
+            var creationResult = SessionFactory.CreateSession(parameters, out session);
+            Assert.IsNotNull(session);
+            Assert.AreEqual(ParametersValidationResult.Valid, creationResult);
+            var ticket = session.Tickets.Single();
+            Assert.IsNotNull(ticket);
+            var questions = session.Tickets.SelectMany(t => t.Questions).Count();
+            Assert.AreEqual(questions, AppLogic.Constants.GlobalConstants.questionsCount);
+        }
+
+        [TestMethod]
         [Ignore]
         public void SessionReturnsRandomTicket()
         {
