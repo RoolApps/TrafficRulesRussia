@@ -10,18 +10,13 @@ using AppLogic.Constants;
 
 namespace AppLogic {
     class TicketLoader : ITicketLoader {
-        #region private Members
-        IEnumerable<Questions> questionList;
-        IEnumerable<int> questionIdList;
-        IEnumerable<Answers> answerList;
-        #endregion
-
         public IEnumerable<ITicket> LoadTickets( ISessionParameters parameters ) {
             SQLiteDataAccessor dataAccessor = null;
             try {
                 dataAccessor = new SQLiteDataAccessor();
                 
                 Tickets[] selectedTickets;
+                IEnumerable<Questions> questionList;
                 if(new Enums.QuestionsGenerationMode[] {Enums.QuestionsGenerationMode.RandomTicket, Enums.QuestionsGenerationMode.SelectedTickets}.Contains(parameters.Mode)) {
                     if(parameters.Mode == Enums.QuestionsGenerationMode.RandomTicket) {
                         var tickets = dataAccessor.CreateQuery<Tickets>();
@@ -43,8 +38,8 @@ namespace AppLogic {
                     throw new NotImplementedException(String.Format("Not supported mode", parameters.Mode));
                 }
 
-                questionIdList = questionList.Select(question => question.id).ToArray();
-                answerList = dataAccessor.CreateQuery<Answers>().Where(answer => questionIdList.Contains(answer.question_id));
+                var questionIdList = questionList.Select(question => question.id).ToArray();
+                var answerList = dataAccessor.CreateQuery<Answers>().Where(answer => questionIdList.Contains(answer.question_id));
 
                 var itickets = selectedTickets.Select(ticket => {
                     var iticket = new Ticket {
