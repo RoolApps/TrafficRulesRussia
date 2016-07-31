@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Utils;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
@@ -111,7 +112,7 @@ namespace Tickets
             var creationResult = SessionFactory.CreateSession(parameters, out session);
             if(creationResult == AppLogic.Enums.ParametersValidationResult.Valid)
             {
-                this.Frame.Navigate(typeof(QuestionPage), session);
+                this.Frame.Navigate(typeof(QuestionPage), Serializer.SerializeToString(session));
             }
             else
             {

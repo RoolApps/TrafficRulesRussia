@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using AppLogic;
 using AppLogic.Interfaces;
 using XAMLMarkup;
+using Utils;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
@@ -38,22 +39,27 @@ namespace Tickets
         /// </summary>
         /// <param name="e">Event data that describes how this page was reached.
         /// This parameter is typically used to configure the page.</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            Session = e.Parameter as ISession;
+            if(e.NavigationMode != NavigationMode.New) {
+                string sessionState = await SettingSaver.GetSettingFromFile(GlobalConstants.sesstionState);
+                Session = Serializer.DeserializeFromString<Session>(sessionState);
+            } else {
+                Session = Serializer.DeserializeFromString<Session>(e.Parameter as string);
+            }
             PagedCanvas = flippingCanvas.Children.OfType<PagedCanvas>().Single();
             PagedCanvas.ItemsSource = new PagedCollection<IQuestion>(2) { DataSource = Session.Tickets.SelectMany(ticket => ticket.Questions) };
             flippingCanvas.OnCompleted += flippingCanvas_OnCompleted;
         }
 
-        void flippingCanvas_OnCompleted(object sender, XAMLMarkup.EventHandlers.OnFlipCompleted e)
-        {
-            if (e.Direction == XAMLMarkup.Enums.MoveDirection.ToNext)
-            {
+        protected override async void OnNavigatedFrom( NavigationEventArgs e ) {
+            await SettingSaver.SaveSettingToFile(GlobalConstants.sesstionState, Serializer.SerializeToString(Session));
+        }
+
+        void flippingCanvas_OnCompleted( object sender, XAMLMarkup.EventHandlers.OnFlipCompleted e ) {
+            if(e.Direction == XAMLMarkup.Enums.MoveDirection.ToNext) {
                 PagedCanvas.LoadNext();
-            }
-            else if(e.Direction == XAMLMarkup.Enums.MoveDirection.ToPrevious)
-            {
+            } else if(e.Direction == XAMLMarkup.Enums.MoveDirection.ToPrevious) {
                 PagedCanvas.LoadPrevious();
             }
         }
@@ -69,7 +75,7 @@ namespace Tickets
 
         private void btnEndSession_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(SessionResultsPage), Session);
+            this.Frame.Navigate(typeof(SessionResultsPage), Serializer.SerializeToString(Session));
         }
     }
 

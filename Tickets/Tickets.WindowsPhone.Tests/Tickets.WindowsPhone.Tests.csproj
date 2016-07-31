@@ -107,6 +107,10 @@
       <Project>{ee978e81-ae21-4f1f-851f-63d4530dbf30}</Project>
       <Name>Tickets.WindowsPhone</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Utils\Utils.csproj">
+      <Project>{687cd1d3-8463-4ec1-b618-d59512678f30}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XAMLMarkup\XAMLMarkup.csproj">
       <Project>{c0f8f593-f465-4ce3-b820-f5b130a391cd}</Project>
       <Name>XAMLMarkup</Name>

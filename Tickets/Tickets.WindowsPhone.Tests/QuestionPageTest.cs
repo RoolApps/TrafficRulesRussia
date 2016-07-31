@@ -16,6 +16,7 @@ using AppLogic;
 using AppLogic.Interfaces;
 using XAMLMarkup;
 using SQLiteShared;
+using Utils;
 
 
 
@@ -27,9 +28,10 @@ namespace Tickets.WindowsPhone.Tests
         public class SessionParameters : ISessionParameters
         {
 
-            public bool Shuffle
-            {
-                get { throw new NotImplementedException(); }
+            public bool Shuffle {
+                get{
+                    return false;
+                }
             }
 
             public int[] TicketNums
