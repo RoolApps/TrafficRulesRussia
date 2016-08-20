@@ -16,6 +16,7 @@ using AppLogic;
 using AppLogic.Enums;
 using AppLogic.Interfaces;
 using Utils;
+using Windows.UI;
 
 namespace Tickets {
     public sealed partial class ExamParametersPage : Page {
@@ -37,7 +38,7 @@ namespace Tickets {
 
         private void CreateSession(QuestionsGenerationMode mode, int[] ticket = null) {
             SessionParameters sp = new SessionParameters() {
-                Shuffle = shuffleQuestionCB.IsChecked ?? false,
+                //Shuffle = shuffleQuestionCB.IsChecked ?? false,
                 Mode = mode,
                 TicketNums = ticket,
             };
@@ -58,6 +59,18 @@ namespace Tickets {
 
         #region Event Handlers
         protected override void OnNavigatedTo( NavigationEventArgs e ) {
+            if(this.Frame.CanGoBack) {
+                BackButton.IsEnabled = true;
+            } else {
+                BackButton.IsEnabled = false;
+            }
+
+            if(this.Frame.CanGoForward) {
+                ForwardButton.IsEnabled = true;
+            } else {
+                ForwardButton.IsEnabled = false;
+            }
+            base.OnNavigatedTo(e);
         }
 
         protected override void OnNavigatedFrom( NavigationEventArgs e ) {
@@ -77,11 +90,6 @@ namespace Tickets {
             GoToQuestionPage();
         }
 
-        private void backButton_Click(object sender, RoutedEventArgs e) {
-            if ( this.Frame != null && this.Frame.CanGoBack )
-                this.Frame.GoBack();
-        }
-
         private void grdView_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             var myGridView = sender as GridView;
             if (myGridView == null) {
@@ -93,6 +101,17 @@ namespace Tickets {
             }
         }
 
+        private void AppBarBackButton_Click( object sender, RoutedEventArgs e ) {
+            if(this.Frame.CanGoBack) {
+                this.Frame.GoBack();
+            }
+        }
+
+        private void AppBarForwardButton_Click( object sender, RoutedEventArgs e ) {
+            if(this.Frame.CanGoForward) {
+                this.Frame.GoForward();
+            }
+        }
 
         #endregion
 
@@ -119,9 +138,11 @@ namespace Tickets {
         public ExamParametersPage() {
             fillTicketGrid();
             this.InitializeComponent();
+            StartBtn.Tapped += Button_Start;
             DataContext = this;
         }
-        #endregion
 
+
+        #endregion
     }
 }

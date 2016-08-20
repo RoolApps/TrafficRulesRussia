@@ -3,25 +3,55 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Tickets"
+    xmlns:markup="using:XAMLMarkup"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+    
+    <Page.Resources>
+        <Style x:Key="ToggleSwitchStyle" TargetType="ToggleSwitch">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="HeaderTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" FontSize="30" Foreground="Black"/>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+    
+    <Page.TopAppBar>
+        <AppBar IsOpen="True" IsSticky="True" Background="LightSteelBlue">
+            <StackPanel Orientation="Horizontal">
+                <AppBarButton x:Name="BackButton" Icon="Back" Label="Назад" Click="AppBarBackButton_Click"></AppBarButton>
+                <AppBarButton x:Name="ForwardButton" Icon="Forward" Label="Вперед" Click="AppBarForwardButton_Click"></AppBarButton>
+                <TextBlock Text="Выбор билета" Foreground="White" VerticalAlignment="Center" FontSize="40"></TextBlock>
+            </StackPanel>
+        </AppBar>
+    </Page.TopAppBar>
 
-    <Grid>
+    <Grid Margin="0,85,0,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
+        <Grid.Background>
+            <ImageBrush ImageSource="Image/MainPageBackground.png" Stretch="UniformToFill"></ImageBrush>
+        </Grid.Background>
         <GridView x:Name="grdView" Grid.Column="0" ItemsSource="{Binding TicketsToFill}" Margin="10,10,10,10" SelectionMode="Multiple" SelectionChanged="grdView_SelectionChanged">
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapGrid MaximumRowsOrColumns="10" VerticalAlignment="Center" ItemHeight="70" ItemWidth="200"/>
+                    <WrapGrid MaximumRowsOrColumns="10" VerticalAlignment="Center" ItemHeight="85" ItemWidth="190" HorizontalAlignment="Center"/>
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderBrush="White" BorderThickness="2" Width="190">
-                        <TextBlock  Text="{Binding}" FontSize="18" Height="60" Width="150" Padding="16" TextAlignment="Center"/>
+                    <Border BorderThickness="2" Width="140" Margin="10, 10, 10, 10">
+                        <Border.Background>#99ff8533</Border.Background>
+                        <Border.BorderBrush>#adaa4834</Border.BorderBrush>
+                        <TextBlock Text="{Binding}" FontSize="18" Height="60" Width="140" Padding="16" TextAlignment="Center" Foreground="Black"/>
                     </Border>
                 </DataTemplate>
             </GridView.ItemTemplate>
@@ -31,12 +61,12 @@
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            <Button Grid.Row="0" Content="Случайный выбор" FontSize="20" Height="60" Width="220" HorizontalAlignment="Center" Click="Button_Click_Rnd"/>
-            <CheckBox Grid.Row="1" x:Name="shuffleQuestionCB" Content="Перемешать вопросы" FontSize="20" HorizontalAlignment="Center"></CheckBox>
-            <Button Grid.Row="2" Content="Поехали" FontSize="20" Height="60" Width="220" HorizontalAlignment="Center" Click="Button_Start"/>
-            <Button Grid.Row="3" Content="Назад" FontSize="20" Height="60" Width="220" HorizontalAlignment="Center" Click="backButton_Click"/>
+            <markup:MainMenuIcon x:Name="StartBtn" Grid.Row="1" MakeTranslucent="false" ImageSource="ms-appx:///Image/Start_btn.png" HorizontalAlignment="Left"/>
+            <StackPanel Grid.Row="0" Margin="0,100,0,0">
+                <ToggleSwitch x:Name="tsRandomTicket" Header="Случайный билет" OffContent="Нет" OnContent="Да" VerticalAlignment="Top" Style="{StaticResource ToggleSwitchStyle}"/>
+                <ToggleSwitch x:Name="tsShuffleQuestions" Header="Случайный порядок вопросов" OffContent="Нет" OnContent="Да" VerticalAlignment="Center" Style="{StaticResource ToggleSwitchStyle}"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </Page>

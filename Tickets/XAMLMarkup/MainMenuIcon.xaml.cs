@@ -15,7 +15,10 @@ using Windows.UI.Xaml.Navigation;
 
 namespace XAMLMarkup {
     public sealed partial class MainMenuIcon : UserControl {
+        private const double translucentValue = 0.6;
+
         public MainMenuIcon() {
+            MakeTranslucent = true;
             this.InitializeComponent();
             DataContext = this;
         }
@@ -30,6 +33,19 @@ namespace XAMLMarkup {
             }
             set {
                 SetValue(TextProperty, value);
+            }
+        }
+
+        // VisibleProperty
+        public static readonly DependencyProperty OpacityProperty =
+            DependencyProperty.Register("MakeTranslucent", typeof(Boolean), typeof(MainMenuIcon), null);
+
+        public Boolean MakeTranslucent {
+            get {
+                return (Boolean)GetValue(OpacityProperty);
+            }
+            set {
+                SetValue(OpacityProperty, value);
             }
         }
 
@@ -55,7 +71,9 @@ namespace XAMLMarkup {
 
         private void Image_PointerExited( object sender, PointerRoutedEventArgs e ) {
             if(sender as Image != null) {
-                (sender as Image).Opacity = 0.5;
+                if(MakeTranslucent == true) {
+                    (sender as Image).Opacity = translucentValue;
+                }
             }
         }
 
@@ -72,5 +90,14 @@ namespace XAMLMarkup {
                 (sender as Image).Width = (sender as Image).Width + 20;
             }
         }
+
+        private void Image_Loaded( object sender, RoutedEventArgs e ) {
+            if(sender as Image != null) {
+                if(MakeTranslucent == true) {
+                    (sender as Image).Opacity = translucentValue;
+                }
+            }
+        }
+
     }
 }

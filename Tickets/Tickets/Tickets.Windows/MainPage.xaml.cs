@@ -75,7 +75,7 @@ namespace Tickets
             SessionParameters sp = new SessionParameters() { Mode = QuestionsGenerationMode.ExamTicket};
             ISession session;
             var sf = SessionFactory.CreateSession(sp, out session);
-            this.Frame.Navigate(typeof(QuestionsContentPage), session);
+            this.Frame.Navigate(typeof(QuestionsContentPage), Serializer.SerializeToString(session));
         }
 
         void ticketBtn_Tapped( object sender, TappedRoutedEventArgs e ) {

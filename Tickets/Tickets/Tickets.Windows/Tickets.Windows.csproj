@@ -135,6 +135,7 @@
     <Content Include="Image\MainPageBackground.png" />
     <Content Include="Image\Message_btn.png" />
     <Content Include="Image\Rules_btn.png" />
+    <Content Include="Image\Start_btn.png" />
     <Content Include="Image\Statistic_btn.png" />
     <Content Include="Image\Ticket_btn.png" />
   </ItemGroup>
