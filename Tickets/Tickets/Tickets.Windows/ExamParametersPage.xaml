@@ -6,6 +6,7 @@
     xmlns:markup="using:XAMLMarkup"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vsm="System.Windows;assembly=System.Windows"
     mc:Ignorable="d">
     
     <Page.Resources>
@@ -15,8 +16,41 @@
             <Setter Property="HeaderTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}" FontSize="30" Foreground="Black"/>
+                        <TextBlock Text="{Binding}" FontSize="30" Foreground="Black" FontFamily="Comic Sans MS"/>
                     </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CustomButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="0" To="0.75" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="Rect" />
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="0" To="0.75" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="Rect" />
+                                            <ColorAnimation Duration="0" To="White" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="Content" />
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Grid>
+                                <Rectangle x:Name="Rect" Stroke="Black" Fill="#ffff8533" Opacity="0.5"/>
+                                <ContentPresenter x:Name="Content" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Grid>
+                    </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
@@ -34,8 +68,8 @@
 
     <Grid Margin="0,85,0,0">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
             <ColumnDefinition Width="2*"></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.Background>
             <ImageBrush ImageSource="Image/MainPageBackground.png" Stretch="UniformToFill"></ImageBrush>
@@ -48,25 +82,23 @@
             </GridView.ItemsPanel>
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderThickness="2" Width="140" Margin="10, 10, 10, 10">
-                        <Border.Background>#99ff8533</Border.Background>
-                        <Border.BorderBrush>#adaa4834</Border.BorderBrush>
+                    <Border BorderThickness="2" Background="#99ff8533" BorderBrush="#adaa4834" Width="140" Margin="10, 10, 10, 10">
                         <TextBlock Text="{Binding}" FontSize="18" Height="60" Width="140" Padding="16" TextAlignment="Center" Foreground="Black"/>
                     </Border>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="2" Margin="0,0,100,0">
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            <markup:MainMenuIcon x:Name="StartBtn" Grid.Row="1" MakeTranslucent="false" ImageSource="ms-appx:///Image/Start_btn.png" HorizontalAlignment="Left"/>
             <StackPanel Grid.Row="0" Margin="0,100,0,0">
                 <ToggleSwitch x:Name="tsRandomTicket" Header="Случайный билет" OffContent="Нет" OnContent="Да" VerticalAlignment="Top" Style="{StaticResource ToggleSwitchStyle}"/>
                 <ToggleSwitch x:Name="tsShuffleQuestions" Header="Случайный порядок вопросов" OffContent="Нет" OnContent="Да" VerticalAlignment="Center" Style="{StaticResource ToggleSwitchStyle}"/>
             </StackPanel>
+            <Button x:Name="startBtn" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="#99ff8533"  Content="НАЧАТЬ" Style="{StaticResource CustomButtonStyle}"/>
         </Grid>
     </Grid>
 </Page>

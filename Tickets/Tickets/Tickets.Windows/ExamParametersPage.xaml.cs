@@ -37,10 +37,11 @@ namespace Tickets {
         }
 
         private void CreateSession(QuestionsGenerationMode mode, int[] ticket = null) {
+            Random rnd = new Random();
             SessionParameters sp = new SessionParameters() {
-                //Shuffle = shuffleQuestionCB.IsChecked ?? false,
+                Shuffle = tsShuffleQuestions.IsOn,
                 Mode = mode,
-                TicketNums = ticket,
+                TicketNums = tsRandomTicket.IsOn ? new int [] { ticket.ElementAt(rnd.Next(ticket.Count())) } : ticket
             };
             var sf = SessionFactory.CreateSession(sp, out session);
         }
@@ -82,11 +83,6 @@ namespace Tickets {
             } else {
                 CreateSession(QuestionsGenerationMode.RandomTicket);
             }
-            GoToQuestionPage();
-        }
-
-        private void Button_Click_Rnd(object sender, RoutedEventArgs e) {
-            CreateSession(QuestionsGenerationMode.RandomTicket);
             GoToQuestionPage();
         }
 
@@ -138,7 +134,7 @@ namespace Tickets {
         public ExamParametersPage() {
             fillTicketGrid();
             this.InitializeComponent();
-            StartBtn.Tapped += Button_Start;
+            startBtn.Tapped += Button_Start;
             DataContext = this;
         }
 
