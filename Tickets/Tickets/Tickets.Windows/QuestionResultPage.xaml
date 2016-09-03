@@ -12,7 +12,6 @@
         <CollectionViewSource x:Name="cvsMain" IsSourceGrouped="True" ItemsPath="Questions"/>
         <local:AnswersConverter x:Key="AnswersConverter"></local:AnswersConverter>
         <local:QuestionsConverter x:Key="QuestionsConverter"></local:QuestionsConverter>
-        <local:TicketToStringConverter x:Key="TicketToStringConverter"></local:TicketToStringConverter>
         <utils:ImageConverter x:Key="ImgConverter"></utils:ImageConverter>
     </Page.Resources>
 

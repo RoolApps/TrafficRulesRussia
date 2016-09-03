@@ -9,7 +9,7 @@
     >
 
     <StackPanel Height="auto" Width="auto">
-        <TextBlock Text="{Binding Path=Text}" Margin="0,50,0,0" HorizontalAlignment="Center" FontSize="32" Foreground="Black" FontWeight="Bold"></TextBlock>
-        <Image Source="{Binding Path=ImageSource}" Height="260" Width="200" Stretch="Uniform" PointerEntered="Image_PointerEntered" PointerExited="Image_PointerExited" PointerPressed="Image_PointerPressed" PointerReleased="Image_PointerReleased" Loaded="Image_Loaded"></Image>
+        <TextBlock Text="{Binding Path=Text}" Margin="0,50,0,0" HorizontalAlignment="Center" FontSize="32" FontWeight="Bold"></TextBlock>
+        <Image Source="{Binding Path=ImageSource}" Height="260" Width="200" Stretch="Uniform" PointerEntered="Image_PointerEntered" PointerExited="Image_PointerExited" PointerPressed="Image_PointerPressed" PointerReleased="Image_PointerReleased"></Image>
     </StackPanel>
 </UserControl>

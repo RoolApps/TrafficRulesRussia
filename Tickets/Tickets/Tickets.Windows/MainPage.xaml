@@ -11,11 +11,11 @@
     >
     
     <Page.TopAppBar>
-        <AppBar IsOpen="True" IsSticky="True" Background="LightSteelBlue">
+        <AppBar IsOpen="True" IsSticky="True" Background="#ff006064">
             <StackPanel Orientation="Horizontal">
                 <AppBarButton x:Name="BackButton" Icon="Back" Label="Назад" Click="AppBarBackButton_Click"></AppBarButton>
                 <AppBarButton x:Name="ForwardButton" Icon="Forward" Label="Вперед" Click="AppBarForwardButton_Click"></AppBarButton>
-                <TextBlock Text="Правила дорожного движения 2016 РФ" Foreground="White" VerticalAlignment="Center" FontSize="40"></TextBlock>
+                <TextBlock Text="Правила дорожного движения 2016 РФ" Foreground="White" VerticalAlignment="Center" FontSize="40" Margin="100,0,0,0"></TextBlock>
             </StackPanel>
         </AppBar>
     </Page.TopAppBar>

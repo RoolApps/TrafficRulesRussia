@@ -12,13 +12,11 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using XAMLMarkup.Global;
 
 namespace XAMLMarkup {
     public sealed partial class MainMenuIcon : UserControl {
-        private const double translucentValue = 0.6;
-
         public MainMenuIcon() {
-            MakeTranslucent = true;
             this.InitializeComponent();
             DataContext = this;
         }
@@ -36,19 +34,6 @@ namespace XAMLMarkup {
             }
         }
 
-        // VisibleProperty
-        public static readonly DependencyProperty OpacityProperty =
-            DependencyProperty.Register("MakeTranslucent", typeof(Boolean), typeof(MainMenuIcon), null);
-
-        public Boolean MakeTranslucent {
-            get {
-                return (Boolean)GetValue(OpacityProperty);
-            }
-            set {
-                SetValue(OpacityProperty, value);
-            }
-        }
-
         // ImageSourceProperty
         public static readonly DependencyProperty ImageSourceProperty =
             DependencyProperty.Register("ImageSource", typeof(string), typeof(MainMenuIcon), null);
@@ -61,43 +46,31 @@ namespace XAMLMarkup {
                 SetValue(ImageSourceProperty, value);
             }
         }
-        //
 
         private void Image_PointerEntered( object sender, PointerRoutedEventArgs e ) {
-            if(sender as Image != null) {
-                (sender as Image).Opacity = 1;
-            }
-        }
-
-        private void Image_PointerExited( object sender, PointerRoutedEventArgs e ) {
-            if(sender as Image != null) {
-                if(MakeTranslucent == true) {
-                    (sender as Image).Opacity = translucentValue;
-                }
-            }
-        }
-
-        private void Image_PointerPressed( object sender, PointerRoutedEventArgs e ) {
-            if(sender as Image != null) {
-                (sender as Image).Height = (sender as Image).Height - 20;
-                (sender as Image).Width = (sender as Image).Width - 20;
-            }
-        }
-
-        private void Image_PointerReleased( object sender, PointerRoutedEventArgs e ) {
             if(sender as Image != null) {
                 (sender as Image).Height = (sender as Image).Height + 20;
                 (sender as Image).Width = (sender as Image).Width + 20;
             }
         }
 
-        private void Image_Loaded( object sender, RoutedEventArgs e ) {
+        private void Image_PointerExited( object sender, PointerRoutedEventArgs e ) {
             if(sender as Image != null) {
-                if(MakeTranslucent == true) {
-                    (sender as Image).Opacity = translucentValue;
-                }
+                (sender as Image).Height = (sender as Image).Height - 20;
+                (sender as Image).Width = (sender as Image).Width - 20;
             }
         }
 
+        private void Image_PointerPressed( object sender, PointerRoutedEventArgs e ) {
+            if(sender as Image != null) {
+                (sender as Image).Opacity = GlobalConstants.translucentValue;
+            }
+        }
+
+        private void Image_PointerReleased( object sender, PointerRoutedEventArgs e ) {
+            if(sender as Image != null) {
+                (sender as Image).Opacity = 1;
+            }
+        }
     }
 }

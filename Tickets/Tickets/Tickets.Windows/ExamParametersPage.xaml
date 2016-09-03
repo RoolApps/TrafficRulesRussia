@@ -11,42 +11,75 @@
     
     <Page.Resources>
         <Style x:Key="ToggleSwitchStyle" TargetType="ToggleSwitch">
-            <Setter Property="FontSize" Value="18"/>
-            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontSize" Value="26"/>
+            <Setter Property="Foreground" Value="White"/>
             <Setter Property="HeaderTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}" FontSize="30" Foreground="Black" FontFamily="Comic Sans MS"/>
+                        <TextBlock Text="{Binding}" FontSize="34" Foreground="White" FontFamily="Comic Sans MS"/>
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
         <Style x:Key="CustomButtonStyle" TargetType="Button">
-            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="30"/>
+            <Setter Property="FontFamily" Value="Comic Sans MS"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Grid>
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="CommonStates">
-                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="Normal">
+                                        <Storyboard>
+                                            <DoubleAnimation EnableDependentAnimation="True" Storyboard.TargetName="Rect" Storyboard.TargetProperty="Height" From="120" To="100" Duration="0">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <PowerEase EasingMode="EaseIn"></PowerEase>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                            <DoubleAnimation EnableDependentAnimation="True" Storyboard.TargetName="Rect" Storyboard.TargetProperty="Width" From="270" To="250" Duration="0">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <PowerEase EasingMode="EaseIn"></PowerEase>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </VisualState>
                                     <VisualState x:Name="PointerOver">
                                         <Storyboard>
-                                            <DoubleAnimation Duration="0" To="0.75" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="Rect" />
+                                            <DoubleAnimation EnableDependentAnimation="True" Storyboard.TargetName="Rect" Storyboard.TargetProperty="Height" From="100" To="120" Duration="0">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <PowerEase EasingMode="EaseIn"></PowerEase>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                            <DoubleAnimation EnableDependentAnimation="True" Storyboard.TargetName="Rect" Storyboard.TargetProperty="Width" From="250" To="270" Duration="0">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <PowerEase EasingMode="EaseIn"></PowerEase>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
                                         </Storyboard>
                                     </VisualState>
                                     <VisualState x:Name="Pressed">
                                         <Storyboard>
                                             <DoubleAnimation Duration="0" To="0.75" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="Rect" />
                                             <ColorAnimation Duration="0" To="White" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="Content" />
+                                            <DoubleAnimation EnableDependentAnimation="True" Storyboard.TargetName="Rect" Storyboard.TargetProperty="Height" From="100" To="120" Duration="0">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <PowerEase EasingMode="EaseIn"></PowerEase>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                            <DoubleAnimation EnableDependentAnimation="True" Storyboard.TargetName="Rect" Storyboard.TargetProperty="Width" From="250" To="270" Duration="0">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <PowerEase EasingMode="EaseIn"></PowerEase>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
                                         </Storyboard>
                                     </VisualState>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
                             <Grid>
-                                <Rectangle x:Name="Rect" Stroke="Black" Fill="#ffff8533" Opacity="0.5"/>
+                                <Rectangle x:Name="Rect" Stroke="#ffA66F00" Fill="#ffBF9030" Opacity="1" Width="250" Height="100"/>
                                 <ContentPresenter x:Name="Content" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Grid>
                         </Grid>
@@ -57,11 +90,11 @@
     </Page.Resources>
     
     <Page.TopAppBar>
-        <AppBar IsOpen="True" IsSticky="True" Background="LightSteelBlue">
+        <AppBar IsOpen="True" IsSticky="True" Background="#ff006064">
             <StackPanel Orientation="Horizontal">
                 <AppBarButton x:Name="BackButton" Icon="Back" Label="Назад" Click="AppBarBackButton_Click"></AppBarButton>
                 <AppBarButton x:Name="ForwardButton" Icon="Forward" Label="Вперед" Click="AppBarForwardButton_Click"></AppBarButton>
-                <TextBlock Text="Выбор билета" Foreground="White" VerticalAlignment="Center" FontSize="40"></TextBlock>
+                <TextBlock Text="Выбор билета" Foreground="White" VerticalAlignment="Center" FontSize="40" Margin="100,0,0,0"></TextBlock>
             </StackPanel>
         </AppBar>
     </Page.TopAppBar>
@@ -82,8 +115,8 @@
             </GridView.ItemsPanel>
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderThickness="2" Background="#99ff8533" BorderBrush="#adaa4834" Width="140" Margin="10, 10, 10, 10">
-                        <TextBlock Text="{Binding}" FontSize="18" Height="60" Width="140" Padding="16" TextAlignment="Center" Foreground="Black"/>
+                    <Border BorderThickness="2" Background="#ffBF9030" BorderBrush="#ffA66F00" Width="140" Margin="10, 10, 10, 10">
+                        <TextBlock Text="{Binding}" FontSize="20" Height="60" Width="140" Padding="14" TextAlignment="Center" Foreground="White" FontFamily="Comic Sans MS"/>
                     </Border>
                 </DataTemplate>
             </GridView.ItemTemplate>
@@ -98,7 +131,7 @@
                 <ToggleSwitch x:Name="tsRandomTicket" Header="Случайный билет" OffContent="Нет" OnContent="Да" VerticalAlignment="Top" Style="{StaticResource ToggleSwitchStyle}"/>
                 <ToggleSwitch x:Name="tsShuffleQuestions" Header="Случайный порядок вопросов" OffContent="Нет" OnContent="Да" VerticalAlignment="Center" Style="{StaticResource ToggleSwitchStyle}"/>
             </StackPanel>
-            <Button x:Name="startBtn" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="#99ff8533"  Content="НАЧАТЬ" Style="{StaticResource CustomButtonStyle}"/>
+            <Button x:Name="startBtn" Grid.Row="1" Content="НАЧАТЬ" Style="{StaticResource CustomButtonStyle}"/>
         </Grid>
     </Grid>
 </Page>

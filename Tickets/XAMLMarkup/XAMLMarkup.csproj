@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Enums\MoveDirection.cs" />
     <Compile Include="EventHandlers\OnFlipCompleted.cs" />
+    <Compile Include="Global\GlobalConstants.cs" />
     <Compile Include="Interfaces\IPagedCollection.cs" />
     <Compile Include="FlippingCanvas.cs" />
     <Compile Include="MainMenuIcon.xaml.cs">

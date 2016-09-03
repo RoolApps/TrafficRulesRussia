@@ -81,6 +81,10 @@ namespace Tickets
         void ticketBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
             System.Diagnostics.Debug.WriteLine("TICKET BUTTON TAPPED");
             this.Frame.Navigate(typeof(ExamParametersPage));
+            //SessionParameters sp = new SessionParameters() { Mode = QuestionsGenerationMode.RandomTicket };
+            //ISession session;
+            //var sf = SessionFactory.CreateSession(sp, out session);
+            //this.Frame.Navigate(typeof(ResultsPage), Serializer.SerializeToString(session));
         }
         #endregion
 

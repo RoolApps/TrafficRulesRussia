@@ -100,20 +100,5 @@ namespace Tickets {
             throw new NotImplementedException();
         }
     }
-
-    public class TicketToStringConverter : IValueConverter {
-
-        public object Convert(object value, Type targetType, object parameter, string language) {
-            var ticket = value as ITicket;
-            if ( ticket != null ) {
-                return String.Format("Билет №{0}", ticket.Number);
-            }
-            return "";
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, string language) {
-            throw new NotImplementedException();
-        }
-    }
     #endregion
 }
