@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Utils;
+using Windows.UI.Xaml.Media.Imaging;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
@@ -38,6 +39,8 @@ namespace Tickets
         #region Private Methods
         private void InitPage()
         {
+            btnShuffleQuestions.Tag = false;
+
             //fetch ticket ids from database
             using (var dataAccessor = new SQLiteShared.SQLiteDataAccessor())
             {
@@ -55,23 +58,23 @@ namespace Tickets
         /// </summary>
         private void EnableControls()
         {
-            if (chkRandomTicket.IsChecked == true)
-            {
-                this.listTickets.IsEnabled = false;
-                this.btnStart.IsEnabled = true;
-            }
-            else
-            {
-                this.listTickets.IsEnabled = true;
-                if (listTickets.SelectedItems.Any())
-                {
-                    this.btnStart.IsEnabled = true;
-                }
-                else
-                {
-                    this.btnStart.IsEnabled = false;
-                }
-            }
+            //if (chkRandomTicket.IsChecked == true)
+            //{
+            //    this.listTickets.IsEnabled = false;
+            //    this.btnStart.IsEnabled = true;
+            //}
+            //else
+            //{
+            //    this.listTickets.IsEnabled = true;
+            //    if (listTickets.SelectedItems.Any())
+            //    {
+            //        this.btnStart.IsEnabled = true;
+            //    }
+            //    else
+            //    {
+            //        this.btnStart.IsEnabled = false;
+            //    }
+            //}
         }
         #endregion Private Methods
 
@@ -98,15 +101,35 @@ namespace Tickets
 
         private void listTickets_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            EnableControls();
+            //EnableControls();
+            foreach(var item in e.AddedItems.Select(item => new { Item = item, Selected = true }).Union(e.RemovedItems.Select(item => new { Item = item, Selected = false })))
+            {
+                var container = listTickets.ContainerFromItem(item.Item);
+                var image = FindVisualChildren<Image>(container).SingleOrDefault();
+                if (image != null)
+                {
+                    String imageName = null;
+                    if(item.Selected)
+                    {
+                        imageName = "imgCheckChecked.png";
+                    }
+                    else
+                    {
+                        imageName = "imgCheckUnchecked.png";
+                    }
+                    String url = String.Format("ms-appx:///Assets/{0}", imageName);
+                    image.Source = new BitmapImage(new Uri(url, UriKind.Absolute));
+                }
+            }
         }
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
             //creating parameters...
-            var mode = chkRandomTicket.IsChecked == true ? AppLogic.Enums.QuestionsGenerationMode.RandomTicket : AppLogic.Enums.QuestionsGenerationMode.SelectedTickets;
+            var mode = AppLogic.Enums.QuestionsGenerationMode.SelectedTickets;
             var ticketNums = listTickets.SelectedItems.Cast<TicketPresenter>().Select(ticket => ticket.Num).ToArray();
-            var parameters = new SessionParameters(mode, chkShuffleQuestions.IsChecked ?? false, ticketNums);
+            var shuffleChecked = Convert.ToBoolean(btnRandomTicket.Tag);
+            var parameters = new SessionParameters(mode, shuffleChecked, ticketNums);
             ISession session;
             //creating session...
             var creationResult = SessionFactory.CreateSession(parameters, out session);
@@ -117,6 +140,72 @@ namespace Tickets
             else
             {
                 throw new Exception("This should never happen! Developers, please check parameters creation logic");
+            }
+        }
+
+        private void btnRandomTicket_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var mode = AppLogic.Enums.QuestionsGenerationMode.RandomTicket;
+            var parameters = new SessionParameters(mode, false, null);
+            ISession session;
+            var creationResult = SessionFactory.CreateSession(parameters, out session);
+            if(creationResult == AppLogic.Enums.ParametersValidationResult.Valid)
+            {
+                this.Frame.Navigate(typeof(QuestionPage), Serializer.SerializeToString(session));
+            }
+            else
+            {
+                throw new Exception("This should never happen! Developers, please check parameters creation logic (2)");
+            }
+        }
+
+        private void btnShuffleQuestions_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var button = sender as Button;
+            if(sender == null)
+            {
+                return;
+            }
+
+            var value = !Convert.ToBoolean(button.Tag);
+            button.Tag = value;
+            String imageName = null;
+
+            if(value)
+            {
+                imageName = "imgCheckChecked.png";
+            }
+            else
+            {
+                imageName = "imgCheckUnchecked.png";
+            }
+
+            String url = String.Format("ms-appx:///Assets/{0}", imageName);
+
+            var image = FindVisualChildren<Image>(button).SingleOrDefault();
+            if (image != null)
+            {
+                image.Source = new BitmapImage(new Uri(url, UriKind.Absolute));   
+            }
+        }
+
+        public static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
+        {
+            if (depObj != null)
+            {
+                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+                {
+                    DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
+                    if (child != null && child is T)
+                    {
+                        yield return (T)child;
+                    }
+
+                    foreach (T childOfChild in FindVisualChildren<T>(child))
+                    {
+                        yield return childOfChild;
+                    }
+                }
             }
         }
         #endregion

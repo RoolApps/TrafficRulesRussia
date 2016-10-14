@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -27,11 +28,14 @@ namespace Tickets
     public sealed partial class QuestionPage : Page
     {
         ISession Session;
-        PagedCanvas PagedCanvas;
+        //PagedCanvas PagedCanvas;
+        GestureRecognizer gestureRecognizer = new GestureRecognizer();
 
         public QuestionPage()
         {
             this.InitializeComponent();
+            //this.Loaded += QuestionPage_Loaded;
+            //this.Unloaded += QuestionPage_Unloaded;
         }
 
         /// <summary>
@@ -47,21 +51,38 @@ namespace Tickets
             } else {
                 Session = Serializer.DeserializeFromString<Session>(e.Parameter as string);
             }
-            PagedCanvas = flippingCanvas.Children.OfType<PagedCanvas>().Single();
-            PagedCanvas.ItemsSource = new PagedCollection<IQuestion>(2) { DataSource = Session.Tickets.SelectMany(ticket => ticket.Questions) };
-            flippingCanvas.OnCompleted += flippingCanvas_OnCompleted;
+            int index = 0;
+            var questions = Session.Tickets.SelectMany(ticket => ticket.Questions);
+            var length = questions.Count();
+            questionsCanvas.DataSource = new VirtualLinkedList<IQuestion>(questions,
+                (dataSource, current) =>
+                {
+                    if (index + 1 < length)
+                    {
+                        index++;
+                    }
+                    else
+                    {
+                        index = 0;
+                    }
+                    return dataSource.ElementAt(index);
+                },
+                (dataSource, current) =>
+                {
+                    if (index > 0)
+                    {
+                        index--;
+                    }
+                    else
+                    {
+                        index = length - 1;
+                    }
+                    return dataSource.ElementAt(index);
+                });
         }
 
         protected override async void OnNavigatedFrom( NavigationEventArgs e ) {
             await SettingSaver.SaveSettingToFile(GlobalConstants.sesstionState, Serializer.SerializeToString(Session));
-        }
-
-        void flippingCanvas_OnCompleted( object sender, XAMLMarkup.EventHandlers.OnFlipCompleted e ) {
-            if(e.Direction == XAMLMarkup.Enums.MoveDirection.ToNext) {
-                PagedCanvas.LoadNext();
-            } else if(e.Direction == XAMLMarkup.Enums.MoveDirection.ToPrevious) {
-                PagedCanvas.LoadPrevious();
-            }
         }
 
         private void TextBlock_Tapped(object sender, TappedRoutedEventArgs e)
@@ -70,7 +91,9 @@ namespace Tickets
             var answer = element.DataContext as IAnswer;
             answer.IsSelected = !answer.IsSelected;
 
-            btnEndSession.Visibility = Session.Tickets.SelectMany(ticket => ticket.Questions).All(question => question.SelectedAnswered != null) ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
+            //btnEndSession.Visibility = Session.Tickets.SelectMany(ticket => ticket.Questions).All(question => question.SelectedAnswered != null) ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
+
+            questionsCanvas.ChangeCanvasContent(true);
         }
 
         private void btnEndSession_Click(object sender, RoutedEventArgs e)
