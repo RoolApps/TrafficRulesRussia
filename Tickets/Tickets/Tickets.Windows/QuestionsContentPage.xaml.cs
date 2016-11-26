@@ -22,6 +22,7 @@ using AppLogic.Interfaces;
 using Tickets;
 using Windows.UI;
 using Windows.UI.Xaml.Media.Animation;
+using System.Collections.ObjectModel;
 
 namespace Tickets
 {
@@ -29,6 +30,10 @@ namespace Tickets
         #region private Members
         private ISession session;
         private PagedCanvas pagedCanvas;
+        #endregion
+
+        #region Public Members
+        static public int[] QuestionCount;
         #endregion
 
         #region Event Handlers
@@ -55,7 +60,9 @@ namespace Tickets
             PagedCollection<IQuestion> paged_col = new PagedCollection<IQuestion>(2);
             paged_col.DataSource = session.Tickets.SelectMany(ticket => ticket.Questions);
             pagedCanvas.ItemsSource = paged_col;
-            appbarText.ItemsSource = new List<ISession> { session };
+            appbarText.ItemsSource = new ObservableCollection<ISession> { session };
+            UpdateQuestionsIdItemsSource();
+            QuestionCount = session.Tickets.Select(t => t.Number).ToArray();
 
             base.OnNavigatedTo(e);
         }
@@ -68,6 +75,8 @@ namespace Tickets
                     pagedCanvas.LoadPrevious();
                 }
             }
+            UpdateQuestionsIdItemsSource();
+            System.Diagnostics.Debug.WriteLine("current screen: {0}", FlippingCanvas.CurrentScreen);
         }
 
         protected override async void OnNavigatedFrom( NavigationEventArgs e ) {
@@ -75,20 +84,20 @@ namespace Tickets
         }
 
         private void Grid_Tapped( object sender, TappedRoutedEventArgs e ) {
+            UpdateQuestionsIdItemsSource();
             IAnswer answer = e.OriginalSource as Grid != null ? (e.OriginalSource as Grid).DataContext as IAnswer : (e.OriginalSource as TextBlock != null ? (e.OriginalSource as TextBlock).DataContext as IAnswer : null);
             if(answer != null) {
                 answer.IsSelected = !answer.IsSelected;
                 Boolean allQuestionsIsAnswered = session.Tickets.SelectMany(ticket => ticket.Questions).All(question => question.SelectedAnswered != null);
                 if(allQuestionsIsAnswered) {
-                    flipping_canvas.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-                    endExamButton.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                    this.Frame.Navigate(typeof(ResultsPage), Serializer.SerializeToString(session));
                 }
                 flipping_canvas.SlideCanvas(MoveDirection.ToNext);
             }
         }
 
-        private void endExamButton_Tapped(object sender, TappedRoutedEventArgs e) {
-            this.Frame.Navigate(typeof(ResultsPage), Serializer.SerializeToString(session));
+        private void UpdateQuestionsIdItemsSource() {
+            questionsId.ItemsSource = session.Tickets.SelectMany(t => t.Questions);
         }
         #endregion
 
@@ -96,6 +105,9 @@ namespace Tickets
         public QuestionsContentPage() {
             this.InitializeComponent();
             flipping_canvas.OnCompleted += flipping_canvas_OnCompleted;
+            flipping_canvas.Loaded += ( s, e ) => {
+                UpdateQuestionsIdItemsSource();
+            };
             
         }
         #endregion
@@ -113,10 +125,12 @@ namespace Tickets
         }
 
         private void NextQuestionTapped( object sender, TappedRoutedEventArgs e ) {
+            UpdateQuestionsIdItemsSource();
             flipping_canvas.SlideCanvas(MoveDirection.ToNext);
         }
 
         private void PreviousQuestionTapped( object sender, TappedRoutedEventArgs e ) {
+            UpdateQuestionsIdItemsSource();
             flipping_canvas.SlideCanvas(MoveDirection.ToPrevious);
         }
 
@@ -145,12 +159,18 @@ namespace Tickets
                 (sender as Border).Tapped -= PreviousQuestionTapped;
             }
         }
+        private void NextPageBtn_Click( object sender, RoutedEventArgs e ) {
+            this.Frame.Navigate(typeof(ResultsPage), Serializer.SerializeToString(session));
+        }
 
+        private void AppBarHomeButton_Click( object sender, RoutedEventArgs e ) {
+            this.Frame.Navigate(typeof(MainPage));
+        }
     }
 
     #region Additional Classes
-    public class BorderBackgroundColorConverter : IValueConverter {
-        const String Selected = "Gray";
+    public class GridBackgroundColorConverter : IValueConverter {
+        const String Selected = "#99FFC040";
         const String NotSelected = "Transparent";
 
         public object Convert(object value, Type targetType, object parameter, string language) {
@@ -178,6 +198,46 @@ namespace Tickets
                 }
             }
             return "";
+        }
+
+        public object ConvertBack( object value, Type targetType, object parameter, string language ) {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class QuestionsIdColorConverter : IValueConverter {
+        const String Current = "Gray";
+
+        public object Convert( object value, Type targetType, object parameter, string language ) {
+            var answer = (value as IQuestion).SelectedAnswered;
+            if(answer != null) {
+                if(answer.IsRight) {
+                    return "Green";
+                } else {
+                    return "Red";
+                }
+            }
+            return Current;
+        }
+
+        public object ConvertBack( object value, Type targetType, object parameter, string language ) {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class QuestionsCurrentIdConverter : IValueConverter {
+        const String Current = "Gray";
+
+        public object Convert( object value, Type targetType, object parameter, string language ) {
+            int[] m = QuestionsContentPage.QuestionCount;
+            var v = (value as IQuestion);
+            int ticketNumber = FlippingCanvas.CurrentScreen / AppLogic.Constants.GlobalConstants.questionsCount < m.Length ? FlippingCanvas.CurrentScreen / AppLogic.Constants.GlobalConstants.questionsCount : m.Length - 1;
+            int questionNumber = FlippingCanvas.CurrentScreen % AppLogic.Constants.GlobalConstants.questionsCount != 0 ? FlippingCanvas.CurrentScreen % AppLogic.Constants.GlobalConstants.questionsCount : (FlippingCanvas.CurrentScreen / AppLogic.Constants.GlobalConstants.questionsCount) * AppLogic.Constants.GlobalConstants.questionsCount;
+            System.Diagnostics.Debug.WriteLine("questionNumber: {0}", questionNumber);
+            if(v.Ticket.Number == m[ticketNumber] && v.Number ==  questionNumber) {
+                return "Orange";
+            }
+            return Current;
         }
 
         public object ConvertBack( object value, Type targetType, object parameter, string language ) {

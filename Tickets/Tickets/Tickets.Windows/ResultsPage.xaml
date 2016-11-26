@@ -13,43 +13,39 @@
         <local:QuestionBorderConverter x:Key="QuestionBorderConverter"></local:QuestionBorderConverter>
         <DataTemplate x:Key="QuestionState250x250ItemTemplate">
             <Border BorderBrush="{Binding Converter={StaticResource QuestionBorderConverter}}" BorderThickness="5">
-                <Grid HorizontalAlignment="Left" Width="250" Height="250" Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="250" Height="250" Background="{Binding Converter={StaticResource QuestionBorderConverter}}">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="2*"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <Border Grid.Row="0" Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                    <Border Grid.Row="0">
                         <TextBlock Text="{Binding Number}" VerticalAlignment="Center" TextAlignment="Center" FontSize="40"/>
                     </Border>
-                    <StackPanel Grid.Row="1" VerticalAlignment="Bottom" Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
-                        <TextBlock Text="{Binding Converter={StaticResource QuestionStateConverter}}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Margin="15,0,15,0" FontSize="20" Height="40"/>
-                        <TextBlock Text="{Binding Converter={StaticResource QuestionErrorsConverter}}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Margin="15,0,15,5" FontSize="16"/>
+                    <StackPanel Grid.Row="1" Background="#ff006064" Orientation="Vertical">
+                        <TextBlock Text="{Binding Converter={StaticResource QuestionStateConverter}}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Margin="15,10,15,0" FontSize="20"/>
+                        <TextBlock Text="{Binding Converter={StaticResource QuestionErrorsConverter}}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Margin="15,10,15,5" FontSize="16"/>
                     </StackPanel>
                 </Grid>
             </Border>
         </DataTemplate>
     </Page.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="80"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="70"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="120"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <AppBarButton Grid.Column="0" Icon="Home" Click="goHomePage" VerticalAlignment="Center"/>
-                <TextBlock Grid.Column="1" Text="Home Page" Style="{StaticResource HeaderTextBlockStyle}" IsHitTestVisible="false" VerticalAlignment="Center"/>
-            </Grid>
-        </Grid>
-        <GridView x:Name="gridView" Grid.Row="1" Margin="50,50,10,10" SelectionMode="Single" SelectionChanged="grdView_SelectionChanged" ItemTemplate="{StaticResource QuestionState250x250ItemTemplate}">
+    <Page.TopAppBar>
+        <AppBar IsOpen="True" IsSticky="True" Background="#ff006064">
+            <StackPanel Orientation="Horizontal">
+                <AppBarButton x:Name="BackButton" Icon="Back" Label="Назад" IsEnabled="False" Click="AppBarBackButton_Click"></AppBarButton>
+                <AppBarButton x:Name="ForwardButton" Icon="Forward" Label="Вперед" Click="AppBarForwardButton_Click"></AppBarButton>
+                <AppBarButton x:Name="HomeButton" Icon="Home" Label="Домой" Click="AppBarHomeButton_Click" Margin="0,0,50,0"></AppBarButton>
+                <TextBlock Text="Результат" Foreground="White" VerticalAlignment="Center" FontSize="40"></TextBlock>
+            </StackPanel>
+        </AppBar>
+    </Page.TopAppBar>
+    
+    <Grid Margin="0,85,0,0">
+        <Grid.Background>
+            <ImageBrush ImageSource="Image/MainPageBackground.png" Stretch="UniformToFill"></ImageBrush>
+        </Grid.Background>
+        <GridView x:Name="gridView" Margin="50,32,10,28" SelectionMode="Single" SelectionChanged="grdView_SelectionChanged" ItemTemplate="{StaticResource QuestionState250x250ItemTemplate}" HorizontalAlignment="Center" VerticalAlignment="Center">
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VariableSizedWrapGrid MaximumRowsOrColumns="5" Orientation="Horizontal"></VariableSizedWrapGrid>

@@ -11,6 +11,8 @@
     
     <Page.Resources>
         <local:TicketToStringConverter x:Key="TicketToStringConverter"></local:TicketToStringConverter>
+        <local:QuestionsIdColorConverter x:Key="QuestionsIdColorConverter"></local:QuestionsIdColorConverter>
+        <local:QuestionsCurrentIdConverter x:Key="QuestionsCurrentIdConverter"></local:QuestionsCurrentIdConverter>
     </Page.Resources>
 
     <Page.TopAppBar>
@@ -18,6 +20,7 @@
             <StackPanel Orientation="Horizontal">
                 <AppBarButton x:Name="BackButton" Icon="Back" Label="Назад" Click="AppBarBackButton_Click"></AppBarButton>
                 <AppBarButton x:Name="ForwardButton" Icon="Forward" Label="Вперед" Click="AppBarForwardButton_Click"></AppBarButton>
+                <AppBarButton x:Name="HomeButton" Icon="Home" Label="Домой" Click="AppBarHomeButton_Click"></AppBarButton>
                 <ItemsControl x:Name="appbarText" VerticalAlignment="Center" Margin="100,0,0,0">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
@@ -25,6 +28,7 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+                <AppBarButton x:Name="NextPageBtn" Icon="Accept" Label="NEXT" Click="NextPageBtn_Click"></AppBarButton>
             </StackPanel>
         </AppBar>
     </Page.TopAppBar>
@@ -33,14 +37,33 @@
         <Grid.Background>
             <ImageBrush ImageSource="Image/MainPageBackground.png" Stretch="UniformToFill"></ImageBrush>
         </Grid.Background>
-        <Button x:Name="endExamButton" Content="ЗАВЕРШИТЬ" Height="100" Width="200" Visibility="Collapsed" VerticalAlignment="Center" HorizontalAlignment="Center" Tapped="endExamButton_Tapped"/>
-        <XAMLMarkup:FlippingCanvas x:Name="flipping_canvas" Visibility="Visible" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" EnableFlip="False">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="120"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
+            <ItemsControl x:Name="questionsId" HorizontalAlignment="Center">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel Orientation="Horizontal" Background="#991D7074"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="{Binding Converter={StaticResource QuestionsIdColorConverter}}" BorderBrush="{Binding Converter={StaticResource QuestionsCurrentIdConverter}}" BorderThickness="3" Width="85" Height="90" Margin="5,5,5,0" VerticalAlignment="Top">
+                            <TextBlock Text="{Binding Path=Number}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="26" FontFamily="Comic Sans MS"></TextBlock>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        <XAMLMarkup:FlippingCanvas Grid.Row="1" x:Name="flipping_canvas" Visibility="Visible" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" EnableFlip="False">
             <XAMLMarkup:FlippingCanvas.MotionDuration>500</XAMLMarkup:FlippingCanvas.MotionDuration>
             <XAMLMarkup:PagedCanvas>
                 <XAMLMarkup:PagedCanvas.ItemTemplate>
                     <DataTemplate>
                         <Canvas>
-                            <Grid x:Name="myGrid" Height="990" Width="1920">
+                            <Grid x:Name="myGrid" Height="870" Width="1920">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
@@ -48,7 +71,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Grid.Resources>
                                     <utils:ImageConverter x:Key="ImgConverter"></utils:ImageConverter>
-                                    <local:BorderBackgroundColorConverter x:Key="BorderBackgroundColorConverter"></local:BorderBackgroundColorConverter>
+                                    <local:GridBackgroundColorConverter x:Key="GridBackgroundColorConverter"></local:GridBackgroundColorConverter>
                                 </Grid.Resources>
                                 <Grid.ChildrenTransitions>
                                     <TransitionCollection>
@@ -67,7 +90,7 @@
                                         <RowDefinition Height="2*"></RowDefinition>
                                         <RowDefinition Height="2*"></RowDefinition>
                                     </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" Text="{Binding Text}" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="WrapWholeWords" FontFamily="Comic Sans MS" FontSize="40" Foreground="#ffcccccc"/>
+                                    <TextBlock Grid.Row="0" Text="{Binding Text}" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="WrapWholeWords" FontFamily="Comic Sans MS" FontSize="36" Foreground="White"/>
                                     <Image Grid.Row="1" Source="{Binding Path=Image, Converter={StaticResource ImgConverter}}" Stretch="Uniform"/>
                                     <ItemsControl ItemsSource="{Binding Answers}" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,50">
                                         <ItemsControl.ItemsPanel>
@@ -77,9 +100,11 @@
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <Grid Background="{Binding Path=IsSelected, Mode=TwoWay, Converter={StaticResource BorderBackgroundColorConverter}}" Tapped="Grid_Tapped" Width="400" Margin="15,25,0,0">
+                                                <Grid Background="{Binding Path=IsSelected, Mode=TwoWay, Converter={StaticResource GridBackgroundColorConverter}}" Tapped="Grid_Tapped" Width="400" Margin="15,25,0,0">
                                                     <Border BorderBrush="#ff5DC8CD" BorderThickness="2" Padding="15">
-                                                        <TextBlock Text="{Binding Text}" TextAlignment="Center" TextWrapping="WrapWholeWords" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="26" FontFamily="Comic Sans MS"/>
+                                                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                                            <TextBlock Text="{Binding Text}" TextAlignment="Center" TextWrapping="WrapWholeWords" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="26" FontFamily="Comic Sans MS"/>
+                                                        </ScrollViewer>
                                                     </Border>
                                                 </Grid>
                                             </DataTemplate>

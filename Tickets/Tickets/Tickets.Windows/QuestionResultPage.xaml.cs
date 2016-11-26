@@ -28,13 +28,34 @@ namespace Tickets {
 
         #region Event Handlers
         protected override void OnNavigatedTo(NavigationEventArgs e) {
+            if(this.Frame.CanGoBack) {
+                BackButton.IsEnabled = true;
+            } else {
+                BackButton.IsEnabled = false;
+            }
+
+            if(this.Frame.CanGoForward) {
+                ForwardButton.IsEnabled = true;
+            } else {
+                ForwardButton.IsEnabled = false;
+            }
+
             ticket.Add(Serializer.DeserializeFromString<Ticket>(e.Parameter as string));
             cvsMain.Source = ticket;
+
+            base.OnNavigatedTo(e);
         }
 
-        private void backButton_Click(object sender, RoutedEventArgs e) {
-            if ( this.Frame != null && this.Frame.CanGoBack )
+        private void AppBarBackButton_Click( object sender, RoutedEventArgs e ) {
+            if(this.Frame.CanGoBack) {
                 this.Frame.GoBack();
+            }
+        }
+
+        private void AppBarForwardButton_Click( object sender, RoutedEventArgs e ) {
+            if(this.Frame.CanGoForward) {
+                this.Frame.GoForward();
+            }
         }
 
         private void SemanticZoom_ViewChangeStarted(object sender, SemanticZoomViewChangedEventArgs e) {
@@ -53,15 +74,21 @@ namespace Tickets {
             ticket = new ObservableCollection<ITicket>();
         }
         #endregion
+
+        private void AppBarHomeButton_Click( object sender, RoutedEventArgs e ) {
+            this.Frame.Navigate(typeof(MainPage));
+        }
+
+
     }
 
     #region Additional Classes
     public class AnswersConverter : IValueConverter {
-        const string Answered = "Green";
-        const string NotAnswered = "Red";
+        const string Answered = "#ff248F40";
+        const string NotAnswered = "#ffBF3330";
 
         public object Convert(object value, Type targetType, object parameter, string language) {
-            string state = "White";
+            string state = "Transparent";
             var answer = value as IAnswer;
             if ( answer != null ) {
                 if ( answer.IsRight ) {
@@ -80,11 +107,11 @@ namespace Tickets {
     }
 
     public class QuestionsConverter : IValueConverter {
-        const string Answered = "Green";
-        const string NotAnswered = "Red";
+        const string Answered = "#ff248F40";
+        const string NotAnswered = "#ffBF3330";
 
         public object Convert(object value, Type targetType, object parameter, string language) {
-            string state = "White";
+            string state = "Transparent";
             var answer = (value as IQuestion).SelectedAnswered;
             if ( answer != null ) {
                 if ( answer.IsRight ) {
