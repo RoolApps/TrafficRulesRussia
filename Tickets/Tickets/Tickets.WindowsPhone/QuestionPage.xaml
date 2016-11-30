@@ -16,6 +16,32 @@
             <Grid.Resources>
                 <utils:ImageConverter x:Key="ImageConverter"></utils:ImageConverter>
                 <local:BorderColorConverter x:Key="BorderColorConverter"></local:BorderColorConverter>
+                <local:BorderOpacityConverter x:Key="BorderOpacityConverter"></local:BorderOpacityConverter>
+                <local:BorderThicknessConverter x:Key="BorderThicknessConverter"></local:BorderThicknessConverter>
+
+                <Style TargetType="TextBlock" x:Key="TextBlockStyle">
+                    <Setter Property="LineHeight" Value="28"/>
+                    <Setter Property="LineStackingStrategy" Value="BlockLineHeight" />
+                </Style>
+
+                <Style TargetType="TextBlock" x:Key="QuestionStyle" BasedOn="{StaticResource TextBlockStyle}">
+                    <Setter Property="FontFamily" Value="Comic Sans MS" />
+                    <Setter Property="FontSize" Value="30" />
+                    <Setter Property="Foreground" Value="Brown" />
+                    <Setter Property="Padding" Value="5,0,5,0" />
+                </Style>
+                
+                <Style TargetType="TextBlock" x:Key="AnswerStyle" BasedOn="{StaticResource TextBlockStyle}">
+                    <Setter Property="FontFamily" Value="Comic Sans MS" />
+                    <Setter Property="FontSize" Value="25" />
+                    <Setter Property="Foreground" Value="Brown" />
+                </Style>
+                
+               
+                
+                <Style TargetType="Border" x:Key="BorderStyle">
+                    <Setter Property="Background" Value="#F8F6F1" />
+                </Style>
             </Grid.Resources>
             <Grid.RowDefinitions>
                 <RowDefinition Height="9*"/>
@@ -39,34 +65,43 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Top"
                                 Margin="0" />
-                            <TextBlock
+                            <Border
                                 Margin="10"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                TextAlignment="Left"
-                                Text="{Binding Path=Text}"
-                                FontSize="48"
-                                TextWrapping="WrapWholeWords"
-                                Foreground="Black" />
-
+                                Style="{StaticResource BorderStyle}">
+                                <TextBlock
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Top"
+                                    TextAlignment="Left"
+                                    Text="{Binding Path=Text}"
+                                    TextWrapping="WrapWholeWords"
+                                    Style="{StaticResource QuestionStyle}" />
+                            </Border>
                             <ListView
-                                HorizontalAlignment="Left"
+                                HorizontalAlignment="Stretch"
                                 VerticalAlignment="Top"
-                                HorizontalContentAlignment="Left"
+                                HorizontalContentAlignment="Stretch"
                                 VerticalContentAlignment="Top"
                                 ItemsSource="{Binding Path=Answers}"
                                 Margin="10" >
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                        <Setter Property="Padding" Value="0,10,0,0" />
+                                    </Style>
+                                </ListView.ItemContainerStyle>
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <Border 
+                                            Style="{StaticResource BorderStyle}"
                                             BorderBrush="{Binding IsSelected, Converter={StaticResource BorderColorConverter}}"
-                                            BorderThickness="1">
-                                        <TextBlock
-                                            Tapped="TextBlock_Tapped"
-                                            Text="{Binding Path=Text}"
-                                            FontSize="48"
-                                            TextWrapping="WrapWholeWords"
-                                            Foreground="Black" />
+                                            Opacity="{Binding IsSelected, Converter={StaticResource BorderOpacityConverter}}"
+                                            BorderThickness="{Binding IsSelected, Converter={StaticResource BorderThicknessConverter}}">
+                                            <TextBlock
+                                                Padding="5,3,5,3"
+                                                Tapped="TextBlock_Tapped"
+                                                Text="{Binding Path=Text}"
+                                                TextWrapping="WrapWholeWords"
+                                                Style="{StaticResource AnswerStyle}" />
                                         </Border>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>

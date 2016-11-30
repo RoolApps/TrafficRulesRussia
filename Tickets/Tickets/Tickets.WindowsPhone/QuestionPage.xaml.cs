@@ -28,14 +28,10 @@ namespace Tickets
     public sealed partial class QuestionPage : Page
     {
         ISession Session;
-        //PagedCanvas PagedCanvas;
-        GestureRecognizer gestureRecognizer = new GestureRecognizer();
 
         public QuestionPage()
         {
             this.InitializeComponent();
-            //this.Loaded += QuestionPage_Loaded;
-            //this.Unloaded += QuestionPage_Unloaded;
         }
 
         /// <summary>
@@ -54,6 +50,7 @@ namespace Tickets
             int index = 0;
             var questions = Session.Tickets.SelectMany(ticket => ticket.Questions);
             var length = questions.Count();
+
             questionsCanvas.DataSource = new VirtualLinkedList<IQuestion>(questions,
                 (dataSource, current) =>
                 {
@@ -91,9 +88,12 @@ namespace Tickets
             var answer = element.DataContext as IAnswer;
             answer.IsSelected = !answer.IsSelected;
 
-            //btnEndSession.Visibility = Session.Tickets.SelectMany(ticket => ticket.Questions).All(question => question.SelectedAnswered != null) ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
+            if(answer.IsSelected)
+            {
+                questionsCanvas.ChangeCanvasContent(true);
+            }
 
-            questionsCanvas.ChangeCanvasContent(true);
+            //btnEndSession.Visibility = Session.Tickets.SelectMany(ticket => ticket.Questions).All(question => question.SelectedAnswered != null) ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
         }
 
         private void btnEndSession_Click(object sender, RoutedEventArgs e)
@@ -102,14 +102,35 @@ namespace Tickets
         }
     }
 
-    public class BorderColorConverter : IValueConverter
+    public class BorderColorConverter : BooleanConverter<String>
     {
-        const String Selected = "Red";
-        const String NotSelected = "White";
+        protected override String Selected { get { return "Brown"; } }
+        protected override String NotSelected { get { return "Brown"; } }
+    }
+
+    public class BorderOpacityConverter : BooleanConverter<double>
+    {
+        protected override double Selected { get { return 1; } }
+        protected override double NotSelected { get { return 1; } }
+    }
+
+    public class BorderThicknessConverter : BooleanConverter<Thickness>
+    {
+        private readonly Thickness selected = new Thickness(3);
+        private readonly Thickness notSelected = new Thickness(1);
+
+        protected override Thickness Selected { get { return selected; } }
+        protected override Thickness NotSelected { get { return notSelected; } }
+    }
+
+    public abstract class BooleanConverter<T> : IValueConverter
+    {
+        protected abstract T Selected { get; }
+        protected abstract T NotSelected { get; }
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if(value == null)
+            if (value == null)
             {
                 return NotSelected;
             }
