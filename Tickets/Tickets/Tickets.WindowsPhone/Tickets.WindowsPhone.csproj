@@ -104,12 +104,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\imgButtonRandom.png" />
+    <Content Include="Assets\imgCarRepair.png" />
     <Content Include="Assets\imgCheckChecked.png" />
     <Content Include="Assets\imgCheckUnchecked.png" />
     <Content Include="Assets\imgErrorReport.png" />
     <Content Include="Assets\imgErrorReportBG.png" />
     <Content Include="Assets\imgExam.png" />
     <Content Include="Assets\imgExamBG.png" />
+    <Content Include="Assets\imgFinish.png" />
     <Content Include="Assets\imgRateApp.png" />
     <Content Include="Assets\imgRateAppBG.png" />
     <Content Include="Assets\imgRules.png" />
