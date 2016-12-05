@@ -25,6 +25,7 @@ namespace Tickets {
         private ISession session;
         private int[] tickets;
         private IList<int> ticketsToFill = new List<int>();
+        private SessionContainer sc = new SessionContainer();
         #endregion
 
         #region Private Methods
@@ -33,17 +34,36 @@ namespace Tickets {
         }
 
         private void GoToQuestionPage() {
-            this.Frame.Navigate(typeof(QuestionsContentPage), Serializer.SerializeToString(session));
+            String SerializedSessionContainer = Serializer.SerializeToString(sc);
+            this.Frame.Navigate(typeof(QuestionsContentPage), SerializedSessionContainer);
+            //this.Frame.Navigate(typeof(QuestionsContentPage), Serializer.SerializeToString(session));
         }
 
         private void CreateSession(QuestionsGenerationMode mode, int[] ticket = null) {
             Random rnd = new Random();
-            SessionParameters sp = new SessionParameters() {
-                Shuffle = tsShuffleQuestions.IsOn,
+            SessionParameters sp = new SessionParameters(){
                 Mode = mode,
-                TicketNums = tsRandomTicket.IsOn ? new int [] { ticket.ElementAt(rnd.Next(ticket.Count())) } : ticket
+                Shuffle = tsShuffleQuestions.IsOn
             };
-            var sf = SessionFactory.CreateSession(sp, out session);
+
+            if(ticket != null) {
+                foreach(var v in ticket.OrderBy(i=>i).ToArray()) {
+                    ISession s;
+                    sp.TicketNums = new int[] { v };
+                    SessionFactory.CreateSession(sp, out s);
+                    sc.AddNewSession(s);
+                }
+            }
+
+            //sc.Show();
+
+            //SessionParameters sp = new SessionParameters() {
+            //    Shuffle = tsShuffleQuestions.IsOn,
+            //    Mode = mode,
+            //    TicketNums = tsRandomTicket.IsOn ? new int [] { ticket.ElementAt(rnd.Next(ticket.Count())) } : ticket
+            //};
+            //var sf = SessionFactory.CreateSession(sp, out session);
+            //sc.AddNewSession(session);
         }
         #endregion
 
@@ -75,6 +95,7 @@ namespace Tickets {
         }
 
         protected override void OnNavigatedFrom( NavigationEventArgs e ) {
+
         }
 
         private void Button_Start(object sender, RoutedEventArgs e) {

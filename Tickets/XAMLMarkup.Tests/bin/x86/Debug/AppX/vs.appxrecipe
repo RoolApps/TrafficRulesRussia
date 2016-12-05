@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Machine>WIN8_FEB</Machine>
+    <WindowsUser>Roman</WindowsUser>
+    <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
+    <SolutionConfiguration>Debug|x86</SolutionConfiguration>
+    <PackageArchitecture>x86</PackageArchitecture>
+    <PackageIdentityName>22a35381-88fa-4426-b920-cab304c14be1</PackageIdentityName>
+    <IntermediateOutputPath>C:\Users\Roman\Source\Repos\Tickets\Tickets\XAMLMarkup.Tests\obj\x86\Debug\</IntermediateOutputPath>
+    <RegisteredManifestChecksum>2D1B3929EDF94F22385863B8985FD151D7EC6201BF59431C80B082EC7104E9A4</RegisteredManifestChecksum>
+    <RegisteredPackageMoniker>22a35381-88fa-4426-b920-cab304c14be1_1.0.0.0_x86__8rvybr5a7y5fr</RegisteredPackageMoniker>
+    <RegisteredUserModeAppID>22a35381-88fa-4426-b920-cab304c14be1_8rvybr5a7y5fr!vstest.executionengine.App</RegisteredUserModeAppID>
+    <RegisteredPackageID>22a35381-88fa-4426-b920-cab304c14be1</RegisteredPackageID>
+    <RegisteredPackagePublisher>CN=Oleg</RegisteredPackagePublisher>
+    <RegisteredVersion>1.0.0.0</RegisteredVersion>
+    <JitOptimizationSuppressed>True</JitOptimizationSuppressed>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppXManifest Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\XAMLMarkup.Tests\bin\x86\Debug\AppxManifest.xml">
+      <PackagePath>AppxManifest.xml</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2016-07-06T11:39:45.375</Modified>
+    </AppXManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\XAMLMarkup.Tests\bin\x86\Debug\XAMLMarkup.Tests.dll">
+      <PackagePath>XAMLMarkup.Tests.dll</PackagePath>
+      <Modified>2016-07-06T11:39:43.485</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\XAMLMarkup\bin\Debug\XAMLMarkup.dll">
+      <PackagePath>XAMLMarkup.dll</PackagePath>
+      <Modified>2016-07-05T16:25:58.054</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Utils\bin\Debug\Utils.dll">
+      <PackagePath>Utils.dll</PackagePath>
+      <Modified>2016-07-05T16:25:55.692</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\XAMLMarkup.Tests\bin\x86\Debug\XAMLMarkup.Tests.pdb">
+      <PackagePath>XAMLMarkup.Tests.pdb</PackagePath>
+      <Modified>2016-07-06T11:39:43.422</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\XAMLMarkup\bin\Debug\XAMLMarkup.pdb">
+      <PackagePath>XAMLMarkup.pdb</PackagePath>
+      <Modified>2016-07-05T16:25:57.959</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Utils\bin\Debug\Utils.pdb">
+      <PackagePath>Utils.pdb</PackagePath>
+      <Modified>2016-07-05T16:25:55.548</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\MSTestFramework\11.0\References\CommonConfiguration\neutral\Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AppContainer.dll">
+      <PackagePath>Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AppContainer.dll</PackagePath>
+      <Modified>2013-10-04T23:38:22.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\MSTestFramework\11.0\References\CommonConfiguration\neutral\Microsoft.VisualStudio.TestPlatform.UnitTestFramework.dll">
+      <PackagePath>Microsoft.VisualStudio.TestPlatform.UnitTestFramework.dll</PackagePath>
+      <Modified>2014-10-31T21:46:48.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\TestPlatform\11.0\Redist\CommonConfiguration\neutral\Microsoft.VisualStudio.TestPlatform.Core.dll">
+      <PackagePath>Microsoft.VisualStudio.TestPlatform.Core.dll</PackagePath>
+      <Modified>2013-10-04T23:38:22.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\TestPlatform\11.0\Redist\CommonConfiguration\neutral\ru\Microsoft.VisualStudio.TestPlatform.Core.resources.dll">
+      <PackagePath>ru\Microsoft.VisualStudio.TestPlatform.Core.resources.dll</PackagePath>
+      <Modified>2013-10-05T01:08:00.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\MSTestFramework\11.0\Redist\CommonConfiguration\neutral\Microsoft.VisualStudio.TestPlatform.Extensions.MSAppContainerAdapter.dll">
+      <PackagePath>Microsoft.VisualStudio.TestPlatform.Extensions.MSAppContainerAdapter.dll</PackagePath>
+      <Modified>2015-06-28T18:58:12.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\MSTestFramework\11.0\Redist\CommonConfiguration\neutral\ru\Microsoft.VisualStudio.TestPlatform.Extensions.MSAppContainerAdapter.resources.dll">
+      <PackagePath>ru\Microsoft.VisualStudio.TestPlatform.Extensions.MSAppContainerAdapter.resources.dll</PackagePath>
+      <Modified>2013-10-05T01:08:00.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\TestPlatform\11.0\Redist\CommonConfiguration\neutral\Microsoft.VisualStudio.TestPlatform.ObjectModel.dll">
+      <PackagePath>Microsoft.VisualStudio.TestPlatform.ObjectModel.dll</PackagePath>
+      <Modified>2015-06-28T18:58:12.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\TestPlatform\11.0\Redist\CommonConfiguration\neutral\ru\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll">
+      <PackagePath>ru\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll</PackagePath>
+      <Modified>2013-10-05T01:08:00.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\TestPlatform\11.0\Redist\CommonConfiguration\neutral\Microsoft.VisualStudio.TestPlatform.TestExecutor.Core.dll">
+      <PackagePath>Microsoft.VisualStudio.TestPlatform.TestExecutor.Core.dll</PackagePath>
+      <Modified>2013-10-04T23:38:22.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\TestPlatform\11.0\Redist\CommonConfiguration\neutral\ru\Microsoft.VisualStudio.TestPlatform.TestExecutor.Core.resources.dll">
+      <PackagePath>ru\Microsoft.VisualStudio.TestPlatform.TestExecutor.Core.resources.dll</PackagePath>
+      <Modified>2013-10-05T01:08:00.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\MSTestFramework\11.0\Redist\CommonConfiguration\neutral\ru\Microsoft.VisualStudio.TestPlatform.UnitTestFramework.resources.dll">
+      <PackagePath>ru\Microsoft.VisualStudio.TestPlatform.UnitTestFramework.resources.dll</PackagePath>
+      <Modified>2013-10-05T01:08:00.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\TestPlatform\11.0\Redist\CommonConfiguration\neutral\Microsoft.VisualStudio.TestPlatform.Utilities.dll">
+      <PackagePath>Microsoft.VisualStudio.TestPlatform.Utilities.dll</PackagePath>
+      <Modified>2014-04-30T22:50:20.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\TestPlatform\11.0\Redist\CommonConfiguration\neutral\ru\Microsoft.VisualStudio.TestPlatform.Utilities.resources.dll">
+      <PackagePath>ru\Microsoft.VisualStudio.TestPlatform.Utilities.resources.dll</PackagePath>
+      <Modified>2013-10-05T01:08:00.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\TestPlatform\11.0\Redist\CommonConfiguration\neutral\vstest.executionengine.appcontainer.exe">
+      <PackagePath>vstest.executionengine.appcontainer.exe</PackagePath>
+      <Modified>2014-07-22T23:27:02.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\TestPlatform\11.0\Redist\CommonConfiguration\neutral\vstest.executionengine.appcontainer.x86.exe">
+      <PackagePath>vstest.executionengine.appcontainer.x86.exe</PackagePath>
+      <Modified>2014-07-22T23:27:02.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\XAMLMarkup.Tests\Images\UnitTestLogo.scale-100.png">
+      <PackagePath>Images\UnitTestLogo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2016-04-23T08:43:25.834</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\XAMLMarkup.Tests\Images\UnitTestSmallLogo.scale-100.png">
+      <PackagePath>Images\UnitTestSmallLogo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2016-04-23T08:43:25.838</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\XAMLMarkup.Tests\Images\UnitTestSplashScreen.scale-100.png">
+      <PackagePath>Images\UnitTestSplashScreen.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2016-04-23T08:43:25.841</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\XAMLMarkup.Tests\Images\UnitTestStoreLogo.scale-100.png">
+      <PackagePath>Images\UnitTestStoreLogo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2016-04-23T08:43:25.845</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\XAMLMarkup\bin\Debug\Themes\Generic.xbf">
+      <PackagePath>XAMLMarkup\Themes\Generic.xbf</PackagePath>
+      <Modified>2016-07-05T16:25:57.673</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\XAMLMarkup\bin\Debug\XAMLMarkup.xr.xml">
+      <PackagePath>XAMLMarkup\XAMLMarkup.xr.xml</PackagePath>
+      <Modified>2016-04-29T13:17:41.250</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\XAMLMarkup.Tests\bin\x86\Debug\resources.pri">
+      <PackagePath>resources.pri</PackagePath>
+      <Modified>2016-07-06T11:39:45.267</Modified>
+    </AppxPackagedFile>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>

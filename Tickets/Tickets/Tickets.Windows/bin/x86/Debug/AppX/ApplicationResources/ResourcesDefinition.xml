@@ -1,0 +1,15 @@
+﻿<?xml version="1.0"?>
+<Resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ResourcesArray>
+    <Resource>
+      <Name>ConnectionString</Name>
+      <Type>System.String</Type>
+      <DefaultValue>""</DefaultValue>
+    </Resource>
+    <Resource>
+      <Name>DBFileName</Name>
+      <Type>System.String</Type>
+      <DefaultValue>"tickets.db"</DefaultValue>
+    </Resource>
+  </ResourcesArray>
+</Resources>

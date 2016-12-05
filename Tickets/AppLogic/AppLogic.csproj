@@ -43,6 +43,10 @@
       <Project>{ed5bdb33-53d5-49c3-803d-85637d1d8150}</Project>
       <Name>SQLiteShared</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Utils\Utils.csproj">
+      <Project>{687cd1d3-8463-4ec1-b618-d59512678f30}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <TargetPlatform Include="WindowsPhoneApp, Version=8.1" />
@@ -64,6 +68,7 @@
     <Compile Include="Interfaces\ITicket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Question.cs" />
+    <Compile Include="SessionContainer.cs" />
     <Compile Include="SessionStatistics.cs" />
     <Compile Include="SessionStatisticsFactory.cs" />
     <Compile Include="TicketLoader.cs" />

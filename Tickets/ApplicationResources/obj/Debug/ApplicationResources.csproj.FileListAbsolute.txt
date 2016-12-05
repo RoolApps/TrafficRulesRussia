@@ -1,0 +1,17 @@
+C:\Users\Roman\Source\Repos\Tickets\Tickets\ApplicationResources\bin\Debug\ApplicationResources.dll
+C:\Users\Roman\Source\Repos\Tickets\Tickets\ApplicationResources\bin\Debug\ApplicationResources.pdb
+C:\Users\Roman\Source\Repos\Tickets\Tickets\ApplicationResources\bin\Debug\ApplicationResources.pri
+C:\Users\Roman\Source\Repos\Tickets\Tickets\ApplicationResources\obj\Debug\ApplicationResources.csprojResolveAssemblyReference.cache
+C:\Users\Roman\Source\Repos\Tickets\Tickets\ApplicationResources\obj\Debug\ApplicationResources.dll
+C:\Users\Roman\Source\Repos\Tickets\Tickets\ApplicationResources\obj\Debug\ApplicationResources.pdb
+C:\Users\Roman\Source\Repos\Tickets\Tickets\ApplicationResources\obj\Debug\priconfig.xml
+C:\Users\Roman\Source\Repos\Tickets\Tickets\ApplicationResources\obj\Debug\priconfig.xml.intermediate
+C:\Users\Roman\Source\Repos\Tickets\Tickets\ApplicationResources\obj\Debug\layout.resfiles
+C:\Users\Roman\Source\Repos\Tickets\Tickets\ApplicationResources\obj\Debug\layout.resfiles.intermediate
+C:\Users\Roman\Source\Repos\Tickets\Tickets\ApplicationResources\obj\Debug\resources.resfiles
+C:\Users\Roman\Source\Repos\Tickets\Tickets\ApplicationResources\obj\Debug\resources.resfiles.intermediate
+C:\Users\Roman\Source\Repos\Tickets\Tickets\ApplicationResources\obj\Debug\pri.resfiles
+C:\Users\Roman\Source\Repos\Tickets\Tickets\ApplicationResources\obj\Debug\pri.resfiles.intermediate
+C:\Users\Roman\Source\Repos\Tickets\Tickets\ApplicationResources\obj\Debug\qualifiers.txt
+C:\Users\Roman\Source\Repos\Tickets\Tickets\ApplicationResources\obj\Debug\qualifiers.txt.intermediate
+C:\Users\Roman\Source\Repos\Tickets\Tickets\ApplicationResources\obj\Debug\MultipleQualifiersPerDimensionFound.txt

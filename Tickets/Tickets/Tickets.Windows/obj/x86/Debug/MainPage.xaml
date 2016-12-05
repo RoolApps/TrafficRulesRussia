@@ -1,0 +1,44 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Tickets"
+    xmlns:markup="using:XAMLMarkup"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:XAMLMarkup="using:XAMLMarkup"
+    x:Class="Tickets.MainPage"
+    mc:Ignorable="d"
+    >
+    
+    <Page.TopAppBar>
+        <AppBar IsOpen="True" IsSticky="True" Background="#ff006064">
+            <StackPanel Orientation="Horizontal">
+                <AppBarButton x:ConnectionId='1' x:Name="BackButton" Icon="Back" Label="Назад"                               ></AppBarButton>
+                <AppBarButton x:ConnectionId='2' x:Name="ForwardButton" Icon="Forward" Label="Вперед"                                  ></AppBarButton>
+                <TextBlock Text="Правила дорожного движения 2016 РФ" Foreground="White" VerticalAlignment="Center" FontSize="40" Margin="100,0,0,0"></TextBlock>
+            </StackPanel>
+        </AppBar>
+    </Page.TopAppBar>
+
+    <Grid Margin="0,85,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.Background>
+            <ImageBrush ImageSource="Image/MainPageBackground.png" Stretch="UniformToFill"></ImageBrush>
+        </Grid.Background>
+        <markup:MainMenuIcon x:Name="ticketsBtn" Grid.Column="0" Grid.Row="0" Text="Билеты" ImageSource="ms-appx:///Image/Ticket_btn.png"></markup:MainMenuIcon>
+        <markup:MainMenuIcon x:Name="ExamBtn" Grid.Column="1" Grid.Row="0" Text="Экзамен" ImageSource="ms-appx:///Image/Exam_btn.png"></markup:MainMenuIcon>
+        <markup:MainMenuIcon x:Name="RulesBtn" Grid.Column="2" Grid.Row="0" Text="Правила" ImageSource="ms-appx:///Image/Rules_btn.png"></markup:MainMenuIcon>
+        <markup:MainMenuIcon x:Name="StatisticsBtn" Grid.Column="0" Grid.Row="1" Text="Статистика" ImageSource="ms-appx:///Image/Statistic_btn.png"></markup:MainMenuIcon>
+        <markup:MainMenuIcon x:Name="ErrorsBtn" Grid.Column="1" Grid.Row="1" Text="Сообщить об ошибке" ImageSource="ms-appx:///Image/Errors_btn.png"></markup:MainMenuIcon>
+        <markup:MainMenuIcon x:Name="MessageBtn" Grid.Column="2" Grid.Row="1" Text="Оцените приложение" ImageSource="ms-appx:///Image/Message_btn.png"></markup:MainMenuIcon>
+    </Grid>
+</Page>
+

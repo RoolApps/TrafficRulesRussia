@@ -1,0 +1,17 @@
+C:\Users\Roman\Source\Repos\Tickets\Tickets\Utils\bin\Debug\Utils.dll
+C:\Users\Roman\Source\Repos\Tickets\Tickets\Utils\bin\Debug\Utils.pdb
+C:\Users\Roman\Source\Repos\Tickets\Tickets\Utils\bin\Debug\Utils.pri
+C:\Users\Roman\Source\Repos\Tickets\Tickets\Utils\obj\Debug\Utils.csprojResolveAssemblyReference.cache
+C:\Users\Roman\Source\Repos\Tickets\Tickets\Utils\obj\Debug\Utils.dll
+C:\Users\Roman\Source\Repos\Tickets\Tickets\Utils\obj\Debug\Utils.pdb
+C:\Users\Roman\Source\Repos\Tickets\Tickets\Utils\obj\Debug\priconfig.xml
+C:\Users\Roman\Source\Repos\Tickets\Tickets\Utils\obj\Debug\priconfig.xml.intermediate
+C:\Users\Roman\Source\Repos\Tickets\Tickets\Utils\obj\Debug\layout.resfiles
+C:\Users\Roman\Source\Repos\Tickets\Tickets\Utils\obj\Debug\layout.resfiles.intermediate
+C:\Users\Roman\Source\Repos\Tickets\Tickets\Utils\obj\Debug\resources.resfiles
+C:\Users\Roman\Source\Repos\Tickets\Tickets\Utils\obj\Debug\resources.resfiles.intermediate
+C:\Users\Roman\Source\Repos\Tickets\Tickets\Utils\obj\Debug\pri.resfiles
+C:\Users\Roman\Source\Repos\Tickets\Tickets\Utils\obj\Debug\pri.resfiles.intermediate
+C:\Users\Roman\Source\Repos\Tickets\Tickets\Utils\obj\Debug\qualifiers.txt
+C:\Users\Roman\Source\Repos\Tickets\Tickets\Utils\obj\Debug\qualifiers.txt.intermediate
+C:\Users\Roman\Source\Repos\Tickets\Tickets\Utils\obj\Debug\MultipleQualifiersPerDimensionFound.txt

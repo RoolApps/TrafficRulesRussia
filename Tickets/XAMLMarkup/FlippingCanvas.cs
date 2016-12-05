@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Shapes;
 using XAMLMarkup.Enums;
 using XAMLMarkup.EventHandlers;
 using Utils.Extensions;
+using Utils;
 
 namespace XAMLMarkup
 {
@@ -174,7 +175,9 @@ namespace XAMLMarkup
                 return transform.TransformPoint(offset).X;
             });
             var maxPosition = childrenPositions.Max();
+            Log.d("maxPosition: {0}", maxPosition);
             var minPosition = childrenPositions.Min();
+            Log.d("minPosition: {0}", minPosition);
 
             if(maxPosition > ActualWidth)
             {
@@ -184,6 +187,7 @@ namespace XAMLMarkup
             {
                 availableDirections |= MoveDirection.ToPrevious;
             }
+            Log.d("availableDirections: {0}", availableDirections);
             return availableDirections;
         }
 

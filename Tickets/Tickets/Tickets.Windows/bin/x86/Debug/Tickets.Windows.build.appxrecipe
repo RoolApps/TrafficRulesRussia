@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Machine>WIN8_FEB</Machine>
+    <WindowsUser>Roman</WindowsUser>
+    <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
+    <SolutionConfiguration>Debug|x86</SolutionConfiguration>
+    <PackageArchitecture>x86</PackageArchitecture>
+    <PackageIdentityName>1de91a92-70bd-44ae-86f6-34d3089d1262</PackageIdentityName>
+    <IntermediateOutputPath>C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\obj\x86\Debug\</IntermediateOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppXManifest Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\bin\x86\Debug\AppxManifest.xml">
+      <PackagePath>AppxManifest.xml</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppXManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\bin\x86\Debug\Tickets.Windows.exe">
+      <PackagePath>Tickets.Windows.exe</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\ApplicationResources\bin\Debug\ApplicationResources.dll">
+      <PackagePath>ApplicationResources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\AppLogic\bin\Debug\AppLogic.dll">
+      <PackagePath>AppLogic.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\SQLiteShared\bin\Debug\SQLiteShared.dll">
+      <PackagePath>SQLiteShared.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Utils\bin\Debug\Utils.dll">
+      <PackagePath>Utils.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\XAMLMarkup\bin\Debug\XAMLMarkup.dll">
+      <PackagePath>XAMLMarkup.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\SQLiteShared\bin\Debug\SQLite.Net.dll">
+      <PackagePath>SQLite.Net.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\SQLiteShared\bin\Debug\SQLite.Net.Platform.WinRT.dll">
+      <PackagePath>SQLite.Net.Platform.WinRT.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\SQLite.WinRT81\3.12.2\Redist\Debug\x86\sqlite3.dll">
+      <PackagePath>sqlite3.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\Assets\Logo.scale-100.png">
+      <PackagePath>Assets\Logo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\Assets\SmallLogo.scale-100.png">
+      <PackagePath>Assets\SmallLogo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\Assets\SplashScreen.scale-100.png">
+      <PackagePath>Assets\SplashScreen.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\Assets\StoreLogo.scale-100.png">
+      <PackagePath>Assets\StoreLogo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\Image\Errors_btn.png">
+      <PackagePath>Image\Errors_btn.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\Image\Exam_btn.png">
+      <PackagePath>Image\Exam_btn.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\Image\MainPageBackground.png">
+      <PackagePath>Image\MainPageBackground.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\Image\Message_btn.png">
+      <PackagePath>Image\Message_btn.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\Image\NextItem.png">
+      <PackagePath>Image\NextItem.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\Image\NoImage.png">
+      <PackagePath>Image\NoImage.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\Image\PreviousItem.png">
+      <PackagePath>Image\PreviousItem.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\Image\Rules_btn.png">
+      <PackagePath>Image\Rules_btn.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\Image\Start_btn.png">
+      <PackagePath>Image\Start_btn.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\Image\Statistic_btn.png">
+      <PackagePath>Image\Statistic_btn.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\Image\Ticket_btn.png">
+      <PackagePath>Image\Ticket_btn.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Shared\tickets.db">
+      <PackagePath>tickets.db</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\bin\x86\Debug\App.xbf">
+      <PackagePath>App.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\bin\x86\Debug\ExamParametersPage.xbf">
+      <PackagePath>ExamParametersPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\bin\x86\Debug\MainPage.xbf">
+      <PackagePath>MainPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\bin\x86\Debug\QuestionResultPage.xbf">
+      <PackagePath>QuestionResultPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\bin\x86\Debug\QuestionsContentPage.xbf">
+      <PackagePath>QuestionsContentPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\bin\x86\Debug\ResultsPage.xbf">
+      <PackagePath>ResultsPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\XAMLMarkup\bin\Debug\MainMenuIcon.xbf">
+      <PackagePath>XAMLMarkup\MainMenuIcon.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\XAMLMarkup\bin\Debug\Themes\Generic.xbf">
+      <PackagePath>XAMLMarkup\Themes\Generic.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\bin\x86\Debug\Tickets.Windows.xr.xml">
+      <PackagePath>Tickets.Windows.xr.xml</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\XAMLMarkup\bin\Debug\XAMLMarkup.xr.xml">
+      <PackagePath>XAMLMarkup\XAMLMarkup.xr.xml</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\ApplicationResources\ResourcesDefinition.xml">
+      <PackagePath>ApplicationResources\ResourcesDefinition.xml</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\bin\x86\Debug\resources.pri">
+      <PackagePath>resources.pri</PackagePath>
+    </AppxPackagedFile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\Microsoft.VCLibs\12.0\">
+      <Name>Microsoft.VCLibs.120.00.Debug</Name>
+      <Version>12.0.21005.1</Version>
+      <Architecture>ARM</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.120.00.Debug, MinVersion = 12.0.21005.1</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\Microsoft.VCLibs\12.0\.\AppX\Debug\ARM\Microsoft.VCLibs.ARM.Debug.12.00.appx</AppxLocation>
+      <MoreInfo></MoreInfo>
+    </ResolvedSDKReference>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\Microsoft.VCLibs\12.0\">
+      <Name>Microsoft.VCLibs.120.00.Debug</Name>
+      <Version>12.0.21005.1</Version>
+      <Architecture>x64</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.120.00.Debug, MinVersion = 12.0.21005.1</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\Microsoft.VCLibs\12.0\.\AppX\Debug\x64\Microsoft.VCLibs.x64.Debug.12.00.appx</AppxLocation>
+      <MoreInfo></MoreInfo>
+    </ResolvedSDKReference>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\Microsoft.VCLibs\12.0\">
+      <Name>Microsoft.VCLibs.120.00.Debug</Name>
+      <Version>12.0.21005.1</Version>
+      <Architecture>x86</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.120.00.Debug, MinVersion = 12.0.21005.1</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\Microsoft.VCLibs\12.0\.\AppX\Debug\x86\Microsoft.VCLibs.x86.Debug.12.00.appx</AppxLocation>
+      <MoreInfo></MoreInfo>
+    </ResolvedSDKReference>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Machine>WIN8_FEB</Machine>
+    <WindowsUser>Roman</WindowsUser>
+    <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
+    <SolutionConfiguration>Debug|AnyCPU</SolutionConfiguration>
+    <PackageArchitecture>neutral</PackageArchitecture>
+    <PackageIdentityName>1de91a92-70bd-44ae-86f6-34d3089d1262</PackageIdentityName>
+    <IntermediateOutputPath>C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\obj\Debug\</IntermediateOutputPath>
+    <RegisteredManifestChecksum>20C0BEF3420A94058599B328658FDE33EB63364F4D4CA11EA62587DD5D0263DB</RegisteredManifestChecksum>
+    <RegisteredPackageMoniker>1de91a92-70bd-44ae-86f6-34d3089d1262_1.0.0.0_neutral__8rvybr5a7y5fr</RegisteredPackageMoniker>
+    <RegisteredUserModeAppID>1de91a92-70bd-44ae-86f6-34d3089d1262_8rvybr5a7y5fr!App</RegisteredUserModeAppID>
+    <RegisteredPackageID>1de91a92-70bd-44ae-86f6-34d3089d1262</RegisteredPackageID>
+    <RegisteredPackagePublisher>CN=Oleg</RegisteredPackagePublisher>
+    <RegisteredVersion>1.0.0.0</RegisteredVersion>
+    <JitOptimizationSuppressed>True</JitOptimizationSuppressed>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppXManifest Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\bin\Debug\AppxManifest.xml">
+      <PackagePath>AppxManifest.xml</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2016-01-12T18:51:13.068</Modified>
+    </AppXManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\bin\Debug\Tickets.Windows.exe">
+      <PackagePath>Tickets.Windows.exe</PackagePath>
+      <Modified>2016-01-12T18:51:12.676</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\Assets\Logo.scale-100.png">
+      <PackagePath>Assets\Logo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2016-01-12T18:50:10.550</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\Assets\SmallLogo.scale-100.png">
+      <PackagePath>Assets\SmallLogo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2016-01-12T18:50:10.554</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\Assets\SplashScreen.scale-100.png">
+      <PackagePath>Assets\SplashScreen.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2016-01-12T18:50:10.557</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\Assets\StoreLogo.scale-100.png">
+      <PackagePath>Assets\StoreLogo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2016-01-12T18:50:10.560</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\bin\Debug\App.xbf">
+      <PackagePath>App.xbf</PackagePath>
+      <Modified>2016-01-12T18:51:12.350</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\bin\Debug\MainPage.xbf">
+      <PackagePath>MainPage.xbf</PackagePath>
+      <Modified>2016-01-12T18:51:12.353</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\bin\Debug\Tickets.Windows.xr.xml">
+      <PackagePath>Tickets.Windows.xr.xml</PackagePath>
+      <Modified>2016-01-12T18:51:12.270</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\bin\Debug\resources.pri">
+      <PackagePath>resources.pri</PackagePath>
+      <Modified>2016-01-12T18:51:12.925</Modified>
+    </AppxPackagedFile>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>

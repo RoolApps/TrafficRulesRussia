@@ -1,0 +1,11 @@
+C:\Users\Roman\Source\Repos\Tickets\Tickets\ApplicationResources\ApplicationResources.csproj;neutral
+C:\Users\Roman\Source\Repos\Tickets\Tickets\ApplicationResources\ApplicationResources.csproj;neutral
+C:\Users\Roman\Source\Repos\Tickets\Tickets\ApplicationResources\ApplicationResources.csproj;neutral
+C:\Users\Roman\Source\Repos\Tickets\Tickets\AppLogic\AppLogic.csproj;neutral
+C:\Users\Roman\Source\Repos\Tickets\Tickets\SQLiteShared\SQLiteShared.csproj;neutral
+C:\Users\Roman\Source\Repos\Tickets\Tickets\SQLiteShared\SQLiteShared.csproj;neutral
+C:\Users\Roman\Source\Repos\Tickets\Tickets\Tickets\Tickets.Windows\Tickets.Windows.csproj;x86
+C:\Users\Roman\Source\Repos\Tickets\Tickets\Utils\Utils.csproj;neutral
+C:\Users\Roman\Source\Repos\Tickets\Tickets\Utils\Utils.csproj;neutral
+C:\Users\Roman\Source\Repos\Tickets\Tickets\Utils\Utils.csproj;neutral
+C:\Users\Roman\Source\Repos\Tickets\Tickets\XAMLMarkup\XAMLMarkup.csproj;neutral

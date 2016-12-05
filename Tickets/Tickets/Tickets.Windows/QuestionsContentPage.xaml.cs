@@ -29,7 +29,9 @@ namespace Tickets
     public sealed partial class QuestionsContentPage : Page {
         #region private Members
         private ISession session;
+        private SessionContainer sc;
         private PagedCanvas pagedCanvas;
+        //private PagedCollection<IQuestion> paged_col;
         #endregion
 
         #region Public Members
@@ -54,15 +56,14 @@ namespace Tickets
                 string sessionState = await SettingSaver.GetSettingFromFile(GlobalConstants.sesstionState);
                 session = Serializer.DeserializeFromString<Session>(sessionState);
             } else {
-                session = Serializer.DeserializeFromString<Session>(e.Parameter as string);
+                //session = Serializer.DeserializeFromString<Session>(e.Parameter as string);
+                sc = Serializer.DeserializeFromString<SessionContainer>(e.Parameter as string);
+                session = sc.GetNext();
             }
+
             pagedCanvas = flipping_canvas.Children.OfType<PagedCanvas>().Single();
-            PagedCollection<IQuestion> paged_col = new PagedCollection<IQuestion>(2);
-            paged_col.DataSource = session.Tickets.SelectMany(ticket => ticket.Questions);
-            pagedCanvas.ItemsSource = paged_col;
-            appbarText.ItemsSource = new ObservableCollection<ISession> { session };
-            UpdateQuestionsIdItemsSource();
-            QuestionCount = session.Tickets.Select(t => t.Number).ToArray();
+            
+            LoadSession(session);
 
             base.OnNavigatedTo(e);
         }
@@ -90,7 +91,13 @@ namespace Tickets
                 answer.IsSelected = !answer.IsSelected;
                 Boolean allQuestionsIsAnswered = session.Tickets.SelectMany(ticket => ticket.Questions).All(question => question.SelectedAnswered != null);
                 if(allQuestionsIsAnswered) {
-                    this.Frame.Navigate(typeof(ResultsPage), Serializer.SerializeToString(session));
+                    sc.Show();
+                    session = sc.GetNext();
+                    LoadSession(session);
+                    Log.d("allQuestionsAnswered");
+                    for(int i = 0; i < 20; i++) {
+                        flipping_canvas.SlideCanvas(MoveDirection.ToPrevious);
+                    }
                 }
                 flipping_canvas.SlideCanvas(MoveDirection.ToNext);
             }
@@ -98,6 +105,21 @@ namespace Tickets
 
         private void UpdateQuestionsIdItemsSource() {
             questionsId.ItemsSource = session.Tickets.SelectMany(t => t.Questions);
+        }
+
+        private void LoadSession(ISession session) {
+            if(session != null) {
+                PagedCollection<IQuestion> paged_col = new PagedCollection<IQuestion>(2);
+                paged_col.DataSource = session.Tickets.SelectMany(ticket => ticket.Questions);
+                pagedCanvas.ItemsSource = paged_col;
+
+                appbarText.ItemsSource = new ObservableCollection<ISession> { session };
+
+                UpdateQuestionsIdItemsSource();
+                QuestionCount = session.Tickets.Select(t => t.Number).ToArray();
+            } else {
+                //this.Frame.Navigate(typeof(ResultsPage), Serializer.SerializeToString(session));
+            }
         }
         #endregion
 
@@ -108,7 +130,6 @@ namespace Tickets
             flipping_canvas.Loaded += ( s, e ) => {
                 UpdateQuestionsIdItemsSource();
             };
-            
         }
         #endregion
 
@@ -159,6 +180,7 @@ namespace Tickets
                 (sender as Border).Tapped -= PreviousQuestionTapped;
             }
         }
+
         private void NextPageBtn_Click( object sender, RoutedEventArgs e ) {
             this.Frame.Navigate(typeof(ResultsPage), Serializer.SerializeToString(session));
         }
@@ -233,7 +255,7 @@ namespace Tickets
             var v = (value as IQuestion);
             int ticketNumber = FlippingCanvas.CurrentScreen / AppLogic.Constants.GlobalConstants.questionsCount < m.Length ? FlippingCanvas.CurrentScreen / AppLogic.Constants.GlobalConstants.questionsCount : m.Length - 1;
             int questionNumber = FlippingCanvas.CurrentScreen % AppLogic.Constants.GlobalConstants.questionsCount != 0 ? FlippingCanvas.CurrentScreen % AppLogic.Constants.GlobalConstants.questionsCount : (FlippingCanvas.CurrentScreen / AppLogic.Constants.GlobalConstants.questionsCount) * AppLogic.Constants.GlobalConstants.questionsCount;
-            System.Diagnostics.Debug.WriteLine("questionNumber: {0}", questionNumber);
+            //System.Diagnostics.Debug.WriteLine("questionNumber: {0}", questionNumber);
             if(v.Ticket.Number == m[ticketNumber] && v.Number ==  questionNumber) {
                 return "Orange";
             }

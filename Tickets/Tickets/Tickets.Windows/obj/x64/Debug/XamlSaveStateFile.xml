@@ -1,0 +1,7 @@
+<XamlCompilerSaveState>
+  <ReferenceAssemblyList>
+    <ReferenceAssembly PathName="c:\program files (x86)\microsoft sdks\windows\v8.1\extensionsdks\microsoft.vclibs\12.0\references\commonconfiguration\neutral\platform.winmd" HashGuid="58b6b6d1-928e-9908-9804-eb460e5e101b" />
+    <ReferenceAssembly PathName="c:\users\roman\source\repos\tickets\tickets\sqliteshared\bin\debug\sqliteshared.dll" HashGuid="5692ad95-2378-1032-20c3-591fd64a8e96" />
+    <ReferenceAssembly PathName="c:\users\roman\source\repos\tickets\tickets\xamlmarkup\bin\debug\xamlmarkup.dll" HashGuid="b40cb5fd-f1f2-0daa-1c57-cbfbd97b97e6" />
+  </ReferenceAssemblyList>
+</XamlCompilerSaveState>

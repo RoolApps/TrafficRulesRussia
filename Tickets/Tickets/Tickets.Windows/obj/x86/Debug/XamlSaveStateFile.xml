@@ -1,0 +1,11 @@
+<XamlCompilerSaveState>
+  <ReferenceAssemblyList>
+    <LocalAssembly PathName="c:\users\roman\source\repos\tickets\tickets\tickets\tickets.windows\obj\x86\debug\intermediatexaml\tickets.windows.exe" HashGuid="6a27be6c-98ad-e526-553f-af667e356761" />
+    <ReferenceAssembly PathName="c:\program files (x86)\microsoft sdks\windows\v8.1\extensionsdks\microsoft.vclibs\12.0\references\commonconfiguration\neutral\platform.winmd" HashGuid="58b6b6d1-928e-9908-9804-eb460e5e101b" />
+    <ReferenceAssembly PathName="c:\users\roman\source\repos\tickets\tickets\applicationresources\bin\debug\applicationresources.dll" HashGuid="66c4977a-6b58-f52e-7403-abb0d78e47e2" />
+    <ReferenceAssembly PathName="c:\users\roman\source\repos\tickets\tickets\applogic\bin\debug\applogic.dll" HashGuid="450a3e29-3636-b23b-b481-1eb1e05edbd3" />
+    <ReferenceAssembly PathName="c:\users\roman\source\repos\tickets\tickets\sqliteshared\bin\debug\sqliteshared.dll" HashGuid="29fe6040-e78b-c575-2a63-0f0b6c5682d3" />
+    <ReferenceAssembly PathName="c:\users\roman\source\repos\tickets\tickets\utils\bin\debug\utils.dll" HashGuid="7ee8e2f2-f386-c6d3-f35f-946791b867dc" />
+    <ReferenceAssembly PathName="c:\users\roman\source\repos\tickets\tickets\xamlmarkup\bin\debug\xamlmarkup.dll" HashGuid="fbec21cb-ad91-6b12-16ed-43cf8db7cddc" />
+  </ReferenceAssemblyList>
+</XamlCompilerSaveState>
