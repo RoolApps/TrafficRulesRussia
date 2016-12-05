@@ -63,6 +63,7 @@ namespace Tickets
             appbarText.ItemsSource = new ObservableCollection<ISession> { session };
             UpdateQuestionsIdItemsSource();
             QuestionCount = session.Tickets.Select(t => t.Number).ToArray();
+            //test
 
             base.OnNavigatedTo(e);
         }
