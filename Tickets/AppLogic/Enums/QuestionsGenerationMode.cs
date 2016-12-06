@@ -10,6 +10,7 @@ namespace AppLogic.Enums
     {
         RandomTicket,
         SelectedTickets,
-        ExamTicket
+        ExamTicket,
+        Questions
     }
 }

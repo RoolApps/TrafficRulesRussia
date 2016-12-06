@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -64,9 +65,35 @@ namespace Tickets
 
         private void btnMistakes_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            var wrongQuestions = session.Tickets.SelectMany(ticket => ticket.Questions.Where(question => !question.SelectedAnswered.IsRight)).ToArray();
+            //Some hacky hacks used here because of wrong architecture. Very bad code
+            var wrongQuestions = session.Tickets.SelectMany(ticket => ticket.Questions.Where(question => question.SelectedAnswered == null || !question.SelectedAnswered.IsRight)).ToArray();
+            
             ISession newSession;
-            throw new NotImplementedException("Not implemented yet");
+            var creationResult = SessionFactory.CreateSession(new SessionParameters(wrongQuestions), out newSession);
+            if(creationResult == ParametersValidationResult.Valid)
+            {
+                this.Frame.Navigate(typeof(QuestionPage), Serializer.SerializeToString(newSession));
+            }
+        }
+
+        class SessionParameters : ISessionParameters
+        {
+
+            public SessionParameters(IEnumerable<IQuestion> questions)
+            {
+                Questions = questions;
+            }
+
+            public bool Shuffle
+            {
+                get { return false; }
+            }
+
+            public IEnumerable<IQuestion> Questions { get; private set; }
+
+            public int[] TicketNums { get { return null; } }
+
+            public QuestionsGenerationMode Mode { get { return QuestionsGenerationMode.Questions; } }
         }
     }
 }

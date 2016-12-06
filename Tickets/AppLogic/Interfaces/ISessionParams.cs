@@ -11,6 +11,7 @@ namespace AppLogic.Interfaces
     public interface ISessionParameters
     {
         bool Shuffle { get; }
+        IEnumerable<IQuestion> Questions { get; }
         int[] TicketNums { get; }
         QuestionsGenerationMode Mode { get; }
     }

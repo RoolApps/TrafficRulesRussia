@@ -245,6 +245,9 @@ namespace Tickets
             public int[] TicketNums { get; private set; }
 
             public AppLogic.Enums.QuestionsGenerationMode Mode { get; private set; }
+
+
+            public IEnumerable<IQuestion> Questions { get { return null; } }
         }
         #endregion
     }

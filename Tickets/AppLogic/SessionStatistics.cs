@@ -17,6 +17,7 @@ namespace AppLogic
 
         public int TakenQuestions { get; private set; }
         public int PassedQuestions { get; private set; }
+        public int WrongQuestions { get { return TakenQuestions - PassedQuestions; } }
         public int PassedQuestionsPercentage { get; private set; }
 
         internal SessionStatistics(ISession session)

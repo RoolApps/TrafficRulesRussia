@@ -58,7 +58,7 @@
                     Grid.Row="1"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"
-                    Text="{Binding Converter={StaticResource StringFormatter}, ConverterParameter='Неправильно отвечено: {TakenQuestions}'}"
+                    Text="{Binding Converter={StaticResource StringFormatter}, ConverterParameter='Неправильно отвечено: {WrongQuestions}'}"
                     Style="{StaticResource TextBlockStyle}">
                 </TextBlock>
             </Grid>
