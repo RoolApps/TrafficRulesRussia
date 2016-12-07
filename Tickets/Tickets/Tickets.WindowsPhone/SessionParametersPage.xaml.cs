@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Utils;
+using Utils.Extensions;
 using Windows.UI.Xaml.Media.Imaging;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
@@ -27,7 +28,7 @@ namespace Tickets
     public sealed partial class SessionParametersPage : Page
     {
         #region Private Members
-        IEnumerable<TicketPresenter> Tickets;
+        IEnumerable<SQLiteShared.Models.Tickets> Tickets;
         #endregion
 
         public SessionParametersPage()
@@ -44,7 +45,7 @@ namespace Tickets
             //fetch ticket ids from database
             using (var dataAccessor = new SQLiteShared.SQLiteDataAccessor())
             {
-                Tickets = dataAccessor.CreateQuery<SQLiteShared.Models.Tickets>().Select(ticket => new TicketPresenter(ticket)).ToArray();
+                Tickets = dataAccessor.CreateQuery<SQLiteShared.Models.Tickets>().ToArray();
             }
             //assign them to listview
             listTickets.ItemsSource = Tickets;
@@ -58,23 +59,6 @@ namespace Tickets
         /// </summary>
         private void EnableControls()
         {
-            //if (chkRandomTicket.IsChecked == true)
-            //{
-            //    this.listTickets.IsEnabled = false;
-            //    this.btnStart.IsEnabled = true;
-            //}
-            //else
-            //{
-            //    this.listTickets.IsEnabled = true;
-            //    if (listTickets.SelectedItems.Any())
-            //    {
-            //        this.btnStart.IsEnabled = true;
-            //    }
-            //    else
-            //    {
-            //        this.btnStart.IsEnabled = false;
-            //    }
-            //}
         }
         #endregion Private Methods
 
@@ -105,7 +89,7 @@ namespace Tickets
             foreach(var item in e.AddedItems.Select(item => new { Item = item, Selected = true }).Union(e.RemovedItems.Select(item => new { Item = item, Selected = false })))
             {
                 var container = listTickets.ContainerFromItem(item.Item);
-                var image = FindVisualChildren<Image>(container).SingleOrDefault();
+                var image = container.FindChildrenOfType<Image>().SingleOrDefault();
                 if (image != null)
                 {
                     String imageName = null;
@@ -127,7 +111,7 @@ namespace Tickets
         {
             //creating parameters...
             var mode = AppLogic.Enums.QuestionsGenerationMode.SelectedTickets;
-            var ticketNums = listTickets.SelectedItems.Cast<TicketPresenter>().Select(ticket => ticket.Num).ToArray();
+            var ticketNums = listTickets.SelectedItems.Cast<SQLiteShared.Models.Tickets>().Select(ticket => ticket.num).ToArray();
             var shuffleChecked = Convert.ToBoolean(btnRandomTicket.Tag);
             var parameters = new SessionParameters(mode, shuffleChecked, ticketNums);
             ISession session;
@@ -182,52 +166,15 @@ namespace Tickets
 
             String url = String.Format("ms-appx:///Assets/{0}", imageName);
 
-            var image = FindVisualChildren<Image>(button).SingleOrDefault();
+            var image = button.FindChildrenOfType<Image>().SingleOrDefault();
             if (image != null)
             {
                 image.Source = new BitmapImage(new Uri(url, UriKind.Absolute));   
             }
         }
-
-        public static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
-        {
-            if (depObj != null)
-            {
-                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
-                {
-                    DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
-                    if (child != null && child is T)
-                    {
-                        yield return (T)child;
-                    }
-
-                    foreach (T childOfChild in FindVisualChildren<T>(child))
-                    {
-                        yield return childOfChild;
-                    }
-                }
-            }
-        }
         #endregion
 
         #region Additional Classes
-        /// <summary>
-        /// class used to display ticket number with user-friendly caption
-        /// </summary>
-        class TicketPresenter
-        {
-            private SQLiteShared.Models.Tickets ticket;
-
-            public TicketPresenter(SQLiteShared.Models.Tickets ticket)
-            {
-                this.ticket = ticket;
-            }
-
-            public int Num { get { return ticket.num; } }
-
-            public string NumString { get { return String.Format("Билет № {0}", ticket.num); } }
-        }
-
         /// <summary>
         /// class used to preserve session parameters
         /// </summary>

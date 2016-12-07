@@ -62,9 +62,9 @@
                     <Image x:Name="imgShuffleQuestions" 
                        Source="Assets/imgCheckUnChecked.png"/>
                     <TextBlock Text="Перемешать"
-                               VerticalAlignment="Center"
-                               Margin="10,0,0,0"
-                               Style="{StaticResource TextBlockStyle}"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,0"
+                        Style="{StaticResource TextBlockStyle}"
                         Grid.Column="1" />
                 </Grid>
                 
@@ -89,9 +89,9 @@
                     <Image x:Name="imgRandomQuestion" 
                        Source="Assets/imgButtonRandom.png"/>
                     <TextBlock Text="Случайный билет"
-                               VerticalAlignment="Center"
-                               Margin="10,0,0,0"
-                               Style="{StaticResource TextBlockStyle}"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,0"
+                        Style="{StaticResource TextBlockStyle}"
                         Grid.Column="1" />
                 </Grid>
             </Button>
@@ -112,18 +112,18 @@
                     <DataTemplate>
                         <Border BorderBrush="Gray" BorderThickness="0,1,0,0">
                             <ContentControl HorizontalContentAlignment="Stretch"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Stretch"
-                                    VerticalContentAlignment="Center"
-                                    Padding="-30,15,40,15">
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                VerticalContentAlignment="Center"
+                                Padding="-30,15,40,15">
                                 <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                                     <Image 
                                         Source="Assets/imgCheckUnChecked.png"
                                         HorizontalAlignment="Right"/>
-                                    <TextBlock Text="{Binding Converter={StaticResource StringFormatter}, ConverterParameter='Билет № {Num}'}"
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Left"
-                                               Style="{StaticResource TextBlockStyle}"/>
+                                    <TextBlock Text="{Binding Converter={StaticResource StringFormatter}, ConverterParameter='Билет № {num}'}"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Left"
+                                        Style="{StaticResource TextBlockStyle}"/>
                                 </Grid>
                             </ContentControl>
                         </Border>
@@ -134,13 +134,13 @@
             <Rectangle Fill="Gray" Grid.Row="4"/>
 
             <Button x:Name="btnStart"
-                    Grid.Row="5"
-                    VerticalAlignment="Stretch"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Stretch"
-                    VerticalContentAlignment="Stretch"
-                    Click="btnStart_Click"
-                    BorderThickness="0">
+                Grid.Row="5"
+                VerticalAlignment="Stretch"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
+                Click="btnStart_Click"
+                BorderThickness="0">
                 <Grid VerticalAlignment="Stretch" HorizontalAlignment="Center">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*" />
@@ -148,9 +148,9 @@
                     </Grid.ColumnDefinitions>
                     <Image Source="Assets/imgWheelDrive.png"/>
                     <TextBlock Text="Начать"
-                               VerticalAlignment="Center"
-                               Margin="10,0,0,0"
-                               Style="{StaticResource TextBlockStyle}"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,0"
+                        Style="{StaticResource TextBlockStyle}"
                         Grid.Column="1" />
                 </Grid>
             </Button>

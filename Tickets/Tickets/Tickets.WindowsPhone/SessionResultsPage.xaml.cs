@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -65,7 +64,6 @@ namespace Tickets
 
         private void btnMistakes_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            //Some hacky hacks used here because of wrong architecture. Very bad code
             var wrongQuestions = session.Tickets.SelectMany(ticket => ticket.Questions.Where(question => question.SelectedAnswered == null || !question.SelectedAnswered.IsRight)).ToArray();
             
             ISession newSession;
@@ -78,7 +76,6 @@ namespace Tickets
 
         class SessionParameters : ISessionParameters
         {
-
             public SessionParameters(IEnumerable<IQuestion> questions)
             {
                 Questions = questions;
