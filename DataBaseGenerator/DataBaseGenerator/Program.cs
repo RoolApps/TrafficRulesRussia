@@ -11,12 +11,55 @@ using System.IO;
 
 namespace DataBaseGenerator
 {
+    static class NodeTypes
+    {
+        public const String Header = "H4";
+        public const String Paragraph = "P";
+        public const String Link = "A";
+        public const String Bold = "STRONG";
+        public const String Text = "#text";
+    }
+
+    public static class ChapterBuilder
+    {
+        private static StringBuilder Content = new StringBuilder();
+        private static RuleChapter Chapter = null;
+
+        public static void StartChapter(String chapterName)
+        {
+            Chapter = new RuleChapter()
+            {
+                Name = chapterName
+            };
+        }
+
+        public static void AppendContent(String content)
+        {
+            Content.Append(content);
+        }
+
+        public static RuleChapter PopChapter()
+        {
+            var chapter = Chapter;
+            if(chapter != null)
+            {
+                chapter.Content = Content.ToString();
+                Content = new StringBuilder();
+                Chapter = null;
+            }
+            return chapter;
+        }
+    }
+
     class Program
     {
         static SQLiteConnection Connection = null;
         const string BaseUrl = "http://pdd.drom.ru/";
+        const string RulesUrl = "http://pdd.drom.ru/pdd/";
         const string NoImageUrl = "http://c.rdrom.ru/skin/pdd_no_question.jpg";
         const int MaximumTimeout = 60000;
+        static List<RuleChapter> Chapters = new List<RuleChapter>();
+
 
         static void Main(string[] args)
         {
@@ -25,6 +68,95 @@ namespace DataBaseGenerator
         }
 
         static Data GetData()
+        {
+            string ignoredHeader = "Правила дорожного движения";
+            bool ignoreUntilHeader = true;
+
+            CsQuery.Config.HtmlEncoder = new CsQuery.Output.HtmlEncoderNone();
+            var baseDocument = CsQuery.CQ.CreateFromUrl(RulesUrl);
+            var rulesDiv = baseDocument.Find(@"div[style=""overflow-x: auto""]").Single();
+            foreach(var node in rulesDiv.ChildNodes)
+            {
+                if (ignoreUntilHeader)
+                {
+                    if(node.NodeName != NodeTypes.Header || node.InnerHTML.Contains(ignoredHeader))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        ignoreUntilHeader = false;
+                    }
+                }
+                else
+                {
+                    if (node.NodeName == NodeTypes.Header && node.InnerHTML.Contains(ignoredHeader))
+                    {
+                        ignoreUntilHeader = true;
+                        continue;
+                    }
+                }
+                var content = ParseNode(node);
+                if(content != null)
+                {
+                    ChapterBuilder.AppendContent(content);
+                }
+            }
+            return null;
+        }
+
+        static String ParseNode(CsQuery.IDomObject node)
+        {
+            if (node.NodeName == NodeTypes.Text)
+            {
+                return node.NodeValue;
+            }
+            if (node.NodeName == NodeTypes.Header)
+            {
+                var currentChapter = ChapterBuilder.PopChapter();
+                if(currentChapter != null)
+                {
+                    Chapters.Add(currentChapter);
+                }
+                ChapterBuilder.StartChapter(node.ChildNodes.Single(n => n.NodeName != NodeTypes.Link).NodeValue);
+            }
+            if (node.NodeName == NodeTypes.Paragraph)
+            {
+                var pattern = "<Paragraph>{0}</Paragraph>";
+                if (node.ChildNodes.Any())
+                {
+                    var content = String.Join("", node.ChildNodes.Select(childNode => ParseNode(childNode)));
+                    return String.Format(pattern, content);
+                }
+                else
+                {
+                    return String.Format(pattern, node.NodeValue);
+                }
+            }
+            if (node.NodeName == NodeTypes.Bold)
+            {
+                var pattern = "<Bold>{0}</Bold>";
+                if (node.ChildNodes.Any())
+                {
+                    var content = String.Join("", node.ChildNodes.Select(childNode => ParseNode(childNode)));
+                    return String.Format(pattern, content);
+                }
+                else
+                {
+                    return String.Format(pattern, node.NodeValue);
+                }
+            }
+            if (node.NodeName == NodeTypes.Link)
+            {
+                if ((node.GetAttribute("href") ?? String.Empty).Contains("signs"))
+                {
+                    return String.Format("@{0}@", node.ChildNodes.Single(childNode => childNode.NodeName == NodeTypes.Text).NodeValue);
+                }
+            }
+            return String.Empty;
+        }
+
+        static Data GetData2()
         {
             CsQuery.Config.HtmlEncoder = new CsQuery.Output.HtmlEncoderNone();
             var baseDocument = CsQuery.CQ.CreateFromUrl(BaseUrl);
