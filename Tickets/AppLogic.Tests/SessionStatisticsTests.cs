@@ -51,6 +51,11 @@ namespace AppLogic.Tests
             {
                 get { return Enums.QuestionsGenerationMode.RandomTicket; }
             }
+
+            public IEnumerable<IQuestion> Questions
+            {
+                get { return null; }
+            }
         }
 
         [ClassInitialize]

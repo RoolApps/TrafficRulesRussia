@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -27,7 +28,6 @@ namespace Tickets
     public sealed partial class QuestionPage : Page
     {
         ISession Session;
-        PagedCanvas PagedCanvas;
 
         public QuestionPage()
         {
@@ -47,21 +47,39 @@ namespace Tickets
             } else {
                 Session = Serializer.DeserializeFromString<Session>(e.Parameter as string);
             }
-            PagedCanvas = flippingCanvas.Children.OfType<PagedCanvas>().Single();
-            PagedCanvas.ItemsSource = new PagedCollection<IQuestion>(2) { DataSource = Session.Tickets.SelectMany(ticket => ticket.Questions) };
-            flippingCanvas.OnCompleted += flippingCanvas_OnCompleted;
+            int index = 0;
+            var questions = Session.Tickets.SelectMany(ticket => ticket.Questions);
+            var length = questions.Count();
+
+            questionsCanvas.DataSource = new VirtualLinkedList<IQuestion>(questions,
+                (dataSource, current) =>
+                {
+                    if (index + 1 < length)
+                    {
+                        index++;
+                    }
+                    else
+                    {
+                        index = 0;
+                    }
+                    return dataSource.ElementAt(index);
+                },
+                (dataSource, current) =>
+                {
+                    if (index > 0)
+                    {
+                        index--;
+                    }
+                    else
+                    {
+                        index = length - 1;
+                    }
+                    return dataSource.ElementAt(index);
+                });
         }
 
         protected override async void OnNavigatedFrom( NavigationEventArgs e ) {
             await SettingSaver.SaveSettingToFile(GlobalConstants.sesstionState, Serializer.SerializeToString(Session));
-        }
-
-        void flippingCanvas_OnCompleted( object sender, XAMLMarkup.EventHandlers.OnFlipCompleted e ) {
-            if(e.Direction == XAMLMarkup.Enums.MoveDirection.ToNext) {
-                PagedCanvas.LoadNext();
-            } else if(e.Direction == XAMLMarkup.Enums.MoveDirection.ToPrevious) {
-                PagedCanvas.LoadPrevious();
-            }
         }
 
         private void TextBlock_Tapped(object sender, TappedRoutedEventArgs e)
@@ -70,7 +88,12 @@ namespace Tickets
             var answer = element.DataContext as IAnswer;
             answer.IsSelected = !answer.IsSelected;
 
-            btnEndSession.Visibility = Session.Tickets.SelectMany(ticket => ticket.Questions).All(question => question.SelectedAnswered != null) ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
+            if(answer.IsSelected)
+            {
+                questionsCanvas.ChangeCanvasContent(true);
+            }
+
+            //btnEndSession.Visibility = Session.Tickets.SelectMany(ticket => ticket.Questions).All(question => question.SelectedAnswered != null) ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
         }
 
         private void btnEndSession_Click(object sender, RoutedEventArgs e)
@@ -79,14 +102,35 @@ namespace Tickets
         }
     }
 
-    public class BorderColorConverter : IValueConverter
+    public class BorderColorConverter : BooleanConverter<String>
     {
-        const String Selected = "Red";
-        const String NotSelected = "White";
+        protected override String Selected { get { return "Brown"; } }
+        protected override String NotSelected { get { return "Brown"; } }
+    }
+
+    public class BorderOpacityConverter : BooleanConverter<double>
+    {
+        protected override double Selected { get { return 1; } }
+        protected override double NotSelected { get { return 1; } }
+    }
+
+    public class BorderThicknessConverter : BooleanConverter<Thickness>
+    {
+        private readonly Thickness selected = new Thickness(3);
+        private readonly Thickness notSelected = new Thickness(1);
+
+        protected override Thickness Selected { get { return selected; } }
+        protected override Thickness NotSelected { get { return notSelected; } }
+    }
+
+    public abstract class BooleanConverter<T> : IValueConverter
+    {
+        protected abstract T Selected { get; }
+        protected abstract T NotSelected { get; }
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if(value == null)
+            if (value == null)
             {
                 return NotSelected;
             }

@@ -11,6 +11,20 @@ using AppLogic.Constants;
 namespace AppLogic {
     class TicketLoader : ITicketLoader {
         public IEnumerable<ITicket> LoadTickets( ISessionParameters parameters ) {
+            if(parameters.Mode == Enums.QuestionsGenerationMode.Questions)
+            {
+                return parameters.Questions.GroupBy(question => question.Ticket.Number, question => question).Select(group =>
+                {
+                    var ticket = new Ticket();
+                    foreach (var q in group.OfType<Question>())
+                    {
+                        q.Ticket = ticket;
+                    }
+                    ticket.Questions = group;
+                    ticket.Number = group.Key;
+                    return ticket;
+                }).ToArray();
+            }
             SQLiteDataAccessor dataAccessor = null;
             try {
                 dataAccessor = new SQLiteDataAccessor();

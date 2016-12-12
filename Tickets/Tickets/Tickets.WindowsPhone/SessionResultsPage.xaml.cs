@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using AppLogic.Interfaces;
 using Utils;
 using AppLogic;
+using AppLogic.Enums;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
@@ -41,88 +42,55 @@ namespace Tickets
         /// This parameter is typically used to configure the page.</param>
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            InitResources();
             if(e.NavigationMode != NavigationMode.New) {
                 string sessionState = await SettingSaver.GetSettingFromFile(GlobalConstants.sesstionState);
                 session = Serializer.DeserializeFromString<Session>(sessionState);
             } else {
                 session = Serializer.DeserializeFromString<Session>(e.Parameter as string);
             }
-            pivot.ItemsSource = session.Tickets;
             ISessionStatistics statistics;
             var creationResult = SessionStatisticsFactory.CreateSessionStatistics(session, out statistics);
-            if(creationResult != AppLogic.Enums.SessionValidationResult.Valid)
-            {
-                btnStatistics.IsEnabled = false;
-            }
-            else
-            {
-                popupStatistics.DataContext = statistics;
-            }
+            gridResults.DataContext = statistics;
         }
 
         protected override async void OnNavigatedFrom( NavigationEventArgs e ) {
             await SettingSaver.SaveSettingToFile(GlobalConstants.sesstionState, Serializer.SerializeToString(session));
         }
 
-        #region EventHandlers
-        private void semanticZoom_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        private void btnFinish_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if (args.NewValue != null)
+            this.Frame.Navigate(typeof(MainPage));
+        }
+
+        private void btnMistakes_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var wrongQuestions = session.Tickets.SelectMany(ticket => ticket.Questions.Where(question => question.SelectedAnswered == null || !question.SelectedAnswered.IsRight)).ToArray();
+            
+            ISession newSession;
+            var creationResult = SessionFactory.CreateSession(new SessionParameters(wrongQuestions), out newSession);
+            if(creationResult == ParametersValidationResult.Valid)
             {
-                ((sender as SemanticZoom).ZoomedOutView as ListViewBase).ItemsSource = (args.NewValue as ICollectionView).CollectionGroups;
+                this.Frame.Navigate(typeof(QuestionPage), Serializer.SerializeToString(newSession));
             }
         }
 
-        private void semanticZoom_ViewChangeStarted(object sender, SemanticZoomViewChangedEventArgs e)
+        class SessionParameters : ISessionParameters
         {
-            Resources.GetPropertyHolder("IsPivotVisible").Value = !e.IsSourceZoomedInView;
-        }
-
-        private void btnMainMenu_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(MainPage));
-        }
-
-        private void btnStatistics_Click(object sender, RoutedEventArgs e)
-        {
-            popupStatistics.IsOpen = true;
-        }
-        #endregion
-
-        #region Private Methods
-        private void InitResources()
-        {
-            Resources.GetPropertyHolder("QuestionColorLambda").Value = new Func<object, object>(question =>
+            public SessionParameters(IEnumerable<IQuestion> questions)
             {
-                var iquestion = question as IQuestion;
-                if (iquestion.SelectedAnswered.IsRight)
-                {
-                    return "Green";
-                }
-                else
-                {
-                    return "Red";
-                }
-            });
+                Questions = questions;
+            }
 
-            Resources.GetPropertyHolder("AnswerColorLambda").Value = new Func<object, object>(answer =>
+            public bool Shuffle
             {
-                var ianswer = answer as IAnswer;
-                if (ianswer.IsRight)
-                {
-                    return "Green";
-                }
-                else if (ianswer.IsSelected)
-                {
-                    return "Red";
-                }
-                else
-                {
-                    return "White";
-                }
-            });
+                get { return false; }
+            }
+
+            public IEnumerable<IQuestion> Questions { get; private set; }
+
+            public int[] TicketNums { get { return null; } }
+
+            public QuestionsGenerationMode Mode { get { return QuestionsGenerationMode.Questions; } }
         }
-        #endregion
     }
 }

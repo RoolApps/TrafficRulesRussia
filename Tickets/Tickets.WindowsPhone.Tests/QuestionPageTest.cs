@@ -49,6 +49,11 @@ namespace Tickets.WindowsPhone.Tests
             {
                 get { return AppLogic.Enums.QuestionsGenerationMode.SelectedTickets; }
             }
+
+            public System.Collections.Generic.IEnumerable<IQuestion> Questions
+            {
+                get { return null; }
+            }
         }
 
         [ClassInitialize]
@@ -57,6 +62,7 @@ namespace Tickets.WindowsPhone.Tests
             Resources.ConnectionString = Path.Combine(Package.Current.InstalledLocation.Path, Resources.DBFileName);
         }
 
+        [Ignore]
         [TestMethod]
         public async Task QuestionContentFitsToTextBlock()
         {

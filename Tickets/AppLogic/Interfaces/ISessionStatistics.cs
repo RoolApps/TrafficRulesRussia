@@ -14,6 +14,7 @@ namespace AppLogic.Interfaces
 
         int TakenQuestions { get; }
         int PassedQuestions { get; }
+        int WrongQuestions { get; }
         int PassedQuestionsPercentage { get; }
     }
 }
