@@ -17,6 +17,13 @@ namespace DataBaseGenerator
     {
         public String Name { get; set; }
         public byte[] Image { get; set; }
+        public String Description { get; set; }
+    }
+
+    class Marks
+    {
+        public String Name { get; set; }
+        public byte[] Image { get; set; }
     }
 
     public class RuleChapter

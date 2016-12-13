@@ -18,6 +18,7 @@ namespace DataBaseGenerator
         public const String Link = "A";
         public const String Bold = "STRONG";
         public const String Text = "#text";
+        public const String Td = "TD";
     }
 
     public static class ChapterBuilder
@@ -56,6 +57,7 @@ namespace DataBaseGenerator
         static SQLiteConnection Connection = null;
         const string BaseUrl = "http://pdd.drom.ru/";
         const string RulesUrl = "http://pdd.drom.ru/pdd/";
+        const string SignsUrl = "http://pdd.drom.ru/pdd/signs/";
         const string NoImageUrl = "http://c.rdrom.ru/skin/pdd_no_question.jpg";
         const int MaximumTimeout = 60000;
         static List<RuleChapter> Chapters = new List<RuleChapter>();
@@ -68,6 +70,20 @@ namespace DataBaseGenerator
         }
 
         static Data GetData()
+        {
+            return new Data()
+            {
+                Signs = GetSigns()
+            };
+            //return new Data()
+            //{
+            //    Tickets = GetTickets(),
+            //    Chapters = GetChapters(),
+            //    Signs = GetSigns()
+            //};
+        }
+
+        static RuleChapter[] GetChapters()
         {
             string ignoredHeader = "Правила дорожного движения";
             bool ignoreUntilHeader = true;
@@ -150,13 +166,17 @@ namespace DataBaseGenerator
             {
                 if ((node.GetAttribute("href") ?? String.Empty).Contains("signs"))
                 {
-                    return String.Format("@{0}@", node.ChildNodes.Single(childNode => childNode.NodeName == NodeTypes.Text).NodeValue);
+                    return String.Format("@<sign>{0}@", node.ChildNodes.Single(childNode => childNode.NodeName == NodeTypes.Text).NodeValue);
+                }
+                else if ((node.GetAttribute("href") ?? String.Empty).Contains("marks"))
+                {
+                    return String.Format("@<mark>{0}@", node.ChildNodes.Single(childNode => childNode.NodeName == NodeTypes.Text).NodeValue);
                 }
             }
             return String.Empty;
         }
 
-        static Data GetData2()
+        static Ticket[] GetTickets()
         {
             CsQuery.Config.HtmlEncoder = new CsQuery.Output.HtmlEncoderNone();
             var baseDocument = CsQuery.CQ.CreateFromUrl(BaseUrl);
@@ -229,7 +249,62 @@ namespace DataBaseGenerator
                 taskList.Add(task);
             }
             Task.WaitAll(taskList.ToArray());
-            return new Data() { Tickets = taskList.Select(task => task.Result).ToArray() };
+            return taskList.Select(task => task.Result).ToArray();
+        }
+
+        static Sign[] GetSigns()
+        {
+            CsQuery.Config.HtmlEncoder = new CsQuery.Output.HtmlEncoderNone();
+            var baseDocument = CsQuery.CQ.CreateFromUrl(SignsUrl);
+            var signsTables = baseDocument.Find(@"div[style=""overflow-x: auto""] table tr");
+
+            return signsTables.SelectMany(signNode =>
+            {
+                var leftNode = signNode.ChildNodes.First(node => node.NodeName == NodeTypes.Td).Cq();
+                var rightNode = signNode.ChildNodes.Last(node => node.NodeName == NodeTypes.Td).Cq();
+                IEnumerable<String> signsCaptions;
+                var captions = leftNode.Find("strong");
+                if(!captions.Any())
+                {
+                    return new Sign[0];
+                }
+                else if(captions.Length > 1)
+                {
+                    signsCaptions = captions.Select(node => node.InnerHTML);
+                }
+                else
+                {
+                    var caption = captions.Single().InnerHTML;
+                    if(caption.Contains(","))
+                    {
+                        signsCaptions = caption.Split(',').Select(cap => cap.Trim());
+                    }
+                    else
+                    {
+                        signsCaptions = new String[] { caption };
+                    }
+                }
+
+                var signs = new List<Sign>();
+                var description = String.Join(Environment.NewLine, rightNode.Find("p").Select(node => ParseNode(node)));
+                var name = rightNode.Find("strong").First().Single().InnerHTML;
+                var imagesUrls = leftNode.Find("img").Select(node => node.GetAttribute("src"));
+                var images = imagesUrls.Select(url => new WebClient().DownloadData(url)).ToArray();
+                if(images.Length < captions.Length)
+                {
+                    images = Enumerable.Range(0, captions.Length).Select(i => images.First()).ToArray();
+                }
+                for (int i = 0; i < captions.Length; i++)
+                {
+                    var sign = new Sign();
+                    sign.Description = description;
+                    sign.Name = name;
+                    sign.Image = images[i];
+                    signs.Add(sign);
+                }
+
+                return signs.ToArray();
+            }).ToArray();
         }
 
         static void CreateDB(Data data)
