@@ -58,6 +58,7 @@ namespace DataBaseGenerator
         const string BaseUrl = "http://pdd.drom.ru/";
         const string RulesUrl = "http://pdd.drom.ru/pdd/";
         const string SignsUrl = "http://pdd.drom.ru/pdd/signs/";
+        const string MarksUrl = "http://pdd.drom.ru/pdd/marking/";
         const string NoImageUrl = "http://c.rdrom.ru/skin/pdd_no_question.jpg";
         const int MaximumTimeout = 60000;
         static List<RuleChapter> Chapters = new List<RuleChapter>();
@@ -73,14 +74,11 @@ namespace DataBaseGenerator
         {
             return new Data()
             {
-                Signs = GetSigns()
+                Tickets = GetTickets(),
+                Signs = GetSigns(),
+                Marks = GetMarks(),
+                Chapters = GetChapters()
             };
-            //return new Data()
-            //{
-            //    Tickets = GetTickets(),
-            //    Chapters = GetChapters(),
-            //    Signs = GetSigns()
-            //};
         }
 
         static RuleChapter[] GetChapters()
@@ -118,7 +116,7 @@ namespace DataBaseGenerator
                     ChapterBuilder.AppendContent(content);
                 }
             }
-            return null;
+            return Chapters.ToArray();
         }
 
         static String ParseNode(CsQuery.IDomObject node)
@@ -192,7 +190,7 @@ namespace DataBaseGenerator
                     {
                         throw new Exception(String.Format("Cannot extract url from element: {0}", link.ToString()));
                     }
-                    var ticketNum = link.InnerText;
+                    var ticketNum = link.Cq().Find("span").First().Single().InnerText;
 
                     Ticket ticket = new Ticket();
                     ticket.Num = Convert.ToInt32(ticketNum);
@@ -307,6 +305,55 @@ namespace DataBaseGenerator
             }).ToArray();
         }
 
+        static Mark[] GetMarks()
+        {
+            CsQuery.Config.HtmlEncoder = new CsQuery.Output.HtmlEncoderNone();
+            var baseDocument = CsQuery.CQ.CreateFromUrl(MarksUrl);
+            var marksTables = baseDocument.Find(@"div[style=""overflow-x: auto""] table tr");
+
+            return marksTables.SelectMany(signNode =>
+            {
+                var leftNode = signNode.ChildNodes.First(node => node.NodeName == NodeTypes.Td).Cq();
+                var rightNode = signNode.ChildNodes.Last(node => node.NodeName == NodeTypes.Td).Cq();
+                IEnumerable<String> marksCaptions;
+                var captions = rightNode.Find("strong");
+                if (!captions.Any())
+                {
+                    return new Mark[0];
+                }
+                else
+                {
+                    var caption = captions.First().Single().InnerHTML;
+                    if (caption.Contains(","))
+                    {
+                        marksCaptions = caption.Split(',').Select(cap => cap.Trim());
+                    }
+                    else
+                    {
+                        marksCaptions = new String[] { caption };
+                    }
+                }
+
+                var marks = new List<Mark>();
+                var description = String.Join(Environment.NewLine, rightNode.Find("p").Select(node => ParseNode(node)));
+                var imagesUrls = leftNode.Find("img").Select(node => node.GetAttribute("src"));
+                var images = imagesUrls.Select(url => new WebClient().DownloadData(url)).ToArray();
+                if (images.Length < captions.Length)
+                {
+                    images = Enumerable.Range(0, captions.Length).Select(i => images.First()).ToArray();
+                }
+                for (int i = 0; i < captions.Length; i++)
+                {
+                    var mark = new Mark();
+                    mark.Description = description;
+                    mark.Image = images[i];
+                    marks.Add(mark);
+                }
+
+                return marks.ToArray();
+            }).ToArray();
+        }
+
         static void CreateDB(Data data)
         {
             System.IO.File.Delete("tickets.db");
@@ -324,6 +371,9 @@ namespace DataBaseGenerator
             ExecuteCommand("CREATE TABLE Tickets (id integer primary key, num integer)");
             ExecuteCommand("CREATE TABLE Questions (id integer primary key, num integer, question text, image blob, ticket_id integer)");
             ExecuteCommand("CREATE TABLE Answers (id integer primary key, answer text, is_right integer, question_id integer)");
+            ExecuteCommand("CREATE TABLE Chapters (id integer primary key, name text, content text)");
+            ExecuteCommand("CREATE TABLE Marks (id integer primary key, description text, image blob)");
+            ExecuteCommand("CREATE TABLE Signs (id integer primary key, name text, description text, image blob)");
         }
 
         static void InsertData(Data data)
@@ -376,6 +426,49 @@ namespace DataBaseGenerator
                             }
                         }
 
+                    }
+                }
+
+                using (var chapterCommand = Connection.CreateCommand())
+                {
+                    chapterCommand.CommandText = "INSERT INTO Chapters (name, content) Values (?,?)";
+                    chapterCommand.Parameters.Add(new SQLiteParameter() { ParameterName = "@name", DbType = System.Data.DbType.String });
+                    chapterCommand.Parameters.Add(new SQLiteParameter() { ParameterName = "@content", DbType = System.Data.DbType.String });
+                    foreach (var chapter in data.Chapters)
+                    {
+                        chapterCommand.Parameters["@name"].Value = chapter.Name;
+                        chapterCommand.Parameters["@content"].Value = chapter.Content;
+                        chapterCommand.ExecuteNonQuery();
+                    }
+                }
+
+                using (var markCommand = Connection.CreateCommand())
+                {
+                    markCommand.CommandText = "INSERT INTO Marks (description, image) Values (?,?)";
+                    markCommand.Parameters.Add(new SQLiteParameter() { ParameterName = "@description", DbType = System.Data.DbType.String });
+                    markCommand.Parameters.Add(new SQLiteParameter() { ParameterName = "@image", DbType = System.Data.DbType.Binary });
+                    foreach(var mark in data.Marks)
+                    {
+                        markCommand.Parameters["@description"].Value = mark.Description;
+                        markCommand.Parameters["@image"].Value = mark.Image;
+                        markCommand.Parameters["@image"].Size = mark.Image.Length;
+                        markCommand.ExecuteNonQuery();
+                    }
+                }
+
+                using (var signCommand = Connection.CreateCommand())
+                {
+                    signCommand.CommandText = "INSERT INTO Signs (name, description, image) Values (?,?,?)";
+                    signCommand.Parameters.Add(new SQLiteParameter() { ParameterName = "@name", DbType = System.Data.DbType.String });
+                    signCommand.Parameters.Add(new SQLiteParameter() { ParameterName = "@description", DbType = System.Data.DbType.String });
+                    signCommand.Parameters.Add(new SQLiteParameter() { ParameterName = "@image", DbType = System.Data.DbType.Binary });
+                    foreach (var sign in data.Signs)
+                    {
+                        signCommand.Parameters["@name"].Value = sign.Name;
+                        signCommand.Parameters["@description"].Value = sign.Description;
+                        signCommand.Parameters["@image"].Value = sign.Image;
+                        signCommand.Parameters["@image"].Size = sign.Image.Length;
+                        signCommand.ExecuteNonQuery();
                     }
                 }
                 transaction.Commit();

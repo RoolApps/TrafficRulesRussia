@@ -11,6 +11,7 @@ namespace DataBaseGenerator
         public Ticket[] Tickets { get; set; }
         public RuleChapter[] Chapters { get; set; }
         public Sign[] Signs { get; set; }
+        public Mark[] Marks { get; set; }
     }
 
     class Sign
@@ -20,10 +21,10 @@ namespace DataBaseGenerator
         public String Description { get; set; }
     }
 
-    class Marks
+    class Mark
     {
-        public String Name { get; set; }
         public byte[] Image { get; set; }
+        public String Description { get; set; }
     }
 
     public class RuleChapter
