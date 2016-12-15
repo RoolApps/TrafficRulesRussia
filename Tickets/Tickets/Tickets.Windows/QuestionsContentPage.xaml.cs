@@ -124,8 +124,8 @@ namespace Tickets
         private void Border_PointerExited( object sender, PointerRoutedEventArgs e ) {
             Image image = (sender as Border).Child as Image;
             if(image != null) {
-                image.Opacity = XAMLMarkup.Global.GlobalConstants.translucentValue;
-                (sender as Border).Opacity = XAMLMarkup.Global.GlobalConstants.translucentValue;
+                image.Opacity = Tickets.Global.GlobalConstants.translucentValue;
+                (sender as Border).Opacity = Tickets.Global.GlobalConstants.translucentValue;
             }
         }
 

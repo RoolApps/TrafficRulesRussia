@@ -103,6 +103,10 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="MainMenuIcon.xaml.cs">
+      <DependentUpon>MainMenuIcon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Constants\GlobalConstants.cs" />
     <Compile Include="ExamParametersPage.xaml.cs">
       <DependentUpon>ExamParametersPage.xaml</DependentUpon>
     </Compile>
@@ -143,6 +147,10 @@
     <Content Include="Image\Ticket_btn.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="MainMenuIcon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ExamParametersPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -193,6 +201,9 @@
     <SDKReference Include="SQLite.WinRT81, Version=3.12.2">
       <Name>SQLite for Windows Runtime %28Windows 8.1%29</Name>
     </SDKReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="CommonUI\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

@@ -12,9 +12,16 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using XAMLMarkup.Global;
+using XAMLMarkup;
+using Tickets;
+using Utils;
+using AppLogic;
+using AppLogic.Enums;
+using AppLogic.Interfaces;
+using System.Collections.ObjectModel;
+using Tickets.Global;
 
-namespace XAMLMarkup {
+namespace Tickets {
     public sealed partial class MainMenuIcon : UserControl {
         public MainMenuIcon() {
             this.InitializeComponent();
@@ -63,7 +70,7 @@ namespace XAMLMarkup {
 
         private void Image_PointerPressed( object sender, PointerRoutedEventArgs e ) {
             if(sender as Image != null) {
-                (sender as Image).Opacity = GlobalConstants.translucentValue;
+                (sender as Image).Opacity = Tickets.Global.GlobalConstants.translucentValue;
             }
         }
 
