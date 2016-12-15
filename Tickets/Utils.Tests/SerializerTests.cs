@@ -33,6 +33,10 @@ namespace Utils.Tests
                 get;
                 set;
             }
+
+            public IEnumerable<IQuestion> Questions {
+                get { return null; }
+            }
         }
 
         [ClassInitialize]

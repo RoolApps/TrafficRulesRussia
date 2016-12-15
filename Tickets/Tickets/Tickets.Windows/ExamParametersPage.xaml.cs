@@ -127,6 +127,11 @@ namespace Tickets {
                 get;
                 set;
             }
+
+
+            public IEnumerable<IQuestion> Questions {
+                get { return null; }
+            }
         }
         #endregion
 

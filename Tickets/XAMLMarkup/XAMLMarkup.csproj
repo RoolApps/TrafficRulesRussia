@@ -36,10 +36,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <Page Include="MainMenuIcon.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Themes\Generic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -52,15 +48,14 @@
   <ItemGroup>
     <Compile Include="Enums\MoveDirection.cs" />
     <Compile Include="EventHandlers\OnFlipCompleted.cs" />
-    <Compile Include="Global\GlobalConstants.cs" />
     <Compile Include="Interfaces\IPagedCollection.cs" />
     <Compile Include="FlippingCanvas.cs" />
-    <Compile Include="MainMenuIcon.xaml.cs">
-      <DependentUpon>MainMenuIcon.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Interfaces\IVirtualLinkedList.cs" />
     <Compile Include="PagedCanvas.cs" />
     <Compile Include="PagedCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SwipeScrollCanvas.cs" />
+    <Compile Include="VirtualLinkedList.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utils\Utils.csproj">

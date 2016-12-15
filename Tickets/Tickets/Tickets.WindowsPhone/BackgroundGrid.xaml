@@ -1,0 +1,44 @@
+﻿<Page
+    x:Class="Tickets.BackgroundGrid"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Tickets"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="MainResourceDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+    <Grid Canvas.ZIndex="-1" Background="White">
+        <Grid.Resources>
+            <Style TargetType="Image" x:Key="ImageButtonBackgroundStyle" BasedOn="{StaticResource StretchedImage}">
+                <Setter Property="Margin" Value="10,20,10,20" />
+                <Setter Property="Opacity" Value="0.5" />
+            </Style>
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="4*" />
+            <RowDefinition Height="4*" />
+            <RowDefinition Height="4*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Image Grid.Row="1" Grid.Column="0" Style="{StaticResource ImageButtonBackgroundStyle}" Source="Assets/imgTicketBG.png"/>
+        <Image Grid.Row="1" Grid.Column="1" Style="{StaticResource ImageButtonBackgroundStyle}" Source="Assets/imgExamBG.png"/>
+        <Image Grid.Row="2" Grid.Column="0" Style="{StaticResource ImageButtonBackgroundStyle}" Source="Assets/imgRulesBG.png"/>
+        <Image Grid.Row="2" Grid.Column="1" Style="{StaticResource ImageButtonBackgroundStyle}" Source="Assets/imgStatisticsBG.png"/>
+        <Image Grid.Row="3" Grid.Column="0" Style="{StaticResource ImageButtonBackgroundStyle}" Source="Assets/imgErrorReportBG.png"/>
+        <Image Grid.Row="3" Grid.Column="1" Style="{StaticResource ImageButtonBackgroundStyle}" Source="Assets/imgRateAppBG.png"/>
+    </Grid>
+</Page>

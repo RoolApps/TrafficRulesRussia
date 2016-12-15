@@ -8,18 +8,85 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="3*" />
-            <RowDefinition Height="3*" />
-            <RowDefinition Height="4*" />
-        </Grid.RowDefinitions>
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="MainResourceDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Background="White">
+        <local:BackgroundGrid />
+
+        <Grid Canvas.ZIndex="1">
+            <Grid.Resources>
+                <Style TargetType="Grid" x:Key="GridContainerStyle">
+                    <Setter Property="Margin" Value="10,10,10,50" />
+                </Style>
+                <Style TargetType="Image" x:Key="ImageButtonStyle" BasedOn="{StaticResource StretchedImage}">
+                    <Setter Property="Margin" Value="10,10,10,50" />
+                </Style>
+            </Grid.Resources>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="4*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            
+            <Grid>
+                <Grid.RowDefinitions>
+                    
+                </Grid.RowDefinitions>
+            </Grid>
+            <Image x:Name="imgTickets" Grid.Row="1" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgTicket.png" Tapped="imgTickets_Tapped"/>
+            <Image Grid.Row="1" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgExam.png"/>
+            <Image Grid.Row="2" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgRules.png"/>
+            <Image Grid.Row="2" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgStatistics.png"/>
+            <Image Grid.Row="3" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgErrorReport.png"/>
+            <Image Grid.Row="3" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgRateApp.png"/>
+        </Grid>
         
-        <Border BorderBrush="WhiteSmoke" Grid.Row="0" BorderThickness="3" Margin="10">
-            <TextBlock x:Name="txtNewExam" Text="Новый экзамен" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" Tapped="txtNewExam_Tapped" />
-        </Border>
-        <Border BorderBrush="WhiteSmoke" Grid.Row="1" BorderThickness="3" Margin="10">
-            <TextBlock x:Name="txtStatistics" Text="Статистика" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" />
-        </Border>
+        <Grid Canvas.ZIndex="1">
+            <Grid.Resources>
+                <Style TargetType="TextBlock" x:Key="TextBlockStyle">
+                    <Setter Property="FontFamily" Value="Comic Sans MS" />
+                    <Setter Property="FontSize" Value="18" />
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                    <Setter Property="Foreground" Value="Brown" />
+                </Style>
+            </Grid.Resources>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="0.5*" />
+                <RowDefinition Height="0.5*" />
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="0.5*" />
+                <RowDefinition Height="0.5*" />
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="0.5*" />
+                <RowDefinition Height="0.5*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Text="Билеты" Grid.Row="2" Grid.Column="0" Style="{StaticResource TextBlockStyle}" />
+            <TextBlock Text="Экзамен" Grid.Row="2" Grid.Column="1" Style="{StaticResource TextBlockStyle}" />
+            <TextBlock Text="Правила" Grid.Row="5" Grid.Column="0" Style="{StaticResource TextBlockStyle}" />
+            <TextBlock Text="Статистика" Grid.Row="5" Grid.Column="1" Style="{StaticResource TextBlockStyle}" />
+            <TextBlock Text="Сообщить об ошибке" Grid.Row="8" Grid.Column="0" Style="{StaticResource TextBlockStyle}" />
+            <TextBlock Text="Оценить приложение" Grid.Row="8" Grid.Column="1" Style="{StaticResource TextBlockStyle}" />
+        </Grid>
     </Grid>
 </Page>

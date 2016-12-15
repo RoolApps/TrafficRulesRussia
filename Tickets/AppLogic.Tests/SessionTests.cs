@@ -22,6 +22,8 @@ namespace AppLogic.Tests
             public int[] TicketNums { get; set; }
 
             public QuestionsGenerationMode Mode { get; set; }
+
+            public IEnumerable<IQuestion> Questions { get { return null; } }
         }
 
         public SessionTests()

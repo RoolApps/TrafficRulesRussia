@@ -53,6 +53,10 @@ namespace AppLogic
                 else if(parameters.Mode == QuestionsGenerationMode.ExamTicket) {
                     return ParametersValidationResult.Valid;
                 }
+                else if(parameters.Mode == QuestionsGenerationMode.Questions)
+                {
+                    return parameters.Questions == null ? ParametersValidationResult.NoTickets : ParametersValidationResult.Valid;
+                }
                 else if(parameters.TicketNums == null || !parameters.TicketNums.Any())
                 {
                     return ParametersValidationResult.NoTickets;

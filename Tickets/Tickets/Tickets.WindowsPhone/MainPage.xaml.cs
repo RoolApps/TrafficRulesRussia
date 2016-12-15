@@ -45,7 +45,7 @@ namespace Tickets
             // данное событие обрабатывается для вас.
         }
 
-        private void txtNewExam_Tapped(object sender, TappedRoutedEventArgs e)
+        private void imgTickets_Tapped(object sender, TappedRoutedEventArgs e)
         {
             Frame.Navigate(typeof(SessionParametersPage));
         }
