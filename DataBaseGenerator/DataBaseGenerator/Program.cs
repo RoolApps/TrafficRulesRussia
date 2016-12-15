@@ -61,6 +61,7 @@ namespace DataBaseGenerator
         const string MarksUrl = "http://pdd.drom.ru/pdd/marking/";
         const string NoImageUrl = "http://c.rdrom.ru/skin/pdd_no_question.jpg";
         const int MaximumTimeout = 60000;
+        static Regex regex = new Regex(@"(?<num>\d+(\.\d+)*)");
         static List<RuleChapter> Chapters = new List<RuleChapter>();
 
 
@@ -164,14 +165,20 @@ namespace DataBaseGenerator
             {
                 if ((node.GetAttribute("href") ?? String.Empty).Contains("signs"))
                 {
-                    return String.Format("@<sign>{0}@", node.ChildNodes.Single(childNode => childNode.NodeName == NodeTypes.Text).NodeValue);
+                    return ReplaceUrl(node.ChildNodes.Single(chileNode => chileNode.NodeName == NodeTypes.Text).NodeValue, "sign");
                 }
                 else if ((node.GetAttribute("href") ?? String.Empty).Contains("marks"))
                 {
-                    return String.Format("@<mark>{0}@", node.ChildNodes.Single(childNode => childNode.NodeName == NodeTypes.Text).NodeValue);
+                    return ReplaceUrl(node.ChildNodes.Single(chileNode => chileNode.NodeName == NodeTypes.Text).NodeValue, "mark");
                 }
             }
             return String.Empty;
+        }
+
+        static string ReplaceUrl(string text, string replace)
+        {
+            text = text.Replace('_', '.');
+            return regex.Replace(text, String.Format("@@{{{0}}}${{num}}@@", replace));
         }
 
         static Ticket[] GetTickets()
@@ -180,16 +187,12 @@ namespace DataBaseGenerator
             var baseDocument = CsQuery.CQ.CreateFromUrl(BaseUrl);
             var ticketLinks = baseDocument.Find("div.numbers a");
             List<Task<Ticket>> taskList = new List<Task<Ticket>>();
+
             foreach(var ticketLink in ticketLinks)
             {
                 var task = new Task<Ticket>(() =>
                 {
                     var link = ticketLink;
-                    String url;
-                    if(!link.TryGetAttribute("href", out url))
-                    {
-                        throw new Exception(String.Format("Cannot extract url from element: {0}", link.ToString()));
-                    }
                     var ticketNum = link.Cq().Find("span").First().Single().InnerText;
 
                     Ticket ticket = new Ticket();
@@ -197,6 +200,7 @@ namespace DataBaseGenerator
 
                     var webClient = new WebClient();
                     webClient.Encoding = Encoding.GetEncoding(1251);
+                    var url = String.Format("http://pdd.drom.ru/bilet_{0}", ticketNum);
                     var documentContent = webClient.DownloadString(url);
                     CsQuery.CQ document = new CsQuery.CQ(documentContent);
                     var questionBlocks = document.Find(".pdd-question-block");
@@ -284,19 +288,19 @@ namespace DataBaseGenerator
                 }
 
                 var signs = new List<Sign>();
-                var description = String.Join(Environment.NewLine, rightNode.Find("p").Select(node => ParseNode(node)));
+                var description = String.Join(Environment.NewLine, rightNode.Children().Select(node => ParseNode(node)));
                 var name = rightNode.Find("strong").First().Single().InnerHTML;
                 var imagesUrls = leftNode.Find("img").Select(node => node.GetAttribute("src"));
                 var images = imagesUrls.Select(url => new WebClient().DownloadData(url)).ToArray();
-                if(images.Length < captions.Length)
+                if (images.Length < signsCaptions.Count())
                 {
-                    images = Enumerable.Range(0, captions.Length).Select(i => images.First()).ToArray();
+                    images = Enumerable.Range(0, signsCaptions.Count()).Select(i => images.First()).ToArray();
                 }
-                for (int i = 0; i < captions.Length; i++)
+                for (int i = 0; i < signsCaptions.Count(); i++)
                 {
                     var sign = new Sign();
                     sign.Description = description;
-                    sign.Name = name;
+                    sign.Num = signsCaptions.ElementAt(i);
                     sign.Image = images[i];
                     signs.Add(sign);
                 }
@@ -335,16 +339,17 @@ namespace DataBaseGenerator
                 }
 
                 var marks = new List<Mark>();
-                var description = String.Join(Environment.NewLine, rightNode.Find("p").Select(node => ParseNode(node)));
+                var description = String.Join(Environment.NewLine, rightNode.Children().Select(node => ParseNode(node)));
                 var imagesUrls = leftNode.Find("img").Select(node => node.GetAttribute("src"));
                 var images = imagesUrls.Select(url => new WebClient().DownloadData(url)).ToArray();
-                if (images.Length < captions.Length)
+                if (images.Length < marksCaptions.Count())
                 {
-                    images = Enumerable.Range(0, captions.Length).Select(i => images.First()).ToArray();
+                    images = Enumerable.Range(0, marksCaptions.Count()).Select(i => images.First()).ToArray();
                 }
-                for (int i = 0; i < captions.Length; i++)
+                for (int i = 0; i < marksCaptions.Count(); i++)
                 {
                     var mark = new Mark();
+                    mark.Num = marksCaptions.ElementAt(i);
                     mark.Description = description;
                     mark.Image = images[i];
                     marks.Add(mark);
@@ -372,8 +377,8 @@ namespace DataBaseGenerator
             ExecuteCommand("CREATE TABLE Questions (id integer primary key, num integer, question text, image blob, ticket_id integer)");
             ExecuteCommand("CREATE TABLE Answers (id integer primary key, answer text, is_right integer, question_id integer)");
             ExecuteCommand("CREATE TABLE Chapters (id integer primary key, name text, content text)");
-            ExecuteCommand("CREATE TABLE Marks (id integer primary key, description text, image blob)");
-            ExecuteCommand("CREATE TABLE Signs (id integer primary key, name text, description text, image blob)");
+            ExecuteCommand("CREATE TABLE Marks (id integer primary key, num text, description text, image blob)");
+            ExecuteCommand("CREATE TABLE Signs (id integer primary key, num text, description text, image blob)");
         }
 
         static void InsertData(Data data)
@@ -444,11 +449,13 @@ namespace DataBaseGenerator
 
                 using (var markCommand = Connection.CreateCommand())
                 {
-                    markCommand.CommandText = "INSERT INTO Marks (description, image) Values (?,?)";
+                    markCommand.CommandText = "INSERT INTO Marks (num, description, image) Values (?,?,?)";
+                    markCommand.Parameters.Add(new SQLiteParameter() { ParameterName = "@num", DbType = System.Data.DbType.String });
                     markCommand.Parameters.Add(new SQLiteParameter() { ParameterName = "@description", DbType = System.Data.DbType.String });
                     markCommand.Parameters.Add(new SQLiteParameter() { ParameterName = "@image", DbType = System.Data.DbType.Binary });
                     foreach(var mark in data.Marks)
                     {
+                        markCommand.Parameters["@num"].Value = mark.Num;
                         markCommand.Parameters["@description"].Value = mark.Description;
                         markCommand.Parameters["@image"].Value = mark.Image;
                         markCommand.Parameters["@image"].Size = mark.Image.Length;
@@ -458,13 +465,13 @@ namespace DataBaseGenerator
 
                 using (var signCommand = Connection.CreateCommand())
                 {
-                    signCommand.CommandText = "INSERT INTO Signs (name, description, image) Values (?,?,?)";
-                    signCommand.Parameters.Add(new SQLiteParameter() { ParameterName = "@name", DbType = System.Data.DbType.String });
+                    signCommand.CommandText = "INSERT INTO Signs (num, description, image) Values (?,?,?)";
+                    signCommand.Parameters.Add(new SQLiteParameter() { ParameterName = "@num", DbType = System.Data.DbType.String });
                     signCommand.Parameters.Add(new SQLiteParameter() { ParameterName = "@description", DbType = System.Data.DbType.String });
                     signCommand.Parameters.Add(new SQLiteParameter() { ParameterName = "@image", DbType = System.Data.DbType.Binary });
                     foreach (var sign in data.Signs)
                     {
-                        signCommand.Parameters["@name"].Value = sign.Name;
+                        signCommand.Parameters["@num"].Value = sign.Num;
                         signCommand.Parameters["@description"].Value = sign.Description;
                         signCommand.Parameters["@image"].Value = sign.Image;
                         signCommand.Parameters["@image"].Size = sign.Image.Length;

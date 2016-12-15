@@ -16,7 +16,7 @@ namespace DataBaseGenerator
 
     class Sign
     {
-        public String Name { get; set; }
+        public String Num { get; set; }
         public byte[] Image { get; set; }
         public String Description { get; set; }
     }
@@ -24,6 +24,7 @@ namespace DataBaseGenerator
     class Mark
     {
         public byte[] Image { get; set; }
+        public String Num { get; set; }
         public String Description { get; set; }
     }
 
