@@ -11,8 +11,6 @@
     
     <Page.Resources>
         <local:TicketToStringConverter x:Key="TicketToStringConverter"></local:TicketToStringConverter>
-        <local:QuestionsIdColorConverter x:Key="QuestionsIdColorConverter"></local:QuestionsIdColorConverter>
-        <local:QuestionsCurrentIdConverter x:Key="QuestionsCurrentIdConverter"></local:QuestionsCurrentIdConverter>
     </Page.Resources>
 
     <Page.TopAppBar>
@@ -28,7 +26,6 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-                <AppBarButton x:Name="NextPageBtn" Icon="Accept" Label="NEXT" Click="NextPageBtn_Click"></AppBarButton>
             </StackPanel>
         </AppBar>
     </Page.TopAppBar>
@@ -38,32 +35,15 @@
             <ImageBrush ImageSource="Image/MainPageBackground.png" Stretch="UniformToFill"></ImageBrush>
         </Grid.Background>
         <Grid.RowDefinitions>
-            <RowDefinition Height="120"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
-            <ItemsControl x:Name="questionsId" HorizontalAlignment="Center">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <VirtualizingStackPanel Orientation="Horizontal" Background="#991D7074"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border Background="{Binding Converter={StaticResource QuestionsIdColorConverter}}" BorderBrush="{Binding Converter={StaticResource QuestionsCurrentIdConverter}}" BorderThickness="3" Width="85" Height="90" Margin="5,5,5,0" VerticalAlignment="Top">
-                            <TextBlock Text="{Binding Path=Number}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="26" FontFamily="Comic Sans MS"></TextBlock>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
         <XAMLMarkup:FlippingCanvas Grid.Row="1" x:Name="flipping_canvas" Visibility="Visible" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" EnableFlip="False">
             <XAMLMarkup:FlippingCanvas.MotionDuration>500</XAMLMarkup:FlippingCanvas.MotionDuration>
             <XAMLMarkup:PagedCanvas>
                 <XAMLMarkup:PagedCanvas.ItemTemplate>
                     <DataTemplate>
                         <Canvas>
-                            <Grid x:Name="myGrid" Height="870" Width="1920">
+                            <Grid x:Name="myGrid" Height="990" Width="1920">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>

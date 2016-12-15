@@ -60,10 +60,8 @@ namespace Tickets
             PagedCollection<IQuestion> paged_col = new PagedCollection<IQuestion>(2);
             paged_col.DataSource = session.Tickets.SelectMany(ticket => ticket.Questions);
             pagedCanvas.ItemsSource = paged_col;
+
             appbarText.ItemsSource = new ObservableCollection<ISession> { session };
-            UpdateQuestionsIdItemsSource();
-            QuestionCount = session.Tickets.Select(t => t.Number).ToArray();
-            //test
 
             base.OnNavigatedTo(e);
         }
@@ -76,8 +74,6 @@ namespace Tickets
                     pagedCanvas.LoadPrevious();
                 }
             }
-            UpdateQuestionsIdItemsSource();
-            System.Diagnostics.Debug.WriteLine("current screen: {0}", FlippingCanvas.CurrentScreen);
         }
 
         protected override async void OnNavigatedFrom( NavigationEventArgs e ) {
@@ -85,7 +81,6 @@ namespace Tickets
         }
 
         private void Grid_Tapped( object sender, TappedRoutedEventArgs e ) {
-            UpdateQuestionsIdItemsSource();
             IAnswer answer = e.OriginalSource as Grid != null ? (e.OriginalSource as Grid).DataContext as IAnswer : (e.OriginalSource as TextBlock != null ? (e.OriginalSource as TextBlock).DataContext as IAnswer : null);
             if(answer != null) {
                 answer.IsSelected = !answer.IsSelected;
@@ -97,19 +92,12 @@ namespace Tickets
             }
         }
 
-        private void UpdateQuestionsIdItemsSource() {
-            questionsId.ItemsSource = session.Tickets.SelectMany(t => t.Questions);
-        }
         #endregion
 
         #region Constructor
         public QuestionsContentPage() {
             this.InitializeComponent();
             flipping_canvas.OnCompleted += flipping_canvas_OnCompleted;
-            flipping_canvas.Loaded += ( s, e ) => {
-                UpdateQuestionsIdItemsSource();
-            };
-            
         }
         #endregion
 
@@ -126,12 +114,10 @@ namespace Tickets
         }
 
         private void NextQuestionTapped( object sender, TappedRoutedEventArgs e ) {
-            UpdateQuestionsIdItemsSource();
             flipping_canvas.SlideCanvas(MoveDirection.ToNext);
         }
 
         private void PreviousQuestionTapped( object sender, TappedRoutedEventArgs e ) {
-            UpdateQuestionsIdItemsSource();
             flipping_canvas.SlideCanvas(MoveDirection.ToPrevious);
         }
 
@@ -206,44 +192,5 @@ namespace Tickets
         }
     }
 
-    public class QuestionsIdColorConverter : IValueConverter {
-        const String Current = "Gray";
-
-        public object Convert( object value, Type targetType, object parameter, string language ) {
-            var answer = (value as IQuestion).SelectedAnswered;
-            if(answer != null) {
-                if(answer.IsRight) {
-                    return "Green";
-                } else {
-                    return "Red";
-                }
-            }
-            return Current;
-        }
-
-        public object ConvertBack( object value, Type targetType, object parameter, string language ) {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class QuestionsCurrentIdConverter : IValueConverter {
-        const String Current = "Gray";
-
-        public object Convert( object value, Type targetType, object parameter, string language ) {
-            int[] m = QuestionsContentPage.QuestionCount;
-            var v = (value as IQuestion);
-            int ticketNumber = FlippingCanvas.CurrentScreen / AppLogic.Constants.GlobalConstants.questionsCount < m.Length ? FlippingCanvas.CurrentScreen / AppLogic.Constants.GlobalConstants.questionsCount : m.Length - 1;
-            int questionNumber = FlippingCanvas.CurrentScreen % AppLogic.Constants.GlobalConstants.questionsCount != 0 ? FlippingCanvas.CurrentScreen % AppLogic.Constants.GlobalConstants.questionsCount : (FlippingCanvas.CurrentScreen / AppLogic.Constants.GlobalConstants.questionsCount) * AppLogic.Constants.GlobalConstants.questionsCount;
-            System.Diagnostics.Debug.WriteLine("questionNumber: {0}", questionNumber);
-            if(v.Ticket.Number == m[ticketNumber] && v.Number ==  questionNumber) {
-                return "Orange";
-            }
-            return Current;
-        }
-
-        public object ConvertBack( object value, Type targetType, object parameter, string language ) {
-            throw new NotImplementedException();
-        }
-    }
     #endregion
 }

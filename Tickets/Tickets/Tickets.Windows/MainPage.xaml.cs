@@ -55,27 +55,18 @@ namespace Tickets
         }
 
         void MessageBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
-            System.Diagnostics.Debug.WriteLine("MESSAGE BUTTON TAPPED");
         }
 
         void ErrorsBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
-            System.Diagnostics.Debug.WriteLine("ERRORS BUTTON TAPPED");
         }
 
         void StatisticsBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
-            System.Diagnostics.Debug.WriteLine("STATISTICS BUTTON TAPPED");
         }
 
         void RulesBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
-            System.Diagnostics.Debug.WriteLine("RULES BUTTON TAPPED");
-            SessionParameters sp = new SessionParameters() { Mode = QuestionsGenerationMode.RandomTicket };
-            ISession session;
-            var sf = SessionFactory.CreateSession(sp, out session);
-            this.Frame.Navigate(typeof(ResultsPage), Serializer.SerializeToString(session));
         }
 
         void ExamBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
-            System.Diagnostics.Debug.WriteLine("EXAM BUTTON TAPPED");
             SessionParameters sp = new SessionParameters() { Mode = QuestionsGenerationMode.ExamTicket};
             ISession session;
             var sf = SessionFactory.CreateSession(sp, out session);
@@ -83,12 +74,7 @@ namespace Tickets
         }
 
         void ticketBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
-            System.Diagnostics.Debug.WriteLine("TICKET BUTTON TAPPED");
             this.Frame.Navigate(typeof(ExamParametersPage));
-            //SessionParameters sp = new SessionParameters() { Mode = QuestionsGenerationMode.RandomTicket };
-            //ISession session;
-            //var sf = SessionFactory.CreateSession(sp, out session);
-            //this.Frame.Navigate(typeof(ResultsPage), Serializer.SerializeToString(session));
         }
         #endregion
 
@@ -120,6 +106,10 @@ namespace Tickets
         public QuestionsGenerationMode Mode {
             get;
             set;
+        }
+
+        public IEnumerable<IQuestion> Questions {
+            get { return null; }
         }
     }
     #endregion

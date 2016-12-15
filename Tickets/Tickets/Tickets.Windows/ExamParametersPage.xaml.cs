@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using AppLogic;
 using AppLogic.Enums;
 using AppLogic.Interfaces;
+using AppLogic.Constants;
 using Utils;
 using Windows.UI;
 
@@ -41,7 +42,7 @@ namespace Tickets {
             SessionParameters sp = new SessionParameters() {
                 Shuffle = tsShuffleQuestions.IsOn,
                 Mode = mode,
-                TicketNums = tsRandomTicket.IsOn ? new int [] { ticket.ElementAt(rnd.Next(ticket.Count())) } : ticket
+                TicketNums = tsRandomTicket.IsOn ? (ticket != null ? new int [] { ticket.ElementAt(rnd.Next(ticket.Count()))} : new int[] { rnd.Next(AppLogic.Constants.GlobalConstants.ticketsCount) })  : (ticket != null ? ticket.OrderBy(t=>t).ToArray() : ticket)
             };
             var sf = SessionFactory.CreateSession(sp, out session);
         }

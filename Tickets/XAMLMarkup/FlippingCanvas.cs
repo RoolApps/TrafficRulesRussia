@@ -30,15 +30,6 @@ namespace XAMLMarkup
         Storyboard storyboard;
         #endregion
 
-        #region Public Members
-        private static int currentScreen = 1;
-        static public int CurrentScreen {
-            get {
-                return currentScreen;
-            }
-        }
-        #endregion
-
         #region Public Properties
         public static readonly DependencyProperty DurationProperty =
             DependencyProperty.Register("MotionDuration", typeof(double), typeof(FlippingCanvas), null);
@@ -94,7 +85,6 @@ namespace XAMLMarkup
                 PointerReleased -= canvas_PointerReleased;
                 PointerMoved -= canvas_PointerMoved;
             }
-            currentScreen = 1;
         }
 
         private void canvas_PointerPressed(object sender, PointerRoutedEventArgs e) {
@@ -149,9 +139,7 @@ namespace XAMLMarkup
             completedAnimations++;
             if (completedAnimations == Children.Count) {
                 if(direction == MoveDirection.ToNext) {
-                    currentScreen++;
                 } else if(direction == MoveDirection.ToPrevious) {
-                    currentScreen--;
                 }
 
                 if ( OnCompleted != null ) {
