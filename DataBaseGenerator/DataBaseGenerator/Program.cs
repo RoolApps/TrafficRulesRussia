@@ -19,6 +19,7 @@ namespace DataBaseGenerator
         public const String Bold = "STRONG";
         public const String Text = "#text";
         public const String Td = "TD";
+        public const String Font = "FONT";
     }
 
     public static class ChapterBuilder
@@ -61,14 +62,18 @@ namespace DataBaseGenerator
         const string MarksUrl = "http://pdd.drom.ru/pdd/marking/";
         const string NoImageUrl = "http://c.rdrom.ru/skin/pdd_no_question.jpg";
         const int MaximumTimeout = 60000;
+        static Regex exactRegex = new Regex(@"^\d+(\.\d+)*$");
         static Regex regex = new Regex(@"(?<num>\d+(\.\d+)*)");
         static List<RuleChapter> Chapters = new List<RuleChapter>();
+        static string[] dashArray = new string[] { "-", "—", "–" };
 
 
         static void Main(string[] args)
         {
             var data = GetData();
             CreateDB(data);
+            Console.WriteLine("Successfully generated db. Press any key to finish...");
+            Console.ReadKey();
         }
 
         static Data GetData()
@@ -161,6 +166,13 @@ namespace DataBaseGenerator
                     return String.Format(pattern, node.NodeValue);
                 }
             }
+            if (node.NodeName == NodeTypes.Font)
+            {
+                if (node.ChildNodes.Any())
+                {
+                    return String.Join("", node.ChildNodes.Select(childNode => ParseNode(childNode)));
+                }
+            }
             if (node.NodeName == NodeTypes.Link)
             {
                 if ((node.GetAttribute("href") ?? String.Empty).Contains("signs"))
@@ -173,6 +185,83 @@ namespace DataBaseGenerator
                 }
             }
             return String.Empty;
+        }
+
+        static IEnumerable<CsQuery.IDomObject> FindResursive(CsQuery.IDomObject node, Func<CsQuery.IDomObject, bool> condition)
+        {
+            IEnumerable<CsQuery.IDomObject> result = new CsQuery.IDomObject[0];
+            if(condition(node))
+            {
+                result = new CsQuery.IDomObject[] { node };
+            }
+            if(node.ChildNodes != null)
+            {
+                result = result.Concat(node.ChildNodes.SelectMany(n => FindResursive(n, condition)));
+            }
+            return result;
+        }
+
+        static IEnumerable<String> GetNumbers(String lower, String upper)
+        {
+            var dotIndex = lower.LastIndexOf('.');
+            var constPart = lower.Substring(0, dotIndex);
+            var lowerInt = Convert.ToInt32(lower.Substring(dotIndex + 1));
+            var upperInt = Convert.ToInt32(upper.Substring(dotIndex + 1));
+            return Enumerable.Range(lowerInt + 1, upperInt - lowerInt - 1).Select(number => String.Format("{0}.{1}", constPart, number));
+        }
+
+        static IEnumerable<String> Patch(IEnumerable<String> numbers)
+        {
+            var array = numbers.ToArray();
+            List<String> result = new List<String>();
+            int counter = 0;
+
+            for (int i = 0; i < numbers.Count();i++ )
+            {
+                if (array[i].StartsWith("."))
+                {
+                    result[counter - 1] += array[i];
+                }
+                else if (dashArray.Any(dash => array[i].Contains(dash)))
+                {
+                    if(dashArray.Any(dash => array[i].Equals(dash)))
+                    {
+                        var lower = array[i - 1];
+                        var upper = array[i + 1];
+                        var nums = GetNumbers(lower, upper);
+                        result.AddRange(nums);
+                        counter += nums.Count();
+                    }
+                    else
+                    {
+                        var splitter = dashArray.Single(dash => array[i].Contains(dash)).Single();
+                        var bounds = array[i].Split(splitter);
+                        var lower = bounds.First();
+                        var upper = bounds.Last();
+                        var nums = GetNumbers(lower, upper);
+                        result.Add(lower);
+                        result.AddRange(nums);
+                        result.Add(upper);
+                        counter += nums.Count() + 2;
+                    }
+                }
+                else if (exactRegex.IsMatch(array[i]))
+                {
+                    result.Add(array[i]);
+                    counter++;
+                }
+                else
+                {
+                    Console.WriteLine(String.Format("Skipped: {0}", array[i]));
+                }
+
+            }
+            return result;
+        }
+
+        static bool Verify(IEnumerable<String> numbers)
+        {
+            return numbers.All(number => exactRegex.IsMatch(number));
         }
 
         static string ReplaceUrl(string text, string replace)
@@ -266,29 +355,19 @@ namespace DataBaseGenerator
                 var rightNode = signNode.ChildNodes.Last(node => node.NodeName == NodeTypes.Td).Cq();
                 IEnumerable<String> signsCaptions;
                 var captions = leftNode.Find("strong");
-                if(!captions.Any())
+                signsCaptions = String.Join(" ", captions.SelectMany(node => FindResursive(node, n => n.NodeName == NodeTypes.Text)).Select(node => node.NodeValue))
+                    .Split(new char[] { ' ', ',', ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(caption => caption.Trim()).Where(caption => !String.Empty.Equals(caption));
+                if(!signsCaptions.Any())
                 {
                     return new Sign[0];
                 }
-                else if(captions.Length > 1)
+                if(!Verify(signsCaptions))
                 {
-                    signsCaptions = captions.Select(node => node.InnerHTML);
-                }
-                else
-                {
-                    var caption = captions.Single().InnerHTML;
-                    if(caption.Contains(","))
-                    {
-                        signsCaptions = caption.Split(',').Select(cap => cap.Trim());
-                    }
-                    else
-                    {
-                        signsCaptions = new String[] { caption };
-                    }
+                    signsCaptions = Patch(signsCaptions);
                 }
 
                 var signs = new List<Sign>();
-                var description = String.Join(Environment.NewLine, rightNode.Children().Select(node => ParseNode(node)));
+                var description = String.Join(Environment.NewLine, rightNode.Single().ChildNodes.Select(node => ParseNode(node)));
                 var name = rightNode.Find("strong").First().Single().InnerHTML;
                 var imagesUrls = leftNode.Find("img").Select(node => node.GetAttribute("src"));
                 var images = imagesUrls.Select(url => new WebClient().DownloadData(url)).ToArray();
@@ -321,25 +400,19 @@ namespace DataBaseGenerator
                 var rightNode = signNode.ChildNodes.Last(node => node.NodeName == NodeTypes.Td).Cq();
                 IEnumerable<String> marksCaptions;
                 var captions = rightNode.Find("strong");
-                if (!captions.Any())
+                marksCaptions = String.Join(" ", captions.SelectMany(node => FindResursive(node, n => n.NodeName == NodeTypes.Text)).Select(node => node.NodeValue))
+                   .Split(new char[] { ' ', ',', ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(caption => caption.Trim()).Where(caption => !String.Empty.Equals(caption));
+                if (!marksCaptions.Any())
                 {
                     return new Mark[0];
                 }
-                else
+                if (!Verify(marksCaptions))
                 {
-                    var caption = captions.First().Single().InnerHTML;
-                    if (caption.Contains(","))
-                    {
-                        marksCaptions = caption.Split(',').Select(cap => cap.Trim());
-                    }
-                    else
-                    {
-                        marksCaptions = new String[] { caption };
-                    }
+                    marksCaptions = Patch(marksCaptions);
                 }
 
                 var marks = new List<Mark>();
-                var description = String.Join(Environment.NewLine, rightNode.Children().Select(node => ParseNode(node)));
+                var description = String.Join(Environment.NewLine, rightNode.Single().ChildNodes.Select(node => ParseNode(node)));
                 var imagesUrls = leftNode.Find("img").Select(node => node.GetAttribute("src"));
                 var images = imagesUrls.Select(url => new WebClient().DownloadData(url)).ToArray();
                 if (images.Length < marksCaptions.Count())
