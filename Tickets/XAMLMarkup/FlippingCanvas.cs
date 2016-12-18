@@ -138,10 +138,6 @@ namespace XAMLMarkup
         private void Completed(object sender, object e) {
             completedAnimations++;
             if (completedAnimations == Children.Count) {
-                if(direction == MoveDirection.ToNext) {
-                } else if(direction == MoveDirection.ToPrevious) {
-                }
-
                 if ( OnCompleted != null ) {
                     OnCompleted(this, new OnFlipCompleted(direction));
                 }

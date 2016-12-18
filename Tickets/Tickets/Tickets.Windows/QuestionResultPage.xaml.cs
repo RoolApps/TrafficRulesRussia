@@ -26,6 +26,12 @@ namespace Tickets {
         private ObservableCollection<ITicket> ticket;
         #endregion
 
+        #region public Members
+        public static string Answered = "#ff248F40";
+        public static string NotAnswered = "#ffBF3330";
+        public static string Transparent = "Transparent";
+        #endregion
+
         #region Event Handlers
         protected override void OnNavigatedTo(NavigationEventArgs e) {
             if(this.Frame.CanGoBack) {
@@ -84,18 +90,15 @@ namespace Tickets {
 
     #region Additional Classes
     public class AnswersConverter : IValueConverter {
-        const string Answered = "#ff248F40";
-        const string NotAnswered = "#ffBF3330";
-
         public object Convert(object value, Type targetType, object parameter, string language) {
-            string state = "Transparent";
+            string state = QuestionResultPage.Transparent;
             var answer = value as IAnswer;
             if ( answer != null ) {
                 if ( answer.IsRight ) {
-                    state = Answered;
+                    state = QuestionResultPage.Answered;
                 }
                 if ( answer.IsSelected && !answer.IsRight ) {
-                    state = NotAnswered;
+                    state = QuestionResultPage.NotAnswered;
                 }
             }
             return state;
@@ -107,17 +110,14 @@ namespace Tickets {
     }
 
     public class QuestionsConverter : IValueConverter {
-        const string Answered = "#ff248F40";
-        const string NotAnswered = "#ffBF3330";
-
         public object Convert(object value, Type targetType, object parameter, string language) {
-            string state = "Transparent";
+            string state = QuestionResultPage.Transparent;
             var answer = (value as IQuestion).SelectedAnswered;
             if ( answer != null ) {
                 if ( answer.IsRight ) {
-                    state = Answered;
+                    state = QuestionResultPage.Answered;
                 } else {
-                    state = NotAnswered;
+                    state = QuestionResultPage.NotAnswered;
                 }
             }
             return state;

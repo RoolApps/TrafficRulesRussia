@@ -54,18 +54,6 @@ namespace Tickets
             }
         }
 
-        void MessageBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
-        }
-
-        void ErrorsBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
-        }
-
-        void StatisticsBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
-        }
-
-        void RulesBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
-        }
-
         void ExamBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
             SessionParameters sp = new SessionParameters() { Mode = QuestionsGenerationMode.ExamTicket};
             ISession session;
@@ -83,10 +71,6 @@ namespace Tickets
             this.InitializeComponent();
             ticketsBtn.Tapped += ticketBtn_Tapped;
             ExamBtn.Tapped += ExamBtn_Tapped;
-            RulesBtn.Tapped += RulesBtn_Tapped;
-            StatisticsBtn.Tapped += StatisticsBtn_Tapped;
-            ErrorsBtn.Tapped += ErrorsBtn_Tapped;
-            MessageBtn.Tapped += MessageBtn_Tapped;
         }
         #endregion
     }

@@ -42,7 +42,7 @@ namespace Tickets {
             SessionParameters sp = new SessionParameters() {
                 Shuffle = tsShuffleQuestions.IsOn,
                 Mode = mode,
-                TicketNums = tsRandomTicket.IsOn ? (ticket != null ? new int [] { ticket.ElementAt(rnd.Next(ticket.Count()))} : new int[] { rnd.Next(AppLogic.Constants.GlobalConstants.ticketsCount) })  : (ticket != null ? ticket.OrderBy(t=>t).ToArray() : ticket)
+                TicketNums = tsRandomTicket.IsOn ? (ticket != null ? new int [] { ticket.ElementAt(rnd.Next(ticket.Count())) } : new int[] { rnd.Next(AppLogic.Constants.GlobalConstants.ticketsCount) })  : (ticket != null ? ticket.OrderBy(t=>t).ToArray() : ticket)
             };
             var sf = SessionFactory.CreateSession(sp, out session);
         }
