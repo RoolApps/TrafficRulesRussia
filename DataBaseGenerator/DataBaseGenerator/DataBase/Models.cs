@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataBaseGenerator
+namespace DataBaseGenerator.DataBase
 {
-    class Data
+    public class Data
     {
         public Ticket[] Tickets { get; set; }
         public RuleChapter[] Chapters { get; set; }
@@ -14,17 +14,24 @@ namespace DataBaseGenerator
         public Mark[] Marks { get; set; }
     }
 
-    class Sign
+    public interface IRuleObject
+    {
+        String Num { get; set; }
+        byte[] Image { get; set; }
+        String Description { get; set; }
+    }
+
+    public class Sign : IRuleObject
     {
         public String Num { get; set; }
         public byte[] Image { get; set; }
         public String Description { get; set; }
     }
 
-    class Mark
+    public class Mark : IRuleObject
     {
-        public byte[] Image { get; set; }
         public String Num { get; set; }
+        public byte[] Image { get; set; }
         public String Description { get; set; }
     }
 
@@ -34,13 +41,13 @@ namespace DataBaseGenerator
         public String Content { get; set; }
     }
 
-    class Ticket
+    public class Ticket
     {
         public int Num { get; set; }
         public Question[] Questions { get; set; }
     }
 
-    class Question
+    public class Question
     {
         public String Text { get; set; }
         public int Num { get; set; }
@@ -49,7 +56,7 @@ namespace DataBaseGenerator
         public Answer[] Answers { get; set; }
     }
 
-    class Answer
+    public class Answer
     {
         public String Text { get; set; }
         public bool IsRight { get; set; }
