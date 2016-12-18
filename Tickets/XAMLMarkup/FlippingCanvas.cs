@@ -45,6 +45,18 @@ namespace XAMLMarkup
                 SetValue(DurationProperty, value);
             }
         }
+
+        public static readonly DependencyProperty FlipStateProperty =
+            DependencyProperty.Register("EnableFlip", typeof(Boolean), typeof(FlippingCanvas), null);
+
+        public Boolean EnableFlip {
+            get {
+                return (Boolean)GetValue(FlipStateProperty);
+            }
+            set {
+                SetValue(FlipStateProperty, value);
+            }
+        }
         #endregion
 
         #region Public Methods
@@ -66,6 +78,14 @@ namespace XAMLMarkup
         #region Event Handlers
 
         public event EventHandler<OnFlipCompleted> OnCompleted;
+
+        private void canvas_Loaded( object sender, RoutedEventArgs e ) {
+            if(!EnableFlip) {
+                PointerPressed -= canvas_PointerPressed;
+                PointerReleased -= canvas_PointerReleased;
+                PointerMoved -= canvas_PointerMoved;
+            }
+        }
 
         private void canvas_PointerPressed(object sender, PointerRoutedEventArgs e) {
             LKMIsPressed = true;
@@ -188,6 +208,9 @@ namespace XAMLMarkup
             corrector = new Ellipse();
             Children.Add(corrector);
 
+            EnableFlip = true;
+
+            Loaded += canvas_Loaded;
             SizeChanged += canvas_SizeChanged;
             PointerPressed += canvas_PointerPressed;
             PointerReleased += canvas_PointerReleased;

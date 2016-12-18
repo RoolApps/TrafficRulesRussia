@@ -1,0 +1,31 @@
+﻿<UserControl
+    x:Class="Tickets.MainMenuIcon"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Tickets"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    >
+
+    <UserControl.Resources>
+        <Style TargetType="local:MainMenuIcon">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="local:MainMenuIcon">
+                        <Border
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <StackPanel Height="auto" Width="auto">
+        <TextBlock Text="{Binding Path=Text}" Margin="0,50,0,0" HorizontalAlignment="Center" FontSize="32" FontWeight="Bold"></TextBlock>
+        <Image Source="{Binding Path=ImageSource}" Height="260" Width="200" Stretch="Uniform" PointerEntered="Image_PointerEntered" PointerExited="Image_PointerExited" PointerPressed="Image_PointerPressed" PointerReleased="Image_PointerReleased"></Image>
+    </StackPanel>
+</UserControl>

@@ -23,6 +23,11 @@ namespace AppLogic.Tests
             {
                 throw new NotImplementedException();
             }
+
+            public QuestionsGenerationMode Mode {
+                get;
+                set;
+            }
         }
 
         class Ticket : ITicket
