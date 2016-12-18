@@ -64,6 +64,9 @@ namespace Tickets
                 {
                     await CopyDBFile();
                 }
+            }).ContinueWith((task) =>
+            {
+                AppLogic.Static.PreloadedContent.LoadData();
             });
         }
 

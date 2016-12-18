@@ -32,6 +32,31 @@ namespace SQLiteShared.Models
         public int question_id { get; set; }
     }
 
+    public class Chapters : BaseModel
+    {
+        public String name { get; set; }
+
+        public String content { get; set; }
+    }
+
+    public class Signs : BaseModel
+    {
+        public String num { get; set; }
+
+        public String description { get; set; }
+
+        public byte[] image { get; set; }
+    }
+
+    public class Marks : BaseModel
+    {
+        public String num { get; set; }
+
+        public String description { get; set; }
+
+        public byte[] image { get; set; }
+    }
+
     public abstract class BaseModel
     {
         [PrimaryKey, AutoIncrement]

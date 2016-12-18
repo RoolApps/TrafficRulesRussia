@@ -66,6 +66,8 @@
     <Compile Include="Question.cs" />
     <Compile Include="SessionStatistics.cs" />
     <Compile Include="SessionStatisticsFactory.cs" />
+    <Compile Include="Static\PreloadedContent.cs" />
+    <Compile Include="Static\PreloadedTable.cs" />
     <Compile Include="TicketLoader.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="SessionFactory.cs" />
