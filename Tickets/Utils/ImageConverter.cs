@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Controls;
 
 namespace Utils
 {
@@ -14,7 +15,9 @@ namespace Utils
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             if (value == null || !(value is byte[])) {
-                return null;
+                BitmapImage image = new BitmapImage();
+                image.UriSource = new Uri("ms-appx:///Image/NoImage.png");
+                return image;
             }
 
             using (InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream()) {

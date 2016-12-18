@@ -22,6 +22,7 @@ using AppLogic.Interfaces;
 using Tickets;
 using Windows.UI;
 using Windows.UI.Xaml.Media.Animation;
+using System.Collections.ObjectModel;
 
 namespace Tickets
 {
@@ -31,8 +32,24 @@ namespace Tickets
         private PagedCanvas pagedCanvas;
         #endregion
 
+        #region Public Members
+        static public int[] QuestionCount;
+        #endregion
+
         #region Event Handlers
         protected override async void OnNavigatedTo(NavigationEventArgs e) {
+            if(this.Frame.CanGoBack) {
+                BackButton.IsEnabled = true;
+            } else {
+                BackButton.IsEnabled = false;
+            }
+
+            if(this.Frame.CanGoForward) {
+                ForwardButton.IsEnabled = true;
+            } else {
+                ForwardButton.IsEnabled = false;
+            }
+
             if(e.NavigationMode != NavigationMode.New) {
                 string sessionState = await SettingSaver.GetSettingFromFile(GlobalConstants.sesstionState);
                 session = Serializer.DeserializeFromString<Session>(sessionState);
@@ -43,6 +60,10 @@ namespace Tickets
             PagedCollection<IQuestion> paged_col = new PagedCollection<IQuestion>(2);
             paged_col.DataSource = session.Tickets.SelectMany(ticket => ticket.Questions);
             pagedCanvas.ItemsSource = paged_col;
+
+            appbarText.ItemsSource = new ObservableCollection<ISession> { session };
+
+            base.OnNavigatedTo(e);
         }
 
         private void flipping_canvas_OnCompleted(object sender, OnFlipCompleted e) {
@@ -59,23 +80,18 @@ namespace Tickets
             await SettingSaver.SaveSettingToFile(GlobalConstants.sesstionState, Serializer.SerializeToString(session));
         }
 
-        private void Grid_Tapped(object sender, TappedRoutedEventArgs e) {
-            TextBlock tb = e.OriginalSource as TextBlock;
-            if (tb != null) {
-                IAnswer answer = ((tb).DataContext) as IAnswer;
+        private void Grid_Tapped( object sender, TappedRoutedEventArgs e ) {
+            IAnswer answer = e.OriginalSource as Grid != null ? (e.OriginalSource as Grid).DataContext as IAnswer : (e.OriginalSource as TextBlock != null ? (e.OriginalSource as TextBlock).DataContext as IAnswer : null);
+            if(answer != null) {
                 answer.IsSelected = !answer.IsSelected;
                 Boolean allQuestionsIsAnswered = session.Tickets.SelectMany(ticket => ticket.Questions).All(question => question.SelectedAnswered != null);
-                if ( allQuestionsIsAnswered ) {
-                    flipping_canvas.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-                    endExamButton.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                if(allQuestionsIsAnswered) {
+                    this.Frame.Navigate(typeof(ResultsPage), Serializer.SerializeToString(session));
                 }
                 flipping_canvas.SlideCanvas(MoveDirection.ToNext);
             }
         }
 
-        private void endExamButton_Tapped(object sender, TappedRoutedEventArgs e) {
-            this.Frame.Navigate(typeof(ResultsPage), Serializer.SerializeToString(session));
-        }
         #endregion
 
         #region Constructor
@@ -84,12 +100,65 @@ namespace Tickets
             flipping_canvas.OnCompleted += flipping_canvas_OnCompleted;
         }
         #endregion
+
+        private void AppBarBackButton_Click( object sender, RoutedEventArgs e ) {
+            if(this.Frame.CanGoBack) {
+                this.Frame.GoBack();
+            }
+        }
+
+        private void AppBarForwardButton_Click( object sender, RoutedEventArgs e ) {
+            if(this.Frame.CanGoForward) {
+                this.Frame.GoForward();
+            }
+        }
+
+        private void NextQuestionTapped( object sender, TappedRoutedEventArgs e ) {
+            flipping_canvas.SlideCanvas(MoveDirection.ToNext);
+        }
+
+        private void PreviousQuestionTapped( object sender, TappedRoutedEventArgs e ) {
+            flipping_canvas.SlideCanvas(MoveDirection.ToPrevious);
+        }
+
+        private void Border_PointerExited( object sender, PointerRoutedEventArgs e ) {
+            Image image = (sender as Border).Child as Image;
+            if(image != null) {
+                image.Opacity = Tickets.Global.GlobalConstants.translucentValue;
+                (sender as Border).Opacity = Tickets.Global.GlobalConstants.translucentValue;
+            }
+        }
+
+        private void Border_PointerEntered( object sender, PointerRoutedEventArgs e ) {
+            Image image = (sender as Border).Child as Image;
+            if(image != null) {
+                image.Opacity = 1;
+                (sender as Border).Opacity = 1;
+            }
+        }
+
+        private void Border_Loaded( object sender, RoutedEventArgs e ) {
+            Image image = (sender as Border).Child as Image;
+            if(image != null && session.Mode == QuestionsGenerationMode.ExamTicket) {
+                image.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                (sender as Border).PointerEntered -= Border_PointerEntered;
+                (sender as Border).Tapped -= NextQuestionTapped;
+                (sender as Border).Tapped -= PreviousQuestionTapped;
+            }
+        }
+        private void NextPageBtn_Click( object sender, RoutedEventArgs e ) {
+            this.Frame.Navigate(typeof(ResultsPage), Serializer.SerializeToString(session));
+        }
+
+        private void AppBarHomeButton_Click( object sender, RoutedEventArgs e ) {
+            this.Frame.Navigate(typeof(MainPage));
+        }
     }
 
     #region Additional Classes
-    public class BorderBackgroundColorConverter : IValueConverter {
-        const String Selected = "Gray";
-        const String NotSelected = "Black";
+    public class GridBackgroundColorConverter : IValueConverter {
+        const String Selected = "#99FFC040";
+        const String NotSelected = "Transparent";
 
         public object Convert(object value, Type targetType, object parameter, string language) {
             return (bool)value ? Selected : NotSelected;
@@ -99,5 +168,29 @@ namespace Tickets
             throw new NotImplementedException();
         }
     }
+
+    public class TicketToStringConverter : IValueConverter {
+        public object Convert( object value, Type targetType, object parameter, string language ) {
+            if(value is ISession) {
+                if((value as ISession).Mode == QuestionsGenerationMode.ExamTicket) {
+                    return String.Format("Экзамен");
+                } else {
+                    string numbers = "";
+                    if((value as ISession).Tickets.Select(t => t.Number).ToList().Count > 1) {
+                        numbers = String.Join(", ", (value as ISession).Tickets.Select(t => t.Number).ToList());
+                    } else {
+                        numbers = (value as ISession).Tickets.Select(t => t.Number).First().ToString();
+                    }
+                    return String.Format("Билет № {0}", numbers);
+                }
+            }
+            return "";
+        }
+
+        public object ConvertBack( object value, Type targetType, object parameter, string language ) {
+            throw new NotImplementedException();
+        }
+    }
+
     #endregion
 }

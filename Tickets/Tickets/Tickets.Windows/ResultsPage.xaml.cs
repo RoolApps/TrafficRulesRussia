@@ -28,6 +28,12 @@ namespace Tickets {
 
         #region Event Handlers
         protected override async void OnNavigatedTo(NavigationEventArgs e) {
+            if(this.Frame.CanGoForward) {
+                ForwardButton.IsEnabled = true;
+            } else {
+                ForwardButton.IsEnabled = false;
+            }
+
             if(e.NavigationMode != NavigationMode.New) {
                 string sessionState = await SettingSaver.GetSettingFromFile(GlobalConstants.sesstionState);
                 session = Serializer.DeserializeFromString<Session>(sessionState);
@@ -37,7 +43,10 @@ namespace Tickets {
             if ( session == null ) {
                 return;
             }
+
             gridView.ItemsSource = session.Tickets;
+
+            base.OnNavigatedTo(e);
         }
 
         protected override async void OnNavigatedFrom( NavigationEventArgs e ) {
@@ -52,8 +61,16 @@ namespace Tickets {
             this.Frame.Navigate(typeof(QuestionResultPage), Serializer.SerializeToString(myGridView.SelectedItem as ITicket));
         }
 
-        private void goHomePage(object sender, RoutedEventArgs e) {
-            this.Frame.Navigate(typeof(MainPage));
+        private void AppBarBackButton_Click( object sender, RoutedEventArgs e ) {
+            if(this.Frame.CanGoBack) {
+                this.Frame.GoBack();
+            }
+        }
+
+        private void AppBarForwardButton_Click( object sender, RoutedEventArgs e ) {
+            if(this.Frame.CanGoForward) {
+                this.Frame.GoForward();
+            }
         }
         #endregion
 
@@ -62,6 +79,10 @@ namespace Tickets {
             this.InitializeComponent();
         }
         #endregion
+
+        private void AppBarHomeButton_Click( object sender, RoutedEventArgs e ) {
+            this.Frame.Navigate(typeof(MainPage));
+        }
     }
 
     #region Additional Classes
@@ -102,8 +123,8 @@ namespace Tickets {
     }
 
     public class QuestionBorderConverter : IValueConverter {
-        const string Passed = "Green";
-        const string NotPassed = "Red";
+        const string Passed = "#ff248F40";
+        const string NotPassed = "#ffBF3330";
         private const int rightAnswersToPassExam = 18;
 
         public object Convert(object value, Type targetType, object parameter, string language) {

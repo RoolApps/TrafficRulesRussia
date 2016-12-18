@@ -17,6 +17,7 @@ namespace AppLogic
             if(validationResult == ParametersValidationResult.Valid)
             {
                 session = new Session(parameters);
+                System.Diagnostics.Debug.WriteLine("validtionResult: {0}", validationResult);
             }
             else
             {

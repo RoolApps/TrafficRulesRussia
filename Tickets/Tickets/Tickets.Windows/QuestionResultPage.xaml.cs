@@ -26,15 +26,42 @@ namespace Tickets {
         private ObservableCollection<ITicket> ticket;
         #endregion
 
+        #region public Members
+        public static string Answered = "#ff248F40";
+        public static string NotAnswered = "#ffBF3330";
+        public static string Transparent = "Transparent";
+        #endregion
+
         #region Event Handlers
         protected override void OnNavigatedTo(NavigationEventArgs e) {
+            if(this.Frame.CanGoBack) {
+                BackButton.IsEnabled = true;
+            } else {
+                BackButton.IsEnabled = false;
+            }
+
+            if(this.Frame.CanGoForward) {
+                ForwardButton.IsEnabled = true;
+            } else {
+                ForwardButton.IsEnabled = false;
+            }
+
             ticket.Add(Serializer.DeserializeFromString<Ticket>(e.Parameter as string));
             cvsMain.Source = ticket;
+
+            base.OnNavigatedTo(e);
         }
 
-        private void backButton_Click(object sender, RoutedEventArgs e) {
-            if ( this.Frame != null && this.Frame.CanGoBack )
+        private void AppBarBackButton_Click( object sender, RoutedEventArgs e ) {
+            if(this.Frame.CanGoBack) {
                 this.Frame.GoBack();
+            }
+        }
+
+        private void AppBarForwardButton_Click( object sender, RoutedEventArgs e ) {
+            if(this.Frame.CanGoForward) {
+                this.Frame.GoForward();
+            }
         }
 
         private void SemanticZoom_ViewChangeStarted(object sender, SemanticZoomViewChangedEventArgs e) {
@@ -53,22 +80,25 @@ namespace Tickets {
             ticket = new ObservableCollection<ITicket>();
         }
         #endregion
+
+        private void AppBarHomeButton_Click( object sender, RoutedEventArgs e ) {
+            this.Frame.Navigate(typeof(MainPage));
+        }
+
+
     }
 
     #region Additional Classes
     public class AnswersConverter : IValueConverter {
-        const string Answered = "Green";
-        const string NotAnswered = "Red";
-
         public object Convert(object value, Type targetType, object parameter, string language) {
-            string state = "White";
+            string state = QuestionResultPage.Transparent;
             var answer = value as IAnswer;
             if ( answer != null ) {
                 if ( answer.IsRight ) {
-                    state = Answered;
+                    state = QuestionResultPage.Answered;
                 }
                 if ( answer.IsSelected && !answer.IsRight ) {
-                    state = NotAnswered;
+                    state = QuestionResultPage.NotAnswered;
                 }
             }
             return state;
@@ -80,35 +110,17 @@ namespace Tickets {
     }
 
     public class QuestionsConverter : IValueConverter {
-        const string Answered = "Green";
-        const string NotAnswered = "Red";
-
         public object Convert(object value, Type targetType, object parameter, string language) {
-            string state = "White";
+            string state = QuestionResultPage.Transparent;
             var answer = (value as IQuestion).SelectedAnswered;
             if ( answer != null ) {
                 if ( answer.IsRight ) {
-                    state = Answered;
+                    state = QuestionResultPage.Answered;
                 } else {
-                    state = NotAnswered;
+                    state = QuestionResultPage.NotAnswered;
                 }
             }
             return state;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, string language) {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class TicketToStringConverter : IValueConverter {
-
-        public object Convert(object value, Type targetType, object parameter, string language) {
-            var ticket = value as ITicket;
-            if ( ticket != null ) {
-                return String.Format("Билет №{0}", ticket.Number);
-            }
-            return "";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language) {
