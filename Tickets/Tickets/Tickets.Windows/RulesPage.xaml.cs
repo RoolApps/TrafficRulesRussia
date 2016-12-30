@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using SQLiteShared;
 using SQLiteShared.Models;
+using Tickets.CommonUI;
 
 namespace Tickets {
     public sealed partial class RulesPage : Page {
@@ -25,14 +26,16 @@ namespace Tickets {
         protected override void OnNavigatedTo( NavigationEventArgs e ) {
             SQLiteDataAccessor sql = new SQLiteDataAccessor();
             var list = sql.CreateQuery<Chapters>();
-            Chapters c = list.First();
+            Chapters c = list.Where(i=>i.id==6).ToArray()[0];
 
-            // < Эта штука, чтобы знать откуда брать элемент InlineRichElement
-                commonBlock.Ns = "using:Tickets.CommonUI";
-            // >
-            commonBlock.Content = c.content;
+            myRtb.DataContext = c.content;
+            RichTextBlockContent.onBlockTapped += RichTextBlockContent_onBlockTapped;
 
             base.OnNavigatedTo(e);
+        }
+
+        void RichTextBlockContent_onBlockTapped( object sender, HLContent e ) {
+            System.Diagnostics.Debug.WriteLine("e.type: {0}, e.data: {1}", e.Type, e.Data);
         }
         #endregion
     }

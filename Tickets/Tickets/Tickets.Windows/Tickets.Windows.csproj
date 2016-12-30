@@ -103,13 +103,10 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CommonUI\ContentBlock.cs" />
-    <Compile Include="CommonUI\InlineRichElement.xaml.cs">
-      <DependentUpon>InlineRichElement.xaml</DependentUpon>
-    </Compile>
     <Compile Include="CommonUI\MainMenuIcon.xaml.cs">
       <DependentUpon>MainMenuIcon.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CommonUI\RichTextBlockContent.cs" />
     <Compile Include="Constants\GlobalConstants.cs" />
     <Compile Include="ExamParametersPage.xaml.cs">
       <DependentUpon>ExamParametersPage.xaml</DependentUpon>
@@ -154,10 +151,6 @@
     <Content Include="Image\Ticket_btn.png" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="CommonUI\InlineRichElement.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="CommonUI\MainMenuIcon.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
