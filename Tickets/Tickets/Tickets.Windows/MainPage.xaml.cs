@@ -66,7 +66,7 @@ namespace Tickets
         }
 
         void RulesBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
-            this.Frame.Navigate(typeof(RulesPage));
+            this.Frame.Navigate(typeof(RulesCategoryPage));
         }
         #endregion
 

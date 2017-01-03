@@ -16,7 +16,7 @@ namespace Utils
         {
             if (value == null || !(value is byte[])) {
                 BitmapImage image = new BitmapImage();
-                image.UriSource = new Uri("ms-appx:///Image/NoImage.png");
+                image.UriSource = new Uri("ms-appx:///Image/NoImage2.png");
                 return image;
             }
 

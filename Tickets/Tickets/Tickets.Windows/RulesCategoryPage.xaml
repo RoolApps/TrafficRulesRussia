@@ -1,0 +1,34 @@
+﻿<Page
+    x:Class="Tickets.RulesCategoryPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Tickets"
+    xmlns:common="using:Tickets.CommonUI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.TopAppBar>
+        <AppBar IsOpen="True" IsSticky="True" Background="#ff006064">
+            <StackPanel Orientation="Horizontal">
+                <AppBarButton x:Name="BackButton" Icon="Back" Label="Назад" Click="AppBarBackButton_Click"></AppBarButton>
+                <AppBarButton x:Name="ForwardButton" Icon="Forward" Label="Вперед" Click="AppBarForwardButton_Click"></AppBarButton>
+                <TextBlock Text="Категории правил" Foreground="White" VerticalAlignment="Center" FontSize="40" Margin="100,0,0,0"></TextBlock>
+            </StackPanel>
+        </AppBar>
+    </Page.TopAppBar>
+
+    <Grid Margin="0,90,0,0">
+        <Grid.Background>
+            <ImageBrush ImageSource="Image/MainPageBackground.png" Stretch="UniformToFill"></ImageBrush>
+        </Grid.Background>
+
+        <ListView x:Name="lstView" Tapped="lstView_Tapped">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" FontSize="28" Foreground="White" FontFamily="Comic Sans MS"></TextBlock>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>
