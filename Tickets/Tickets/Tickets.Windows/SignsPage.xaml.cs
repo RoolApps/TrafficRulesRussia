@@ -1,11 +1,9 @@
 ﻿using SQLiteShared;
-using SQLiteShared.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Tickets.CommonUI;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -15,14 +13,14 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using SQLiteShared.Models;
+using Tickets.CommonUI;
 
 namespace Tickets {
-    public sealed partial class RulesPage : Page {
+    public sealed partial class SignsPage : Page {
         private SQLiteDataAccessor sql;
-
-        public RulesPage() {
+        public SignsPage() {
             this.InitializeComponent();
-            sql = new SQLiteDataAccessor();
         }
 
         protected override void OnNavigatedTo( NavigationEventArgs e ) {
@@ -39,13 +37,9 @@ namespace Tickets {
                 ForwardButton.IsEnabled = false;
             }
 
-            int index = (int)e.Parameter;
-            var list = sql.CreateQuery<Chapters>();
-            Chapters c = list.Where(i => i.id == index).FirstOrDefault();
-            if(c != null) {
-                header.Text = c.name;
-                rtb.DataContext = c.content;
-            }
+            sql = new SQLiteDataAccessor();
+            var signs = sql.CreateQuery<Signs>();
+            signsGv.ItemsSource = signs;
             RichTextBlockContent.onBlockTapped += RichTextBlockContent_onBlockTapped;
         }
 
@@ -53,33 +47,21 @@ namespace Tickets {
             base.OnNavigatedFrom(e);
             RichTextBlockContent.onBlockTapped -= RichTextBlockContent_onBlockTapped;
         }
-
+        
         private void RichTextBlockContent_onBlockTapped( object sender, HLContent e ) {
-            switch(e.Type) {
-                case "signs": {
-                    var v = sql.CreateQuery<Signs>().Where(s => s.num == e.Data).FirstOrDefault();
-                    if(v != null) {
-                        popupText.Text = v.num;
-                        popupRtb.DataContext = v.description;
-                        popupImage.DataContext = v.image;
-                    }
-                    break;
-                }
-                case "marks": {
-                    var v = sql.CreateQuery<Marks>().Where(s => s.num == e.Data).FirstOrDefault();
-                    if(v != null) {
-                        popupText.Text = v.num;
-                        popupRtb.DataContext = v.description;
-                        popupImage.DataContext = v.image;
-                    }
-                    break;
-                }
-                default:
-                    break;
+            var v = sql.CreateQuery<Signs>().Where(s => s.num == e.Data).FirstOrDefault();
+            if(v != null) {
+                setPopupContent(v);
             }
             if(!contentPopup.IsOpen) {
                 contentPopup.IsOpen = true;
             }
+        }
+
+        private void setPopupContent(Signs sign) {
+            popupText.Text = sign.num;
+            popupRtb.DataContext = sign.description;
+            popupImage.DataContext = sign.image;
         }
 
         private void AppBarBackButton_Click( object sender, RoutedEventArgs e ) {
@@ -91,6 +73,19 @@ namespace Tickets {
         private void AppBarForwardButton_Click( object sender, RoutedEventArgs e ) {
             if(this.Frame.CanGoForward) {
                 this.Frame.GoForward();
+            }
+        }
+
+        private void Grid_Tapped( object sender, TappedRoutedEventArgs e ) {
+            var gridView = sender as GridView;
+            if(gridView == null) {
+                return;
+            }
+            int index = gridView.SelectedIndex + 1;
+            var v = sql.CreateQuery<Signs>().Where(s => s.id == index).FirstOrDefault();
+            setPopupContent(v);
+            if(!contentPopup.IsOpen) {
+                contentPopup.IsOpen = true;
             }
         }
     }

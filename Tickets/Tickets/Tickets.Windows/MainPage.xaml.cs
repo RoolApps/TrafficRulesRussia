@@ -68,6 +68,10 @@ namespace Tickets
         void RulesBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
             this.Frame.Navigate(typeof(RulesCategoryPage));
         }
+
+        private void SignsBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
+            this.Frame.Navigate(typeof(SignsPage));
+        }
         #endregion
 
         #region Constructor
@@ -76,6 +80,7 @@ namespace Tickets
             ticketsBtn.Tapped += ticketBtn_Tapped;
             ExamBtn.Tapped += ExamBtn_Tapped;
             RulesBtn.Tapped += RulesBtn_Tapped;
+            SignsBtn.Tapped += SignsBtn_Tapped;
         }
         #endregion
     }

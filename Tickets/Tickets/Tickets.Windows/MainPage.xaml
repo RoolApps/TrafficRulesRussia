@@ -35,9 +35,9 @@
         </Grid.Background>
         <local:MainMenuIcon x:Name="ticketsBtn" Grid.Column="0" Grid.Row="0" Text="Билеты" ImageSource="ms-appx:///Image/Ticket_btn.png"></local:MainMenuIcon>
         <local:MainMenuIcon x:Name="ExamBtn" Grid.Column="1" Grid.Row="0" Text="Экзамен" ImageSource="ms-appx:///Image/Exam_btn.png"></local:MainMenuIcon>
-        <local:MainMenuIcon x:Name="RulesBtn" Grid.Column="2" Grid.Row="0" Text="Правила" ImageSource="ms-appx:///Image/Rules_btn.png"></local:MainMenuIcon>
-        <local:MainMenuIcon x:Name="StatisticsBtn" Grid.Column="0" Grid.Row="1" Text="Статистика" ImageSource="ms-appx:///Image/Statistic_btn.png"></local:MainMenuIcon>
-        <local:MainMenuIcon x:Name="ErrorsBtn" Grid.Column="1" Grid.Row="1" Text="Сообщить об ошибке" ImageSource="ms-appx:///Image/Errors_btn.png"></local:MainMenuIcon>
-        <local:MainMenuIcon x:Name="MessageBtn" Grid.Column="2" Grid.Row="1" Text="Оцените приложение" ImageSource="ms-appx:///Image/Message_btn.png"></local:MainMenuIcon>
+        <local:MainMenuIcon x:Name="StatisticsBtn" Grid.Column="2" Grid.Row="0" Text="Статистика" ImageSource="ms-appx:///Image/Statistic_btn.png"></local:MainMenuIcon>
+        <local:MainMenuIcon x:Name="RulesBtn" Grid.Column="0" Grid.Row="1" Text="Правила" ImageSource="ms-appx:///Image/Rules_btn.png"></local:MainMenuIcon>
+        <local:MainMenuIcon x:Name="SignsBtn" Grid.Column="1" Grid.Row="1" Text="Знаки" ImageSource="ms-appx:///Image/Signs.png"></local:MainMenuIcon>
+        <local:MainMenuIcon x:Name="MarksBtn" Grid.Column="2" Grid.Row="1" Text="Разметка" ImageSource="ms-appx:///Image/Marks.png"></local:MainMenuIcon>
     </Grid>
 </Page>
