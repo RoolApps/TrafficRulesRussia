@@ -17,9 +17,9 @@ using SQLiteShared.Models;
 using Tickets.CommonUI;
 
 namespace Tickets {
-    public sealed partial class SignsPage : Page {
+    public sealed partial class MarksPage : Page {
         private SQLiteDataAccessor sql;
-        public SignsPage() {
+        public MarksPage() {
             this.InitializeComponent();
         }
 
@@ -38,8 +38,8 @@ namespace Tickets {
             }
 
             sql = new SQLiteDataAccessor();
-            var signs = sql.CreateQuery<Signs>();
-            signsGv.ItemsSource = signs;
+            var signs = sql.CreateQuery<Marks>();
+            marksGv.ItemsSource = signs;
             RichTextBlockContent.onBlockTapped += RichTextBlockContent_onBlockTapped;
         }
 
@@ -76,10 +76,10 @@ namespace Tickets {
             }
         }
 
-        private void setPopupContent(Signs sign) {
-            popupText.Text = sign.num;
-            popupRtb.DataContext = sign.description;
-            popupImage.DataContext = sign.image;
+        private void setPopupContent(Marks mark) {
+            popupText.Text = mark.num;
+            popupRtb.DataContext = mark.description;
+            popupImage.DataContext = mark.image;
         }
 
         private void AppBarBackButton_Click( object sender, RoutedEventArgs e ) {
@@ -100,7 +100,7 @@ namespace Tickets {
                 return;
             }
             int index = gridView.SelectedIndex + 1;
-            var v = sql.CreateQuery<Signs>().Where(s => s.id == index).FirstOrDefault();
+            var v = sql.CreateQuery<Marks>().Where(s => s.id == index).FirstOrDefault();
             setPopupContent(v);
             if(!contentPopup.IsOpen) {
                 contentPopup.IsOpen = true;
