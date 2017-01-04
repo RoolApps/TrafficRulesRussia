@@ -13,6 +13,7 @@
             <StackPanel Orientation="Horizontal">
                 <AppBarButton x:Name="BackButton" Icon="Back" Label="Назад" Click="AppBarBackButton_Click"></AppBarButton>
                 <AppBarButton x:Name="ForwardButton" Icon="Forward" Label="Вперед" Click="AppBarForwardButton_Click"></AppBarButton>
+                <AppBarButton x:Name="HomeButton" Icon="Home" Label="Домой" Click="AppBarHomeButton_Click"></AppBarButton>
                 <TextBlock Text="Категории правил" Foreground="White" VerticalAlignment="Center" FontSize="40" Margin="100,0,0,0"></TextBlock>
             </StackPanel>
         </AppBar>

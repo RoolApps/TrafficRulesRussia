@@ -93,5 +93,9 @@ namespace Tickets {
                 this.Frame.GoForward();
             }
         }
+
+        private void AppBarHomeButton_Click( object sender, RoutedEventArgs e ) {
+            this.Frame.Navigate(typeof(MainPage));
+        }
     }
 }

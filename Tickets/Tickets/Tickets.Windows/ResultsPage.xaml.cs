@@ -40,6 +40,7 @@ namespace Tickets {
             } else {
                 session = Serializer.DeserializeFromString<Session>(e.Parameter as string);
             }
+            
             if ( session == null ) {
                 return;
             }

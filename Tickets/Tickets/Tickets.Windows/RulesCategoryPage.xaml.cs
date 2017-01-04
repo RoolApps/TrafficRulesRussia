@@ -54,6 +54,10 @@ namespace Tickets {
             }
         }
 
+        private void AppBarHomeButton_Click( object sender, RoutedEventArgs e ) {
+            this.Frame.Navigate(typeof(MainPage));
+        }
+
         private void lstView_Tapped( object sender, TappedRoutedEventArgs e ) {
             var index = (sender as ListView).SelectedIndex + 1;
             this.Frame.Navigate(typeof(RulesPage), index);

@@ -36,7 +36,7 @@
                 <AppBarButton x:Name="BackButton" Icon="Back" Label="Назад" IsEnabled="False" Click="AppBarBackButton_Click"></AppBarButton>
                 <AppBarButton x:Name="ForwardButton" Icon="Forward" Label="Вперед" Click="AppBarForwardButton_Click"></AppBarButton>
                 <AppBarButton x:Name="HomeButton" Icon="Home" Label="Домой" Click="AppBarHomeButton_Click" Margin="0,0,50,0"></AppBarButton>
-                <TextBlock Text="Результат" Foreground="White" VerticalAlignment="Center" FontSize="40"></TextBlock>
+                <TextBlock Text="Статистика" Foreground="White" VerticalAlignment="Center" FontSize="40"></TextBlock>
             </StackPanel>
         </AppBar>
     </Page.TopAppBar>
