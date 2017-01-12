@@ -64,6 +64,23 @@ namespace Tickets
         void ticketBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
             this.Frame.Navigate(typeof(ExamParametersPage));
         }
+
+        void RulesBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
+            this.Frame.Navigate(typeof(RulesCategoryPage));
+        }
+
+        private void SignsBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
+            this.Frame.Navigate(typeof(SignsPage));
+        }
+
+        private void MarksBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
+            this.Frame.Navigate(typeof(MarksPage));
+        }
+
+        private async void StatisticsBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
+            string sessionState = await SettingSaver.GetSettingFromFile(GlobalConstants.sesstionState);
+            this.Frame.Navigate(typeof(ResultsPage), sessionState);
+        }
         #endregion
 
         #region Constructor
@@ -71,7 +88,11 @@ namespace Tickets
             this.InitializeComponent();
             ticketsBtn.Tapped += ticketBtn_Tapped;
             ExamBtn.Tapped += ExamBtn_Tapped;
-        }
+            RulesBtn.Tapped += RulesBtn_Tapped;
+            SignsBtn.Tapped += SignsBtn_Tapped;
+            MarksBtn.Tapped += MarksBtn_Tapped;
+            StatisticsBtn.Tapped += StatisticsBtn_Tapped;
+        }        
         #endregion
     }
 

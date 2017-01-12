@@ -30,7 +30,7 @@
         <Grid.Background>
             <ImageBrush ImageSource="Image/MainPageBackground.png" Stretch="UniformToFill"></ImageBrush>
         </Grid.Background>
-        <SemanticZoom IsZoomedInViewActive="False" Grid.Row="1" ViewChangeStarted="SemanticZoom_ViewChangeStarted">
+        <SemanticZoom IsZoomedInViewActive="False" ViewChangeStarted="SemanticZoom_ViewChangeStarted">
             <SemanticZoom.ZoomedInView>
                 <GridView ItemsSource="{Binding Source={StaticResource cvsMain}}" ScrollViewer.IsHorizontalScrollChainingEnabled="False" SelectionMode="None">
                     <GridView.ItemTemplate>
@@ -51,7 +51,7 @@
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
-                                    </StackPanel>    
+                                    </StackPanel>
                                 </StackPanel>
                             </Border>
                         </DataTemplate>
