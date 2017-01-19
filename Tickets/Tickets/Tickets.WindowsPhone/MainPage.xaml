@@ -50,8 +50,8 @@
             <Image Grid.Row="1" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgExam.png"/>
             <Image Grid.Row="2" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgRules.png"/>
             <Image Grid.Row="2" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgStatistics.png"/>
-            <Image Grid.Row="3" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgErrorReport.png"/>
-            <Image Grid.Row="3" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgRateApp.png"/>
+            <Image Grid.Row="3" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgSigns.png"/>
+            <Image Grid.Row="3" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgMarks.png"/>
         </Grid>
         
         <Grid Canvas.ZIndex="1">
@@ -85,8 +85,8 @@
             <TextBlock Text="Экзамен" Grid.Row="2" Grid.Column="1" Style="{StaticResource TextBlockStyle}" />
             <TextBlock Text="Правила" Grid.Row="5" Grid.Column="0" Style="{StaticResource TextBlockStyle}" />
             <TextBlock Text="Статистика" Grid.Row="5" Grid.Column="1" Style="{StaticResource TextBlockStyle}" />
-            <TextBlock Text="Сообщить об ошибке" Grid.Row="8" Grid.Column="0" Style="{StaticResource TextBlockStyle}" />
-            <TextBlock Text="Оценить приложение" Grid.Row="8" Grid.Column="1" Style="{StaticResource TextBlockStyle}" />
+            <TextBlock Text="Знаки" Grid.Row="8" Grid.Column="0" Style="{StaticResource TextBlockStyle}" />
+            <TextBlock Text="Разметка" Grid.Row="8" Grid.Column="1" Style="{StaticResource TextBlockStyle}" />
         </Grid>
     </Grid>
 </Page>
