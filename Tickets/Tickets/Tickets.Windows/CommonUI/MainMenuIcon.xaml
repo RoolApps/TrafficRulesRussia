@@ -8,24 +8,12 @@
     mc:Ignorable="d"
     >
 
-    <UserControl.Resources>
-        <Style TargetType="local:MainMenuIcon">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="local:MainMenuIcon">
-                        <Border
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}">
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </UserControl.Resources>
-
-    <StackPanel Height="auto" Width="auto">
-        <TextBlock Text="{Binding Path=Text}" Margin="0,50,0,0" HorizontalAlignment="Center" FontSize="32" FontWeight="Bold"></TextBlock>
-        <Image Source="{Binding Path=ImageSource}" Height="260" Width="200" Stretch="Uniform" PointerEntered="Image_PointerEntered" PointerExited="Image_PointerExited" PointerPressed="Image_PointerPressed" PointerReleased="Image_PointerReleased"></Image>
-    </StackPanel>
+    <Grid Margin="45">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="7*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="{Binding Path=Text}" Margin="0,20,0,0" HorizontalAlignment="Center" FontSize="32" FontWeight="Bold"/>
+        <Image Grid.Row="1" Source="{Binding Path=ImageSource}" HorizontalAlignment="Center" VerticalAlignment="Center" PointerEntered="Image_PointerEntered" PointerExited="Image_PointerExited"/>
+    </Grid>
 </UserControl>

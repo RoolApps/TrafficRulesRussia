@@ -56,25 +56,11 @@ namespace Tickets {
 
         private void Image_PointerEntered( object sender, PointerRoutedEventArgs e ) {
             if(sender as Image != null) {
-                (sender as Image).Height = (sender as Image).Height + 20;
-                (sender as Image).Width = (sender as Image).Width + 20;
-            }
-        }
-
-        private void Image_PointerExited( object sender, PointerRoutedEventArgs e ) {
-            if(sender as Image != null) {
-                (sender as Image).Height = (sender as Image).Height - 20;
-                (sender as Image).Width = (sender as Image).Width - 20;
-            }
-        }
-
-        private void Image_PointerPressed( object sender, PointerRoutedEventArgs e ) {
-            if(sender as Image != null) {
                 (sender as Image).Opacity = Tickets.Global.GlobalConstants.translucentValue;
             }
         }
 
-        private void Image_PointerReleased( object sender, PointerRoutedEventArgs e ) {
+        private void Image_PointerExited( object sender, PointerRoutedEventArgs e ) {
             if(sender as Image != null) {
                 (sender as Image).Opacity = 1;
             }
