@@ -83,12 +83,16 @@
     <Compile Include="BackgroundGrid.xaml.cs">
       <DependentUpon>BackgroundGrid.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CommonUI\RichTextBlockContent.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuestionPage.xaml.cs">
       <DependentUpon>QuestionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RuleObjectsPage.xaml.cs">
+      <DependentUpon>RuleObjectsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="SessionParametersPage.xaml.cs">
       <DependentUpon>SessionParametersPage.xaml</DependentUpon>
@@ -143,6 +147,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="QuestionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RuleObjectsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
