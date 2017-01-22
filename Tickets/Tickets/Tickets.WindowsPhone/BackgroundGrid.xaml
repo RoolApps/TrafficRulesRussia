@@ -38,7 +38,7 @@
         <Image Grid.Row="1" Grid.Column="1" Style="{StaticResource ImageButtonBackgroundStyle}" Source="Assets/imgExamBG.png"/>
         <Image Grid.Row="2" Grid.Column="0" Style="{StaticResource ImageButtonBackgroundStyle}" Source="Assets/imgRulesBG.png"/>
         <Image Grid.Row="2" Grid.Column="1" Style="{StaticResource ImageButtonBackgroundStyle}" Source="Assets/imgStatisticsBG.png"/>
-        <Image Grid.Row="3" Grid.Column="0" Style="{StaticResource ImageButtonBackgroundStyle}" Source="Assets/imgErrorReportBG.png"/>
-        <Image Grid.Row="3" Grid.Column="1" Style="{StaticResource ImageButtonBackgroundStyle}" Source="Assets/imgRateAppBG.png"/>
+        <Image Grid.Row="3" Grid.Column="0" Style="{StaticResource ImageButtonBackgroundStyle}" Source="Assets/imgSignsBG.png"/>
+        <Image Grid.Row="3" Grid.Column="1" Style="{StaticResource ImageButtonBackgroundStyle}" Source="Assets/imgMarksBG.png"/>
     </Grid>
 </Page>

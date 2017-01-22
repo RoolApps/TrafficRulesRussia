@@ -86,7 +86,7 @@ namespace Tickets
         #region Constructor
         public MainPage() {
             this.InitializeComponent();
-            ticketsBtn.Tapped += ticketBtn_Tapped;
+            TicketsBtn.Tapped += ticketBtn_Tapped;
             ExamBtn.Tapped += ExamBtn_Tapped;
             RulesBtn.Tapped += RulesBtn_Tapped;
             SignsBtn.Tapped += SignsBtn_Tapped;

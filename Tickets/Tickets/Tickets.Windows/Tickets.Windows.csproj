@@ -149,13 +149,12 @@
     <Content Include="Assets\StoreLogo.scale-100.png" />
     <Content Include="Image\Exam_btn.png" />
     <Content Include="Image\MainPageBackground.png" />
-    <Content Include="Image\Marks.png" />
+    <Content Include="Image\Marks_btn.png" />
     <Content Include="Image\NextItem.png" />
     <Content Include="Image\NoImage.png" />
-    <Content Include="Image\NoImage2.png" />
     <Content Include="Image\PreviousItem.png" />
     <Content Include="Image\Rules_btn.png" />
-    <Content Include="Image\Signs.png" />
+    <Content Include="Image\Signs_btn.png" />
     <Content Include="Image\Statistic_btn.png" />
     <Content Include="Image\Ticket_btn.png" />
   </ItemGroup>
