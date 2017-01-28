@@ -32,20 +32,20 @@
         </Grid.Background>
         <SemanticZoom IsZoomedInViewActive="False" ViewChangeStarted="SemanticZoom_ViewChangeStarted">
             <SemanticZoom.ZoomedInView>
-                <GridView ItemsSource="{Binding Source={StaticResource cvsMain}}" ScrollViewer.IsHorizontalScrollChainingEnabled="False" SelectionMode="None">
+                <GridView ItemsSource="{Binding Source={StaticResource cvsMain}}" ScrollViewer.IsHorizontalScrollChainingEnabled="False" SelectionMode="None" Margin="0,5,0,0">
                     <GridView.ItemTemplate>
                         <DataTemplate>
-                            <Border BorderThickness="2" BorderBrush="{Binding Converter={StaticResource QuestionsConverter}}" Margin="0,0,10,0">
-                                <StackPanel Width="480" Height="990" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding Text}" TextAlignment="Center" TextWrapping="WrapWholeWords" FontSize="18" FontFamily="Comic Sans MS" Height="100" Padding="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    <Image Source="{Binding Path=Image, Converter={StaticResource ImgConverter}}" Height="200" Margin="10"/>
-                                    <StackPanel Margin="10">
+                            <Border BorderThickness="5" BorderBrush="{Binding Converter={StaticResource QuestionsConverter}}" Margin="5,5,5,5">
+                                <StackPanel VerticalAlignment="Center" Loaded="QuestionStackPanel_Loaded">
+                                    <TextBlock Text="{Binding Text}" TextAlignment="Center" TextWrapping="WrapWholeWords" FontSize="20" FontFamily="Comic Sans MS" Height="80" Padding="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <Image Source="{Binding Path=Image, Converter={StaticResource ImgConverter}}" Height="150" Margin="0,10,0,5"/>
+                                    <StackPanel VerticalAlignment="Center">
                                         <ItemsControl ItemsSource="{Binding Answers}">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Border BorderBrush="White" BorderThickness="1" Margin="5" Height="135">
+                                                    <Border BorderBrush="White" BorderThickness="1" Margin="0,5,0,0" Loaded="AnswerBorder_Loaded" VerticalAlignment="Center">
                                                         <Border Background="{Binding Converter={StaticResource AnswersConverter}}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                                                            <TextBlock Text="{Binding Text}" TextAlignment="Center" TextWrapping="WrapWholeWords" FontSize="18" FontFamily="Comic Sans MS" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                            <TextBlock Text="{Binding Text}" TextAlignment="Center" TextWrapping="WrapWholeWords" FontSize="16" FontFamily="Comic Sans MS" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                                         </Border>
                                                     </Border>
                                                 </DataTemplate>
@@ -62,12 +62,12 @@
                 <GridView x:Name="zoomedOutGridView" ItemsSource="{Binding Source={StaticResource cvsMain}}" SelectionMode="None" ScrollViewer.IsHorizontalScrollChainingEnabled="False" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <VariableSizedWrapGrid ItemHeight="200" ItemWidth="200" MaximumRowsOrColumns="5" Orientation="Horizontal"></VariableSizedWrapGrid>
+                            <VariableSizedWrapGrid ItemHeight="150" ItemWidth="150" MaximumRowsOrColumns="5" Orientation="Horizontal"></VariableSizedWrapGrid>
                         </ItemsPanelTemplate>
                     </GridView.ItemsPanel>
                     <GridView.ItemTemplate>
                         <DataTemplate>
-                            <Border Background="{Binding Converter={StaticResource QuestionsConverter}}" BorderThickness="4" Height="140" Width="140" Margin="25">
+                            <Border Background="{Binding Converter={StaticResource QuestionsConverter}}" BorderThickness="4" Height="140" Width="140">
                                 <TextBlock Text="{Binding Number}" TextAlignment="Center" VerticalAlignment="Center" FontSize="32" FontFamily="Comic Sans MS"/>
                             </Border>
                         </DataTemplate>
