@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Tickets"
     xmlns:common="using:Tickets.CommonUI"
+    xmlns:markup="using:XAMLMarkup"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -11,133 +12,35 @@
 
     <Grid Background="White">
         <local:BackgroundGrid/>
-        <Grid x:Name="mainGrid">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="9*" />
-            </Grid.RowDefinitions>
-
+        
+        <StackPanel>
             <ComboBox Name="cmbSections"
-                Grid.Row="0"
                 ItemsSource="{Binding}"
-                SelectionChanged="cmbSections_SelectionChanged" >
-            	<ComboBox.Resources>
-            		<Style x:Key="ComboBoxItemStyle1" TargetType="ComboBoxItem">
-            			<Setter Property="Background" Value="Transparent"/>
-            			<Setter Property="TabNavigation" Value="Local"/>
-            			<Setter Property="Padding" Value="6.5,8"/>
-            			<Setter Property="HorizontalContentAlignment" Value="Left"/>
-            			<Setter Property="Template">
-            				<Setter.Value>
-            					<ControlTemplate TargetType="ComboBoxItem">
-            						<Border x:Name="LayoutRoot" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
-            							<VisualStateManager.VisualStateGroups>
-            								<VisualStateGroup x:Name="CommonStates">
-            									<VisualStateGroup.Transitions>
-            										<VisualTransition From="Pressed" To="Normal">
-            											<Storyboard>
-            												<PointerUpThemeAnimation Storyboard.TargetName="InnerGrid"/>
-            											</Storyboard>
-            										</VisualTransition>
-            									</VisualStateGroup.Transitions>
-            									<VisualState x:Name="Normal"/>
-            									<VisualState x:Name="PointerOver"/>
-            									<VisualState x:Name="Disabled">
-            										<Storyboard>
-            											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="LayoutRoot">
-            												<DiscreteObjectKeyFrame KeyTime="0" Value="Transparent"/>
-            											</ObjectAnimationUsingKeyFrames>
-            											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-            												<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ListBoxItemDisabledForegroundThemeBrush}"/>
-            											</ObjectAnimationUsingKeyFrames>
-            										</Storyboard>
-            									</VisualState>
-            									<VisualState x:Name="Pressed">
-            										<Storyboard>
-            											<PointerDownThemeAnimation Storyboard.TargetName="InnerGrid"/>
-            											<DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="PressedBackground"/>
-            											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-            												<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ListBoxItemPressedForegroundThemeBrush}"/>
-            											</ObjectAnimationUsingKeyFrames>
-            										</Storyboard>
-            									</VisualState>
-            								</VisualStateGroup>
-            								<VisualStateGroup x:Name="SelectionStates">
-            									<VisualState x:Name="Unselected"/>
-            									<VisualState x:Name="Selected">
-            										<Storyboard>
-            											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="InnerGrid">
-            												<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ListBoxItemSelectedBackgroundThemeBrush}"/>
-            											</ObjectAnimationUsingKeyFrames>
-            											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-            												<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ListBoxItemSelectedForegroundThemeBrush}"/>
-            											</ObjectAnimationUsingKeyFrames>
-            										</Storyboard>
-            									</VisualState>
-            									<VisualState x:Name="SelectedUnfocused">
-            										<Storyboard>
-            											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="InnerGrid">
-            												<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ListBoxItemSelectedBackgroundThemeBrush}"/>
-            											</ObjectAnimationUsingKeyFrames>
-            											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-            												<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ListBoxItemSelectedForegroundThemeBrush}"/>
-            											</ObjectAnimationUsingKeyFrames>
-            										</Storyboard>
-            									</VisualState>
-            									<VisualState x:Name="SelectedDisabled">
-            										<Storyboard>
-            											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="InnerGrid">
-            												<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ListBoxItemSelectedDisabledBackgroundThemeBrush}"/>
-            											</ObjectAnimationUsingKeyFrames>
-            											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-            												<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ListBoxItemSelectedDisabledForegroundThemeBrush}"/>
-            											</ObjectAnimationUsingKeyFrames>
-            										</Storyboard>
-            									</VisualState>
-            									<VisualState x:Name="SelectedPointerOver">
-            										<Storyboard>
-            											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="InnerGrid">
-            												<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ListBoxItemSelectedPointerOverBackgroundThemeBrush}"/>
-            											</ObjectAnimationUsingKeyFrames>
-            											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-            												<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ListBoxItemSelectedForegroundThemeBrush}"/>
-            											</ObjectAnimationUsingKeyFrames>
-            										</Storyboard>
-            									</VisualState>
-            									<VisualState x:Name="SelectedPressed">
-            										<Storyboard>
-            											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="InnerGrid">
-            												<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ListBoxItemSelectedBackgroundThemeBrush}"/>
-            											</ObjectAnimationUsingKeyFrames>
-            											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-            												<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ListBoxItemSelectedForegroundThemeBrush}"/>
-            											</ObjectAnimationUsingKeyFrames>
-            										</Storyboard>
-            									</VisualState>
-            								</VisualStateGroup>
-            							</VisualStateManager.VisualStateGroups>
-            							<Grid x:Name="InnerGrid" Background="Transparent">
-            								<Rectangle x:Name="PressedBackground" Fill="{ThemeResource ListBoxItemPressedBackgroundThemeBrush}" Opacity="0"/>
-            								<ContentPresenter x:Name="ContentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Foreground="Red"/>
-            							</Grid>
-            						</Border>
-            					</ControlTemplate>
-            				</Setter.Value>
-            			</Setter>
-            			<Setter Property="Foreground" Value="Black"/>
-            		</Style>
-            	</ComboBox.Resources>
-            	<ComboBox.ItemContainerStyle>
-            		<StaticResource ResourceKey="ComboBoxItemStyle1"/>
-            	</ComboBox.ItemContainerStyle>
+                Background="White"
+                SelectionChanged="cmbSections_SelectionChanged"
+                Margin="0,-10,0,0">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock
+                            Text="{Binding name}"
+                            Foreground="Brown"
+                            TextWrapping="WrapWholeWords"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <ScrollViewer
-                Grid.Row="1">
-                <RichTextBlock x:Name="txtRuleChapter"
-                    common:RichTextBlockContent.Content="{Binding}"
-                    Margin="5,0,15,0"/>
-            </ScrollViewer>
-        </Grid>
+            <markup:SwipeScrollCanvas x:Name="rulesCanvas"
+                MotionDuration="0"
+                Grid.Row="1"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Margin="5,5,5,5">
+                <markup:SwipeScrollCanvas.Content>
+                    <DataTemplate>
+                        <common:ExtendedRichTextBlock Text="{Binding content}"/>
+                    </DataTemplate>
+                </markup:SwipeScrollCanvas.Content>
+            </markup:SwipeScrollCanvas>
+        </StackPanel>
     </Grid>
 </Page>

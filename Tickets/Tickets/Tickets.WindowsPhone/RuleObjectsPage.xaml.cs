@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLiteShared.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,6 +13,9 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using XAMLMarkup;
+using Utils.Extensions;
+using Tickets.CommonUI;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
@@ -24,10 +28,8 @@ namespace Tickets
     {
         public RuleObjectsPage()
         {
+            this.NavigationCacheMode = NavigationCacheMode.Required;
             this.InitializeComponent();
-
-            this.cmbSections.DataContext = AppLogic.Static.PreloadedContent.RuleChapters.Data.Select(chapter => chapter.name).ToArray();
-            this.txtRuleChapter.DataContext = AppLogic.Static.PreloadedContent.RuleChapters.Data.First().content;
         }
 
         /// <summary>
@@ -37,11 +39,60 @@ namespace Tickets
         /// This parameter is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            if (e.NavigationMode != NavigationMode.Back)
+            {
+                Canvas.SetZIndex(this.rulesCanvas, -1);
+
+                this.rulesCanvas.DataSource = null;
+                this.cmbSections.DataContext = null;
+                this.cmbSections.DataContext = AppLogic.Static.PreloadedContent.RuleChapters.Data;
+                this.cmbSections.SelectedItem = AppLogic.Static.PreloadedContent.RuleChapters.Data.First();
+            }
+        }
+
+        private void rich_onBlockTapped(object sender, HLContent e)
+        {
+            this.Frame.Navigate(typeof(SignMarkPage), GetSignOrMark(e.Type, e.Data));
+        }
+
+        private object GetSignOrMark(String type, String num)
+        {
+            switch (type)
+            {
+                case "signs":
+                    return AppLogic.Static.PreloadedContent.Signs.Data.Single(sign => sign.num == num);
+                case "marks":
+                    return AppLogic.Static.PreloadedContent.Marks.Data.Single(mark => mark.num == num);
+                default:
+                    return null;
+            }
         }
 
         private void cmbSections_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            var rich = rulesCanvas.FindChildrenOfType<ExtendedRichTextBlock>().FirstOrDefault();
+            if (rich != null)
+            {
+                rich.onBlockTapped -= rich_onBlockTapped;
+            }
+            rulesCanvas.DataSource = new VirtualLinkedList<Chapters>(e.AddedItems.OfType<Chapters>(),
+                (dataSource, current) =>
+                {
+                    return dataSource.FirstOrDefault();
+                },
+                (dataSource, current) =>
+                {
+                    
+                    this.Frame.Navigate(typeof(MainPage));
+                    return null;
+                }
+            );
 
+            rich = rulesCanvas.FindChildrenOfType<ExtendedRichTextBlock>().LastOrDefault();
+            if (rich != null)
+            {
+                rich.onBlockTapped += rich_onBlockTapped;
+            }
         }
     }
 }
