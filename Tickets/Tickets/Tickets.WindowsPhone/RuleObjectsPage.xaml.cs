@@ -52,17 +52,17 @@ namespace Tickets
 
         private void rich_onBlockTapped(object sender, HLContent e)
         {
-            this.Frame.Navigate(typeof(SignMarkPage), GetSignOrMark(e.Type, e.Data));
+            this.Frame.Navigate(typeof(SignMarkPage), GetCommonObject(e.Type, e.Data));
         }
 
-        private object GetSignOrMark(String type, String num)
+        private CommonObject GetCommonObject(String type, String num)
         {
             switch (type)
             {
                 case "signs":
-                    return AppLogic.Static.PreloadedContent.Signs.Data.Single(sign => sign.num == num);
+                    return new CommonObject(AppLogic.Static.PreloadedContent.Signs.Data.Single(sign => sign.num == num));
                 case "marks":
-                    return AppLogic.Static.PreloadedContent.Marks.Data.Single(mark => mark.num == num);
+                    return new CommonObject(AppLogic.Static.PreloadedContent.Marks.Data.Single(mark => mark.num == num));
                 default:
                     return null;
             }
