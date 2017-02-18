@@ -48,10 +48,10 @@
             </Grid>
             <Image x:Name="imgTickets" Grid.Row="1" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgTicket.png" Tapped="imgTickets_Tapped"/>
             <Image Grid.Row="1" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgExam.png"/>
-            <Image Grid.Row="2" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgRules.png"/>
-            <Image Grid.Row="2" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgStatistics.png"/>
-            <Image Grid.Row="3" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgSigns.png"/>
-            <Image Grid.Row="3" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgMarks.png"/>
+            <Image Grid.Row="2" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgSigns.png"/>
+            <Image Grid.Row="2" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgMarks.png"/>
+            <Image Grid.Row="3" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgRules.png"/>
+            <Image x:Name="imgAbout" Grid.Row="3" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgStatistics.png" Tapped="imgAbout_Tapped"/>
         </Grid>
         
         <Grid Canvas.ZIndex="1">
@@ -83,10 +83,10 @@
             
             <TextBlock Text="Билеты" Grid.Row="2" Grid.Column="0" Style="{StaticResource TextBlockStyle}" />
             <TextBlock Text="Экзамен" Grid.Row="2" Grid.Column="1" Style="{StaticResource TextBlockStyle}" />
-            <TextBlock Text="Правила" Grid.Row="5" Grid.Column="0" Style="{StaticResource TextBlockStyle}" />
-            <TextBlock Text="Статистика" Grid.Row="5" Grid.Column="1" Style="{StaticResource TextBlockStyle}" />
-            <TextBlock Text="Знаки" Grid.Row="8" Grid.Column="0" Style="{StaticResource TextBlockStyle}" />
-            <TextBlock Text="Разметка" Grid.Row="8" Grid.Column="1" Style="{StaticResource TextBlockStyle}" />
+            <TextBlock Text="Знаки" Grid.Row="5" Grid.Column="0" Style="{StaticResource TextBlockStyle}" />
+            <TextBlock Text="Разметка" Grid.Row="5" Grid.Column="1" Style="{StaticResource TextBlockStyle}" />
+            <TextBlock Text="Правила" Grid.Row="8" Grid.Column="0" Style="{StaticResource TextBlockStyle}" />
+            <TextBlock Text="О приложении" Grid.Row="8" Grid.Column="1" Style="{StaticResource TextBlockStyle}" />
         </Grid>
     </Grid>
 </Page>

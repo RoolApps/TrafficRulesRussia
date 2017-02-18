@@ -49,5 +49,10 @@ namespace Tickets
         {
             Frame.Navigate(typeof(SessionParametersPage));
         }
+
+        private void imgAbout_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(AboutPage));
+        }
     }
 }
