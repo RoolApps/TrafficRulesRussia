@@ -47,7 +47,7 @@
                 </Grid.RowDefinitions>
             </Grid>
             <Image x:Name="imgTickets" Grid.Row="1" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgTicket.png" Tapped="imgTickets_Tapped"/>
-            <Image Grid.Row="1" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgExam.png"/>
+            <Image x:Name="imgExam" Grid.Row="1" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgExam.png" Tapped="imgExam_Tapped"/>
             <Image Grid.Row="2" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgRules.png"/>
             <Image Grid.Row="2" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgStatistics.png"/>
             <Image Grid.Row="3" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgSigns.png"/>

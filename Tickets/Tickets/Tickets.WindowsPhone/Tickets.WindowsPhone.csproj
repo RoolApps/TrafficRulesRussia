@@ -90,6 +90,7 @@
     <Compile Include="QuestionPage.xaml.cs">
       <DependentUpon>QuestionPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SessionParameters.cs" />
     <Compile Include="SessionParametersPage.xaml.cs">
       <DependentUpon>SessionParametersPage.xaml</DependentUpon>
     </Compile>

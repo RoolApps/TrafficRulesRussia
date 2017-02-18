@@ -49,5 +49,16 @@ namespace Tickets
         {
             Frame.Navigate(typeof(SessionParametersPage));
         }
+
+        private void imgExam_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var sessionParameters = new SessionParameters(AppLogic.Enums.QuestionsGenerationMode.ExamTicket);
+            AppLogic.Interfaces.ISession session;
+            var creationResult = AppLogic.SessionFactory.CreateSession(sessionParameters, out session);
+            if(creationResult == AppLogic.Enums.ParametersValidationResult.Valid)
+            {
+                Frame.Navigate(typeof(QuestionPage), Utils.Serializer.SerializeToString(session));
+            }
+        }
     }
 }
