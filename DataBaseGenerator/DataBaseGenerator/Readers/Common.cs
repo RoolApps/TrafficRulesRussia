@@ -103,6 +103,11 @@ namespace DataBaseGenerator.Readers
             text = text.Replace('_', '.');
             return regex.Replace(text, String.Format("@@{{{0}}}${{num}}@@", replace));
         }
+
+        public static String WrapText(String text)
+        {
+            return String.Format(@"<Paragraph xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"">{0}</Paragraph>", text);
+        }
     }
 
     public class HeaderEventArgs : EventArgs

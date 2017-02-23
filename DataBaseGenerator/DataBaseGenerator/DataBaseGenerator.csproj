@@ -74,7 +74,9 @@
     <Compile Include="Readers\ChapterReader.cs" />
     <Compile Include="Readers\Common.cs" />
     <Compile Include="Readers\DataReader.cs" />
+    <Compile Include="Readers\MarksReader.cs" />
     <Compile Include="Readers\RuleObjectReader.cs" />
+    <Compile Include="Readers\SignsReader.cs" />
     <Compile Include="Readers\TicketsReader.cs" />
   </ItemGroup>
   <ItemGroup>
