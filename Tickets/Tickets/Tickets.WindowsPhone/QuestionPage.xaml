@@ -52,13 +52,10 @@
             
             <XAMLMarkup:SwipeScrollCanvas x:Name="questionsCanvas"
                 MotionDuration="300"
-                Grid.Row="0"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch">
+                Grid.Row="0">
                 <XAMLMarkup:SwipeScrollCanvas.Content>
                     <DataTemplate>
                         <StackPanel
-                            Width="400"
                             Orientation="Vertical"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch">

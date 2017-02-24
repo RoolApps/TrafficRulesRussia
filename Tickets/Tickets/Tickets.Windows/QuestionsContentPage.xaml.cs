@@ -30,6 +30,8 @@ namespace Tickets
         #region private Members
         private ISession session;
         private PagedCanvas pagedCanvas;
+        private const int tabletFontSize = 28;
+        private const int desktopFontSize = 34;
         #endregion
 
         #region Public Members
@@ -98,6 +100,7 @@ namespace Tickets
         public QuestionsContentPage() {
             this.InitializeComponent();
             flipping_canvas.OnCompleted += flipping_canvas_OnCompleted;
+            
         }
         #endregion
 
@@ -152,6 +155,32 @@ namespace Tickets
 
         private void AppBarHomeButton_Click( object sender, RoutedEventArgs e ) {
             this.Frame.Navigate(typeof(MainPage));
+        }
+
+        private void ContentGrid_Loaded( object sender, RoutedEventArgs e ) {
+            Grid g = sender as Grid;
+            if(g != null) {
+                g.Height = Window.Current.Bounds.Height - 90;
+                g.Width = Window.Current.Bounds.Width - 200;
+            }
+        }
+
+        private void QuestionGrid_Loaded( object sender, RoutedEventArgs e ) {
+            Grid g = sender as Grid;
+            if(g != null) {
+                g.Width = Window.Current.Bounds.Width / 5;
+            }
+        }
+
+        private void TextBlock_Loaded( object sender, RoutedEventArgs e ) {
+            var tb = sender as TextBlock;
+            if(tb != null) {
+                if(Window.Current.Bounds.Height <= Tickets.Global.GlobalConstants.tabletheight) {
+                    tb.FontSize = tabletFontSize;
+                } else {
+                    tb.FontSize = desktopFontSize;
+                }
+            }
         }
     }
 
