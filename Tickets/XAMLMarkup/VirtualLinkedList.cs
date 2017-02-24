@@ -7,6 +7,14 @@ using XAMLMarkup.Interfaces;
 
 namespace XAMLMarkup
 {
+    public static class VirtualLinkedListFactory
+    {
+        public static VirtualLinkedList<T> Create<T>(IEnumerable<T> dataSource, VirtualLinkedList<T>.Rule returnNext, VirtualLinkedList<T>.Rule returnPrevious) where T : class
+        {
+            return new VirtualLinkedList<T>(dataSource, returnNext, returnPrevious);
+        }
+    }
+
     public class VirtualLinkedList<T> : IVirtualLinkedList where T : class
     {
         public delegate T Rule(IEnumerable<T> dataSource, T current);

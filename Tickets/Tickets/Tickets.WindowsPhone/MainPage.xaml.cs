@@ -49,5 +49,20 @@ namespace Tickets
         {
             Frame.Navigate(typeof(SessionParametersPage));
         }
+
+        private void imgRules_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(RuleObjectsPage));
+        }
+
+        private void imgSigns_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(SignsMarksPage), "signs");
+        }
+
+        private void imgMarks_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(SignsMarksPage), "marks");
+        }
     }
 }

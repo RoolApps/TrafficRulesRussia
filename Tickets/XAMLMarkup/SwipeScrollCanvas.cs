@@ -57,9 +57,6 @@ namespace XAMLMarkup
 
         private static void DataSource_Changed(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
         {
-            if (args.NewValue == null)
-                return;
-
             if (args.NewValue == args.OldValue)
                 return;
 
@@ -69,7 +66,12 @@ namespace XAMLMarkup
 
             if (canvas.Content != null)
             {
-                canvas.ChangeCanvasContent(canvas.DataSource.Current, true);
+                object content = null;
+                if (args.NewValue != null)
+                {
+                    content = canvas.DataSource.Current;
+                }
+                canvas.ChangeCanvasContent(content, true);
             }
             else
             {
@@ -108,8 +110,7 @@ namespace XAMLMarkup
 
             if (changed)
             {
-                ManipulationDelta -= SwipeScrollCanvas_ManipulationDelta;
-                ManipulationCompleted -= SwipeScrollCanvas_ManipulationCompleted;
+                
                 ChangeCanvasContent(DataSource.Current, toTheRight);
             }
             return changed;
@@ -117,10 +118,19 @@ namespace XAMLMarkup
 
         private void ChangeCanvasContent(object content, bool toTheRight)
         {
+            if (content == null)
+            {
+                Children.Clear();
+                return;
+            }
+
+            ManipulationDelta -= SwipeScrollCanvas_ManipulationDelta;
+            ManipulationCompleted -= SwipeScrollCanvas_ManipulationCompleted;
             var child = Child;
 
             FrameworkElement element = Content.LoadContent() as FrameworkElement;
             element.DataContext = content;
+            element.Width = Window.Current.Bounds.Width - this.Margin.Left - this.Margin.Right; //can't measure width - don't know why
             Children.Add(element);
             var left = ActualWidth * (toTheRight ? 1 : -1);
             Canvas.SetLeft(element, left);
@@ -135,9 +145,9 @@ namespace XAMLMarkup
                     if (child != null)
                     {
                         Children.Remove(child);
-                        ManipulationDelta += SwipeScrollCanvas_ManipulationDelta;
-                        ManipulationCompleted += SwipeScrollCanvas_ManipulationCompleted;
                     }
+                    ManipulationDelta += SwipeScrollCanvas_ManipulationDelta;
+                    ManipulationCompleted += SwipeScrollCanvas_ManipulationCompleted;
                 });
         }
 
