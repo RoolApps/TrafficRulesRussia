@@ -47,10 +47,10 @@
                 </Grid.RowDefinitions>
             </Grid>
             <Image x:Name="imgTickets" Grid.Row="1" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgTicket.png" Tapped="imgTickets_Tapped"/>
-            <Image Grid.Row="1" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgExam.png"/>
-            <Image Grid.Row="2" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgSigns.png"/>
-            <Image Grid.Row="2" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgMarks.png"/>
-            <Image Grid.Row="3" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgRules.png"/>
+            <Image x:Name="imgExam" Grid.Row="1" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgExam.png" Tapped="imgExam_Tapped"/>
+            <Image x:Name="imgSigns" Grid.Row="2" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgSigns.png" Tapped="imgSigns_Tapped"/>
+            <Image x:Name="imgMarks" Grid.Row="2" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgMarks.png" Tapped="imgMarks_Tapped"/>
+            <Image x:Name="imgRules" Grid.Row="3" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgRules.png" Tapped="imgRules_Tapped"/>
             <Image x:Name="imgAbout" Grid.Row="3" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgStatistics.png" Tapped="imgAbout_Tapped"/>
         </Grid>
         

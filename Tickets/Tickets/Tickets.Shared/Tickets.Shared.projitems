@@ -18,6 +18,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Global\GlobalConstants.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)tickets.db" />
+    <Content Include="$(MSBuildThisFileDirectory)tickets.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

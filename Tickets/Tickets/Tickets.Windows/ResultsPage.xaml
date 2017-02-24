@@ -41,7 +41,7 @@
         </AppBar>
     </Page.TopAppBar>
     
-    <Grid Margin="0,85,0,0">
+    <Grid Margin="0,90,0,0">
         <Grid.Background>
             <ImageBrush ImageSource="Image/MainPageBackground.png" Stretch="UniformToFill"></ImageBrush>
         </Grid.Background>

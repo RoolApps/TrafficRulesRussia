@@ -21,6 +21,8 @@ namespace Tickets {
         private SQLiteDataAccessor sql;
         public MarksPage() {
             this.InitializeComponent();
+            contentPopup.Loaded += CommonEvents.CommonUIEvents.Popup_Loaded;
+            popUpContent.Loaded += CommonEvents.CommonUIEvents.PopUpContent_Loaded;
         }
 
         protected override void OnNavigatedTo( NavigationEventArgs e ) {

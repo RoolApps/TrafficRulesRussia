@@ -86,6 +86,9 @@
     <Compile Include="BackgroundGrid.xaml.cs">
       <DependentUpon>BackgroundGrid.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CommonUI\CommonObject.cs" />
+    <Compile Include="CommonUI\ExtendedRichTextBlock.cs" />
+    <Compile Include="CommonUI\HLContent.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -93,11 +96,21 @@
     <Compile Include="QuestionPage.xaml.cs">
       <DependentUpon>QuestionPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SessionParameters.cs" />
+    <Compile Include="RuleObjectsPage.xaml.cs">
+      <DependentUpon>RuleObjectsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SessionParametersPage.xaml.cs">
       <DependentUpon>SessionParametersPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="SessionResultsPage.xaml.cs">
       <DependentUpon>SessionResultsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SignMarkPage.xaml.cs">
+      <DependentUpon>SignMarkPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SignsMarksPage.xaml.cs">
+      <DependentUpon>SignsMarksPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -153,11 +166,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="RuleObjectsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SessionParametersPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SessionResultsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SignMarkPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SignsMarksPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

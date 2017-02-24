@@ -14,10 +14,12 @@
         
         <Grid x:Name="mainGrid">
             <Grid.Resources>
+                <utils:PropertyHolder x:Name="sessionMode"></utils:PropertyHolder>
                 <utils:ImageConverter x:Key="ImageConverter"></utils:ImageConverter>
                 <local:BorderColorConverter x:Key="BorderColorConverter"></local:BorderColorConverter>
                 <local:BorderOpacityConverter x:Key="BorderOpacityConverter"></local:BorderOpacityConverter>
                 <local:BorderThicknessConverter x:Key="BorderThicknessConverter"></local:BorderThicknessConverter>
+                <local:BorderBackgroundConverter x:Key="BorderBackgroundConverter"></local:BorderBackgroundConverter>
 
                 <Style TargetType="TextBlock" x:Key="TextBlockStyle">
                     <Setter Property="LineHeight" Value="28"/>
@@ -50,13 +52,10 @@
             
             <XAMLMarkup:SwipeScrollCanvas x:Name="questionsCanvas"
                 MotionDuration="300"
-                Grid.Row="0"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch">
+                Grid.Row="0">
                 <XAMLMarkup:SwipeScrollCanvas.Content>
                     <DataTemplate>
                         <StackPanel
-                            Width="400"
                             Orientation="Vertical"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch">
@@ -92,7 +91,7 @@
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <Border 
-                                            Style="{StaticResource BorderStyle}"
+                                            Background="{Binding IsRight, Converter={StaticResource BorderBackgroundConverter}, ConverterParameter={StaticResource sessionMode}}"
                                             BorderBrush="{Binding IsSelected, Converter={StaticResource BorderColorConverter}}"
                                             Opacity="{Binding IsSelected, Converter={StaticResource BorderOpacityConverter}}"
                                             BorderThickness="{Binding IsSelected, Converter={StaticResource BorderThicknessConverter}}">
@@ -119,8 +118,12 @@
                     Click="btnEndSession_Click"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center" 
-                    Foreground="Black"
-                    BorderBrush="Black"/>
+                    Foreground="Brown"
+                    Background="#F8F6F1"
+                    FontSize="25"
+                    FontFamily="Comic Sans MS"
+                    BorderBrush="Brown"
+                    />
             </Grid>
         </Grid>
     </Grid>

@@ -27,7 +27,7 @@ namespace Tickets {
         #endregion
 
         #region public Members
-        public static string Answered = "#ff248F40";
+        public static string Answered = "#ff00a213";
         public static string NotAnswered = "#ffBF3330";
         public static string Transparent = "Transparent";
         #endregion
@@ -83,6 +83,21 @@ namespace Tickets {
 
         private void AppBarHomeButton_Click( object sender, RoutedEventArgs e ) {
             this.Frame.Navigate(typeof(MainPage));
+        }
+
+        private void QuestionStackPanel_Loaded( object sender, RoutedEventArgs e ) {
+            var sp = sender as StackPanel;
+            if(sp != null) {
+                sp.Height = Window.Current.Bounds.Height - 95;
+                sp.Width = Window.Current.Bounds.Width / 4;
+            }
+        }
+
+        private void AnswerBorder_Loaded( object sender, RoutedEventArgs e ) {
+            var b = sender as Border;
+            if(b != null) {
+                b.Height = Window.Current.Bounds.Height / 8;
+            }
         }
     }
 

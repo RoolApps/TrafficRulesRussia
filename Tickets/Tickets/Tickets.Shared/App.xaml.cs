@@ -133,7 +133,14 @@ namespace Tickets
                 {
                     // TODO: Загрузить состояние из ранее приостановленного приложения
                     string navigationState = await SettingSaver.GetSettingFromFile("NavigationState");
-                    rootFrame.SetNavigationState(navigationState);
+                    if(!String.IsNullOrEmpty(navigationState))
+                    {
+                        rootFrame.SetNavigationState(navigationState);
+                    }
+                    else
+                    {
+                        rootFrame.Navigate(typeof(MainPage));
+                    }
                 }
 
                 // Размещение фрейма в текущем окне
@@ -196,8 +203,16 @@ namespace Tickets
             var deferral = e.SuspendingOperation.GetDeferral();
 
             // TODO: Сохранить состояние приложения и остановить все фоновые операции
-            await SettingSaver.SaveSettingToFile("NavigationState", (Window.Current.Content as Frame).GetNavigationState());
-            deferral.Complete();
+            try
+            {
+                await SettingSaver.SaveSettingToFile("NavigationState", (Window.Current.Content as Frame).GetNavigationState());
+            }
+            catch (Exception)
+            { }
+            finally
+            {
+                deferral.Complete();
+            }
         }
     }
 }
