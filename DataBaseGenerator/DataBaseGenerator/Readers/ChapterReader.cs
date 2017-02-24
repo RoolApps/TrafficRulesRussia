@@ -9,7 +9,7 @@ namespace DataBaseGenerator.Readers
 {
     public static class ChapterReader
     {
-        const string RulesUrl = "http://pdd.drom.ru/pdd/";
+        const string RulesUrl = "https://pdd.am.ru/rules/";
         static List<RuleChapter> Chapters = new List<RuleChapter>();
 
         public static RuleChapter[] Read()
@@ -22,37 +22,15 @@ namespace DataBaseGenerator.Readers
                 {
                     Chapters.Add(currentChapter);
                 }
-                ChapterBuilder.StartChapter(e.Node.ChildNodes.Single(n => n.NodeName != NodeTypes.Link).NodeValue);
+                ChapterBuilder.StartChapter(e.Node.InnerHTML.Replace("<br>", String.Empty));
             };
-
-            string ignoredHeader = "Правила дорожного движения";
-            bool ignoreUntilHeader = true;
 
             CsQuery.Config.HtmlEncoder = new CsQuery.Output.HtmlEncoderNone();
             var baseDocument = CsQuery.CQ.CreateFromUrl(RulesUrl);
             Common.Log("Parsing chapters...");
-            var rulesDiv = baseDocument.Find(@"div[style=""overflow-x: auto""]").Single();
+            var rulesDiv = baseDocument.Find(@".au-accordion").Single();
             foreach (var node in rulesDiv.ChildNodes)
             {
-                if (ignoreUntilHeader)
-                {
-                    if (node.NodeName != NodeTypes.Header || node.InnerHTML.Contains(ignoredHeader))
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        ignoreUntilHeader = false;
-                    }
-                }
-                else
-                {
-                    if (node.NodeName == NodeTypes.Header && node.InnerHTML.Contains(ignoredHeader))
-                    {
-                        ignoreUntilHeader = true;
-                        continue;
-                    }
-                }
                 var content = Common.ParseNode(node);
                 if ((content ?? String.Empty) != String.Empty)
                 {
@@ -79,7 +57,7 @@ namespace DataBaseGenerator.Readers
 
         public static void AppendContent(String content)
         {
-            Content.Append(content);
+            Content.AppendLine(content);
         }
 
         public static RuleChapter PopChapter()

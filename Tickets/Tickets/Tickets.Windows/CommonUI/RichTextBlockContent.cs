@@ -88,6 +88,9 @@ namespace Tickets.CommonUI {
                 case "Bold": {
                         return generateBold(node);
                     }
+                case "Italic": {
+                        return generateItalic(node);
+                    }
                 case "Run": {
                         return generateRun(node);
                     }
@@ -124,6 +127,12 @@ namespace Tickets.CommonUI {
             Bold bold = new Bold();
             addChildren(bold, node);
             return bold;
+        }
+
+        private static Inline generateItalic(IXmlNode node) {
+            Italic italic = new Italic();
+            addChildren(italic, node);
+            return italic;
         }
 
         private static Inline generateRun( IXmlNode node ) {

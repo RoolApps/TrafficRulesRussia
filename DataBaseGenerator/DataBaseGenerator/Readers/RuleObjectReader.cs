@@ -1,155 +1,119 @@
-﻿using System;
+﻿using DataBaseGenerator.DataBase;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using DataBaseGenerator.DataBase;
 
 namespace DataBaseGenerator.Readers
 {
     public static class RuleObjectReader
     {
-        static Regex exactRegex = new Regex(@"^\d+(\.\d+)*$");
-        static string[] dashArray = new string[] { "-", "—", "–" };
-
-        public static T[] Read<T>(string pageUrl) where T : IRuleObject, new()
+        public static IRuleObject[] Read(IRuleObjectParser parser)
         {
-            Common.Log(String.Format("Downloading {0}s...", typeof(T).Name));
-            CsQuery.Config.HtmlEncoder = new CsQuery.Output.HtmlEncoderNone();
-            var baseDocument = CsQuery.CQ.CreateFromUrl(pageUrl);
-            var ruleObjectsTables = baseDocument.Find(@"div[style=""overflow-x: auto""] table tr");
-            Common.Log(String.Format("Parsing {0}s...", typeof(T).Name));
+            Common.Log(String.Format("Downloading {0}...", parser.Name));
+            var unparsed = parser.DownloadData();
+            Common.Log(String.Format("Successfully downloaded {0}.", parser.Name));
 
-            var result = ruleObjectsTables.SelectMany(ruleObjectNode =>
+            Common.Log(String.Format("Parsing {0}...", parser.Name));
+            var parsed = unparsed.AsParallel().WithDegreeOfParallelism(Environment.ProcessorCount).SelectMany(node => parser.Parse(node)).ToArray();
+            Common.Log(String.Format("Successfully parsed {0}.", parser.Name));
+
+            return parsed;
+        }
+    }
+
+    public interface IRuleObjectParser
+    {
+        String Name { get; }
+        IEnumerable<CsQuery.IDomObject> DownloadData();
+        IRuleObject[] Parse(CsQuery.IDomObject trNode);
+    }
+
+    public abstract class RuleObjectParser : IRuleObjectParser
+    {
+        private static char[] dashArray = new char[] { '-', '—', '–' };
+
+        public abstract String Name { get; }
+        public abstract IEnumerable<CsQuery.IDomObject> DownloadData();
+
+        protected abstract IRuleObject Create();
+        protected abstract String GetNumberText(CsQuery.CQ node);
+        protected abstract String GetDescription(CsQuery.CQ descriptionNode);
+
+        public IRuleObject[] Parse(CsQuery.IDomObject trNode)
+        {
+            var leftNode = trNode.ChildNodes.First(node => node.NodeName == NodeTypes.Td).Cq();
+            var rightNode = trNode.ChildNodes.Last(node => node.NodeName == NodeTypes.Td).Cq();
+
+            var numberText = GetNumberText(leftNode);
+            var numbers = GetNumbers(numberText);
+
+            var urls = GetUrls(rightNode);
+            var images = GetImages(urls);
+            var description = GetDescription(rightNode);
+
+            var numbersStack = new Stack<String>(numbers);
+            var imagesStack = new Stack<byte[]>(images);
+            List<IRuleObject> ruleObjects = new List<IRuleObject>();
+            while(numbersStack.Any())
             {
-                var leftNode = ruleObjectNode.ChildNodes.First(node => node.NodeName == NodeTypes.Td).Cq();
-                var rightNode = ruleObjectNode.ChildNodes.Last(node => node.NodeName == NodeTypes.Td).Cq();
-                IEnumerable<String> ruleObjectCaptions;
-                var captions = FindCaptions<T>(leftNode, rightNode);
-                ruleObjectCaptions = String.Join(" ", captions.SelectMany(node => FindResursive(node, n => n.NodeName == NodeTypes.Text)).Select(node => node.NodeValue))
-                    .Split(new char[] { ' ', ',', ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(caption => caption.Trim()).Where(caption => !String.Empty.Equals(caption));
-                if (!ruleObjectCaptions.Any())
-                {
-                    return new T[0];
-                }
-                if (!Verify(ruleObjectCaptions))
-                {
-                    ruleObjectCaptions = Patch(ruleObjectCaptions);
-                }
+                var number = numbersStack.Pop();
+                var image = imagesStack.Pop();
 
-                var ruleObjects = new List<T>();
-                var description = String.Join(Environment.NewLine, rightNode.Single().ChildNodes.Select(node => Common.ParseNode(node)));
-                var imagesUrls = leftNode.Find("img").Select(node => node.GetAttribute("src"));
-                var images = imagesUrls.Select(url => new WebClient().DownloadData(url)).ToArray();
-                if (images.Length < ruleObjectCaptions.Count())
-                {
-                    images = Enumerable.Range(0, ruleObjectCaptions.Count()).Select(i => images.First()).ToArray();
-                }
-                for (int i = 0; i < ruleObjectCaptions.Count(); i++)
-                {
-                    var ruleObject = new T();
-                    ruleObject.Description = description;
-                    ruleObject.Num = ruleObjectCaptions.ElementAt(i);
-                    ruleObject.Image = images[i];
-                    ruleObjects.Add(ruleObject);
-                }
+                var ruleObject = Create();
+                ruleObject.Num = number;
+                ruleObject.Image = image;
+                ruleObject.Description = description;
 
-                return ruleObjects.ToArray();
+                ruleObjects.Add(ruleObject);
+            }
+            return ruleObjects.ToArray();
+
+        }
+
+        private String[] GetUrls(CsQuery.CQ node)
+        {
+            return node.Find("img").Not(".pdd-inline-sign__icon").Not("p span img").Select(img => img.GetAttribute("src")).ToArray();
+        }
+
+        private byte[][] GetImages(String[] urls)
+        {
+            var tasks = urls.Select(url =>
+            {
+                var link = url;
+
+                var task = new Task<byte[]>(() =>
+                {
+                    return new WebClient().DownloadData(link);
+                });
+                task.Start();
+                return task;
             }).ToArray();
-            Common.Log(String.Format("{0}s successfully parsed.", typeof(T).Name));
-            return result;
+            Task.WaitAll(tasks);
+            return tasks.Select(task => task.Result).ToArray();
         }
 
-        static CsQuery.CQ FindCaptions<T>(CsQuery.CQ leftNode, CsQuery.CQ rightNode) where T : IRuleObject
+        static String[] GetNumbers(String text)
         {
-            if (typeof(T) == typeof(Mark))
+            if (dashArray.Any(dash => text.Contains(dash)))
             {
-                return rightNode.Find("strong");
+                var splitter = dashArray.Single(dash => text.Contains(dash));
+                var borders = text.Split(splitter).Select(border => border.Trim());
+                var first = Convert.ToInt32(borders.First().Split('.').Last());
+                var last = Convert.ToInt32(borders.Last().Split('.').Last());
+                var prefix = borders.First().Substring(0, borders.First().LastIndexOf('.'));
+                return Enumerable.Range(first, last - first + 1).Select(number => String.Format("{0}.{1}", prefix, number)).ToArray();
             }
-            else if (typeof(T) == typeof(Sign))
+            else if (text.Contains(","))
             {
-                return leftNode.Find("strong");
+                return text.Split(',').Select(number => number.Trim()).ToArray();
             }
-            else throw new NotImplementedException();
-        }
-
-        static IEnumerable<String> Patch(IEnumerable<String> numbers)
-        {
-            var array = numbers.ToArray();
-            List<String> result = new List<String>();
-            int counter = 0;
-
-            for (int i = 0; i < numbers.Count(); i++)
+            else
             {
-                if (array[i].StartsWith("."))
-                {
-                    result[counter - 1] += array[i];
-                }
-                else if (dashArray.Any(dash => array[i].Contains(dash)))
-                {
-                    if (dashArray.Any(dash => array[i].Equals(dash)))
-                    {
-                        var lower = array[i - 1];
-                        var upper = array[i + 1];
-                        var nums = GetNumbers(lower, upper);
-                        result.AddRange(nums);
-                        counter += nums.Count();
-                    }
-                    else
-                    {
-                        var splitter = dashArray.Single(dash => array[i].Contains(dash)).Single();
-                        var bounds = array[i].Split(splitter);
-                        var lower = bounds.First();
-                        var upper = bounds.Last();
-                        var nums = GetNumbers(lower, upper);
-                        result.Add(lower);
-                        result.AddRange(nums);
-                        result.Add(upper);
-                        counter += nums.Count() + 2;
-                    }
-                }
-                else if (exactRegex.IsMatch(array[i]))
-                {
-                    result.Add(array[i]);
-                    counter++;
-                }
-                else
-                {
-                    Common.Log(String.Format("Skipped: {0}", array[i]));
-                }
-
+                return new String[] { text.Trim() };
             }
-            return result;
-        }
-
-        static bool Verify(IEnumerable<String> numbers)
-        {
-            return numbers.All(number => exactRegex.IsMatch(number));
-        }
-
-        static IEnumerable<CsQuery.IDomObject> FindResursive(CsQuery.IDomObject node, Func<CsQuery.IDomObject, bool> condition)
-        {
-            IEnumerable<CsQuery.IDomObject> result = new CsQuery.IDomObject[0];
-            if (condition(node))
-            {
-                result = new CsQuery.IDomObject[] { node };
-            }
-            if (node.ChildNodes != null)
-            {
-                result = result.Concat(node.ChildNodes.SelectMany(n => FindResursive(n, condition)));
-            }
-            return result;
-        }
-
-        static IEnumerable<String> GetNumbers(String lower, String upper)
-        {
-            var dotIndex = lower.LastIndexOf('.');
-            var constPart = lower.Substring(0, dotIndex);
-            var lowerInt = Convert.ToInt32(lower.Substring(dotIndex + 1));
-            var upperInt = Convert.ToInt32(upper.Substring(dotIndex + 1));
-            return Enumerable.Range(lowerInt + 1, upperInt - lowerInt - 1).Select(number => String.Format("{0}.{1}", constPart, number));
         }
     }
 }
