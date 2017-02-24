@@ -23,6 +23,8 @@ namespace Tickets {
         public RulesPage() {
             this.InitializeComponent();
             sql = new SQLiteDataAccessor();
+            contentPopup.Loaded += CommonEvents.CommonUIEvents.Popup_Loaded;
+            popUpContent.Loaded += CommonEvents.CommonUIEvents.PopUpContent_Loaded;
         }
 
         protected override void OnNavigatedTo( NavigationEventArgs e ) {

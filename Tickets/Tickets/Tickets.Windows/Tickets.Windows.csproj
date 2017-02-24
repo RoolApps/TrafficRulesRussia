@@ -103,6 +103,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CommonEvents\CommonUIEvents.cs" />
     <Compile Include="CommonUI\MainMenuIcon.xaml.cs">
       <DependentUpon>MainMenuIcon.xaml</DependentUpon>
     </Compile>

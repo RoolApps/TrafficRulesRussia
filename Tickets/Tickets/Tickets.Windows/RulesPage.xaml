@@ -31,15 +31,15 @@
         <ScrollViewer>
             <RichTextBlock x:Name="rtb" common:RichTextBlockContent.Content="{Binding}" Margin="5,0,15,0"/>
         </ScrollViewer>
-        <Popup x:Name="contentPopup" IsLightDismissEnabled="True" Margin="300,100,0,0">
-            <Border BorderBrush="Aqua" BorderThickness="4" Background="#1D7074" Width="1300" MaxHeight="800">
-                <StackPanel>
-                    <TextBlock x:Name="popupText" Text="popupText" FontSize="28" Foreground="Orange" FontFamily="Comic Sans MS" VerticalAlignment="Center" Margin="20,12,20,4"/>
-                    <Image x:Name="popupImage" Source="{Binding Converter={StaticResource ImgConverter}}" Height="150" Width="200"/>
-                    <ScrollViewer>
+        <Popup x:Name="contentPopup" IsLightDismissEnabled="True">
+            <Border x:Name="popUpContent" BorderBrush="Aqua" BorderThickness="4" Background="#1D7074">
+                <ScrollViewer>
+                    <StackPanel>
+                        <TextBlock x:Name="popupText" Text="popupText" FontSize="28" Foreground="Orange" FontFamily="Comic Sans MS" VerticalAlignment="Center" Margin="20,12,20,4"/>
+                        <Image x:Name="popupImage" Source="{Binding Converter={StaticResource ImgConverter}}" Height="150" Width="200"/>
                         <RichTextBlock x:Name="popupRtb" common:RichTextBlockContent.Content="{Binding}" Margin="5,0,15,0"/>
-                    </ScrollViewer>
-                </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
             </Border>
         </Popup>
     </Grid>
