@@ -47,6 +47,20 @@ namespace Tickets
             } else {
                 Session = Serializer.DeserializeFromString<Session>(e.Parameter as string);
             }
+            this.mainGrid.Resources.GetPropertyHolder("sessionMode").Value = Session.Mode;
+            if(Session.Mode == AppLogic.Enums.QuestionsGenerationMode.ExamTicket)
+            {
+                questionsCanvas.ManipulationMode = ManipulationModes.TranslateY;
+                btnEndSession.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            }
+            if (Session.Mode == AppLogic.Enums.QuestionsGenerationMode.Questions)
+            {
+                btnEndSession.Content = "Главное меню";
+            }
+            else
+            {
+                btnEndSession.Content = "Завершить экзамен";
+            }
             int index = 0;
             var questions = Session.Tickets.SelectMany(ticket => ticket.Questions);
             var length = questions.Count();
@@ -84,21 +98,37 @@ namespace Tickets
 
         private void TextBlock_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            var element = e.OriginalSource as FrameworkElement;
-            var answer = element.DataContext as IAnswer;
-            answer.IsSelected = !answer.IsSelected;
-
-            if(answer.IsSelected)
+            if (Session.Mode != AppLogic.Enums.QuestionsGenerationMode.Questions)
             {
-                questionsCanvas.ChangeCanvasContent(true);
-            }
+                var element = e.OriginalSource as FrameworkElement;
+                var answer = element.DataContext as IAnswer;
+                answer.IsSelected = !answer.IsSelected;
 
-            //btnEndSession.Visibility = Session.Tickets.SelectMany(ticket => ticket.Questions).All(question => question.SelectedAnswered != null) ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
+                if (answer.IsSelected)
+                {
+                    if (Session.Mode == AppLogic.Enums.QuestionsGenerationMode.ExamTicket
+                        && Session.Tickets.SelectMany(ticket => ticket.Questions).All(question => question.SelectedAnswered != null))
+                    {
+                        this.Frame.Navigate(typeof(SessionResultsPage), Serializer.SerializeToString(Session));
+                    }
+                    else
+                    {
+                        questionsCanvas.ChangeCanvasContent(true);
+                    }
+                }
+            }
         }
 
         private void btnEndSession_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(SessionResultsPage), Serializer.SerializeToString(Session));
+            if(Session.Mode == AppLogic.Enums.QuestionsGenerationMode.Questions)
+            {
+                this.Frame.Navigate(typeof(MainPage));
+            }
+            else
+            {
+                this.Frame.Navigate(typeof(SessionResultsPage), Serializer.SerializeToString(Session));
+            }
         }
     }
 
@@ -121,6 +151,49 @@ namespace Tickets
 
         protected override Thickness Selected { get { return selected; } }
         protected override Thickness NotSelected { get { return notSelected; } }
+    }
+
+    public class BorderBackgroundConverter : IValueConverter
+    {
+        const string Default = "#F8F6F1";
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            bool isRight;
+            PropertyHolder holder;
+            AppLogic.Enums.QuestionsGenerationMode mode;
+
+            if(ChangeType(value, out isRight)
+                && ChangeType(parameter, out holder)
+                && ChangeType(holder.Value, out mode)
+                && mode == AppLogic.Enums.QuestionsGenerationMode.Questions && isRight)
+            {
+                return "#C6FFBD";
+            }
+            else
+            {
+                return Default;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool ChangeType<T>(object obj, out T typed)
+        {
+            try
+            {
+                typed = (T)obj;
+                return true;
+            }
+            catch (Exception)
+            {
+                typed = default(T);
+                return false;
+            }
+        }
     }
 
     public abstract class BooleanConverter<T> : IValueConverter
