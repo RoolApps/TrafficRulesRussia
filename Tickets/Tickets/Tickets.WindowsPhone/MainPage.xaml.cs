@@ -75,5 +75,10 @@ namespace Tickets
         {
             Frame.Navigate(typeof(SignsMarksPage), "marks");
         }
+
+        private void imgAbout_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(AboutPage));
+        }
     }
 }

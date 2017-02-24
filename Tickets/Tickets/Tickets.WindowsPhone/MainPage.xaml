@@ -48,10 +48,10 @@
             </Grid>
             <Image x:Name="imgTickets" Grid.Row="1" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgTicket.png" Tapped="imgTickets_Tapped"/>
             <Image x:Name="imgExam" Grid.Row="1" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgExam.png" Tapped="imgExam_Tapped"/>
-            <Image x:Name="imgRules" Grid.Row="2" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgRules.png" Tapped="imgRules_Tapped"/>
-            <Image Grid.Row="2" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgStatistics.png"/>
-            <Image x:Name="imgSigns" Grid.Row="3" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgSigns.png" Tapped="imgSigns_Tapped"/>
-            <Image x:Name="imgMarks" Grid.Row="3" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgMarks.png" Tapped="imgMarks_Tapped"/>
+            <Image x:Name="imgSigns" Grid.Row="2" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgSigns.png" Tapped="imgSigns_Tapped"/>
+            <Image x:Name="imgMarks" Grid.Row="2" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgMarks.png" Tapped="imgMarks_Tapped"/>
+            <Image x:Name="imgRules" Grid.Row="3" Grid.Column="0" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgRules.png" Tapped="imgRules_Tapped"/>
+            <Image x:Name="imgAbout" Grid.Row="3" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Source="Assets/imgStatistics.png" Tapped="imgAbout_Tapped"/>
         </Grid>
         
         <Grid Canvas.ZIndex="1">
@@ -83,10 +83,10 @@
             
             <TextBlock Text="Билеты" Grid.Row="2" Grid.Column="0" Style="{StaticResource TextBlockStyle}" />
             <TextBlock Text="Экзамен" Grid.Row="2" Grid.Column="1" Style="{StaticResource TextBlockStyle}" />
-            <TextBlock Text="Правила" Grid.Row="5" Grid.Column="0" Style="{StaticResource TextBlockStyle}" />
-            <TextBlock Text="Статистика" Grid.Row="5" Grid.Column="1" Style="{StaticResource TextBlockStyle}" />
-            <TextBlock Text="Знаки" Grid.Row="8" Grid.Column="0" Style="{StaticResource TextBlockStyle}" />
-            <TextBlock Text="Разметка" Grid.Row="8" Grid.Column="1" Style="{StaticResource TextBlockStyle}" />
+            <TextBlock Text="Знаки" Grid.Row="5" Grid.Column="0" Style="{StaticResource TextBlockStyle}" />
+            <TextBlock Text="Разметка" Grid.Row="5" Grid.Column="1" Style="{StaticResource TextBlockStyle}" />
+            <TextBlock Text="Правила" Grid.Row="8" Grid.Column="0" Style="{StaticResource TextBlockStyle}" />
+            <TextBlock Text="О приложении" Grid.Row="8" Grid.Column="1" Style="{StaticResource TextBlockStyle}" />
         </Grid>
     </Grid>
 </Page>
