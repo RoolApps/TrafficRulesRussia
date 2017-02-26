@@ -7,78 +7,68 @@ using System.Threading;
 using System.Threading.Tasks;
 using DataBaseGenerator.DataBase;
 
-namespace DataBaseGenerator.Readers
-{
-    public static class TicketReader
-    {
-        const string BaseUrl = "http://pdd.drom.ru/";
-        const string NoImageUrl = "http://c.rdrom.ru/skin/pdd_no_question.jpg";
+using Newtonsoft.Json;
+using System.IO;
 
-        public static Ticket[] Read()
-        {
+namespace DataBaseGenerator.Readers {
+    public static class TicketReader {
+        private const int maxTicketCount = 40;
+        private const int maxQuestionCount = 20;
+        private const string baseUrl = "https://pdd.am.ru/int/controls/get-question/?category=1&type=1&object=";
+
+        public static Ticket[] Read() {
             Common.Log("Downloading tickets...");
-            CsQuery.Config.HtmlEncoder = new CsQuery.Output.HtmlEncoderNone();
-            var baseDocument = CsQuery.CQ.CreateFromUrl(BaseUrl);
-            Common.Log("Parsing tickets...");
-            var ticketLinks = baseDocument.Find("div.numbers a");
             List<Task<Ticket>> taskList = new List<Task<Ticket>>();
+            Dictionary<int, CookieCollection> savedCookie = new Dictionary<int, CookieCollection>();
 
-            foreach (var ticketLink in ticketLinks)
-            {
-                var task = new Task<Ticket>(() =>
-                {
-                    var link = ticketLink;
-                    var ticketNum = link.Cq().Find("span").First().Single().InnerText;
-
+            foreach (var currentTicket in Enumerable.Range(1, maxTicketCount)) {
+                var task = new Task<Ticket>(() => {
                     Ticket ticket = new Ticket();
-                    ticket.Num = Convert.ToInt32(ticketNum);
-
-                    var webClient = new WebClient();
-                    webClient.Encoding = Encoding.GetEncoding(1251);
-                    var url = String.Format("http://pdd.drom.ru/bilet_{0}", ticketNum);
-                    var documentContent = webClient.DownloadString(url);
-                    CsQuery.CQ document = new CsQuery.CQ(documentContent);
-                    var questionBlocks = document.Find(".pdd-question-block");
-
+                    ticket.Num = currentTicket;
                     List<Question> questions = new List<Question>();
-
-                    foreach (var questionBlock in questionBlocks)
-                    {
-                        var question = new Question();
-
-                        var csQuestionBlock = new CsQuery.CQ(questionBlock);
-                        Thread thread = new Thread(new ThreadStart(() =>
-                        {
-                            var imageUrl = csQuestionBlock.Find(".question img").Attr("src");
-                            if (imageUrl != NoImageUrl)
-                            {
+                    foreach (var currentQuestion in Enumerable.Range(1, maxQuestionCount)) {
+                        string url = baseUrl + currentTicket.ToString();
+                        if (currentQuestion != 1) {
+                            url += "&answer=1";
+                        }
+                        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                        request.CookieContainer = new CookieContainer();
+                        request.CookieContainer.Add(savedCookie.ContainsKey(currentTicket) ? savedCookie[currentTicket] : new CookieCollection());
+                        HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                        Stream responseStream = response.GetResponseStream();
+                        StreamReader responseStreamReader = new StreamReader(responseStream, Encoding.UTF8);
+                        var jsonObject = JsonConvert.DeserializeObject<jsonModel.jsonRootObject>(responseStreamReader.ReadToEnd());
+                        Question question = new Question();
+                        question.Text = jsonObject.data.question.text;
+                        question.Num = jsonObject.data.question.orderNumber;
+                        Thread downloadImg = new Thread(new ThreadStart(() => {
+                            var imageUrl = jsonObject.data.question.image;
+                            if (imageUrl != string.Empty) {
                                 question.Image = new WebClient().DownloadData(imageUrl);
+                            } else {
+                                question.Image = null;
                             }
                         }));
-                        thread.Start();
+                        downloadImg.Start();
 
                         question.Ticket = ticket;
-                        question.Num = Convert.ToInt32(csQuestionBlock.Find("a").Attr("name"));
-                        question.Text = csQuestionBlock.Find(".question p").Single().InnerText;
-
-
-                        var answerBlocks = csQuestionBlock.Find(".answer");
                         List<Answer> answers = new List<Answer>();
-                        foreach (var answerBlock in answerBlocks)
-                        {
+                        foreach (var a in jsonObject.data.question.answers) {
                             var answer = new Answer();
+                            answer.Text = a.text;
+                            answer.IsRight = a.isRight;
                             answer.Question = question;
-                            var csAnswerBlock = new CsQuery.CQ(answerBlock);
-                            answer.Text = csAnswerBlock.Find("span").Single().InnerText;
-                            answer.IsRight = answerBlock.HasAttribute("id");
                             answers.Add(answer);
                         }
                         question.Answers = answers.ToArray();
 
-                        thread.Join();
+                        downloadImg.Join();
                         questions.Add(question);
-                    }
 
+                        if (currentQuestion == 1) {
+                            savedCookie[currentTicket] = response.Cookies;
+                        }
+                    }
                     ticket.Questions = questions.ToArray();
                     return ticket;
                 });
