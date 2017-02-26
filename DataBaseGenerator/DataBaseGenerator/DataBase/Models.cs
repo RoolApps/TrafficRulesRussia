@@ -54,6 +54,7 @@ namespace DataBaseGenerator.DataBase
         public byte[] Image { get; set; }
         public Ticket Ticket { get; set; }
         public Answer[] Answers { get; set; }
+        public string Hint { get; set; }
     }
 
     public class Answer
