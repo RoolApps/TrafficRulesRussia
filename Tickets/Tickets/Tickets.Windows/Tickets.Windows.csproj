@@ -103,6 +103,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AboutPage.xaml.cs">
+      <DependentUpon>AboutPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CommonEvents\CommonUIEvents.cs" />
     <Compile Include="CommonUI\MainMenuIcon.xaml.cs">
       <DependentUpon>MainMenuIcon.xaml</DependentUpon>
@@ -148,6 +151,7 @@
     <Content Include="Assets\SmallLogo.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\StoreLogo.scale-100.png" />
+    <Content Include="Image\About_btn.png" />
     <Content Include="Image\Exam_btn.png" />
     <Content Include="Image\MainPageBackground.png" />
     <Content Include="Image\Marks_btn.png" />
@@ -156,10 +160,13 @@
     <Content Include="Image\PreviousItem.png" />
     <Content Include="Image\Rules_btn.png" />
     <Content Include="Image\Signs_btn.png" />
-    <Content Include="Image\Statistic_btn.png" />
     <Content Include="Image\Ticket_btn.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="AboutPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CommonUI\MainMenuIcon.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

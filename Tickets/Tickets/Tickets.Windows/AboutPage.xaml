@@ -1,0 +1,63 @@
+﻿<Page
+    x:Class="Tickets.AboutPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Tickets"
+    xmlns:utils="using:Utils"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <utils:ImageConverter x:Key="ImgConverter"></utils:ImageConverter>
+    </Page.Resources>
+
+    <Page.TopAppBar>
+        <AppBar IsOpen="True" IsSticky="True" Background="#ff006064">
+            <StackPanel Orientation="Horizontal">
+                <AppBarButton x:Name="BackButton" Icon="Back" Label="Назад" Click="AppBarBackButton_Click"></AppBarButton>
+                <AppBarButton x:Name="ForwardButton" Icon="Forward" Label="Вперед" Click="AppBarForwardButton_Click"></AppBarButton>
+                <AppBarButton x:Name="HomeButton" Icon="Home" Label="Домой" Click="AppBarHomeButton_Click"></AppBarButton>
+                <TextBlock x:Name="header" Text="О программе" Foreground="White" VerticalAlignment="Center" FontSize="32" ></TextBlock>
+            </StackPanel>
+        </AppBar>
+    </Page.TopAppBar>
+
+    <Grid Margin="0,90,0,0">
+        <Grid.Background>
+            <ImageBrush ImageSource="Image/MainPageBackground.png" Stretch="UniformToFill" Opacity="0.85"></ImageBrush>
+        </Grid.Background>
+        <StackPanel Margin="50,15,50,20">
+            <TextBlock Text="Описание:" FontSize="28" FontWeight="Bold"></TextBlock>
+            <TextBlock FontSize="24" TextWrapping="WrapWholeWords" Margin="30,5,0,0">
+                Простое и удобное приложение для подготовки к сдаче экзамена в ГИБДД.
+                Билеты составлены в соответствии с Правилами Дорожного Движения 2017 года.
+                Приложение может использоваться в качестве учебного пособия с целью повторения знаний.
+            </TextBlock>
+            <TextBlock Text="Режимы:" FontSize="28" FontWeight="Bold" Margin="0,5,0,0"></TextBlock>
+            <TextBlock FontSize="24" TextWrapping="WrapWholeWords" Margin="30,5,0,0">
+                В приложении присутствуют два основных режима прохождения билетов. Во вкладке «Билеты» можно выбрать
+                любой(или несколько) билетов. Так-же можно отсортировать вопросы в случайном порядке.
+                В данном режиме есть возможность навигации по вопросам внутри билета.
+                Во вкладке «Экзамен» такая возможность отсутствует, поэтому необходимо ответить на все вопросы.
+                После прохождения билета вы попадете на страницу «Ошибки» где можно посмотреть какие ошибки были совершены.
+            </TextBlock>
+            <TextBlock FontSize="24" TextWrapping="WrapWholeWords" Margin="30,5,0,0">
+                Так-же во вкладках «Правила», «Знаки» и «Разметка» можно подкрепить свои знания.
+            </TextBlock>
+            <TextBlock Text="Дополнительная информация:" FontSize="28" FontWeight="Bold" Margin="0,5,0,0"></TextBlock>
+            <TextBlock FontSize="24" TextWrapping="WrapWholeWords" Margin="30,5,0,0">
+                Пройдя по ссылке <Hyperlink NavigateUri="https://www.microsoft.com/ru-ru/store/apps" FontWeight="Bold" FontSize="26">ПДД</Hyperlink> Вы можете оценить наше приложение и оставить комментарий.
+            </TextBlock>
+            <TextBlock FontSize="24" TextWrapping="WrapWholeWords" Margin="30,5,0,0">
+                Вся информация, в том числе текстовое и графическое содержимое ПДД, билетов экзамена ПДД, знаков дорожного движения и дорожной разметки, предоставлена сайтом <Hyperlink NavigateUri="http://am.ru" FontWeight="Bold" FontSize="26">am.ru</Hyperlink>
+            </TextBlock>
+            <TextBlock Text="Авторы:" FontSize="26" FontWeight="Bold" Margin="0,5,0,0"></TextBlock>
+            <TextBlock FontSize="26" TextWrapping="WrapWholeWords" Margin="30,0,0,0">
+                 <Hyperlink NavigateUri="https://github.com/OlegRakovitch" FontWeight="Bold" FontSize="26">Ракович Олег</Hyperlink>
+                , 
+                <Hyperlink NavigateUri="https://github.com/febonachi" FontWeight="Bold" FontSize="26">Кривченко Роман</Hyperlink>
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+</Page>

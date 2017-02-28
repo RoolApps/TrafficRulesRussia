@@ -19,7 +19,7 @@
                 <AppBarButton x:Name="BackButton" Icon="Back" Label="Назад" Click="AppBarBackButton_Click"></AppBarButton>
                 <AppBarButton x:Name="ForwardButton" Icon="Forward" Label="Вперед" Click="AppBarForwardButton_Click"></AppBarButton>
                 <AppBarButton x:Name="HomeButton" Icon="Home" Label="Домой" Click="AppBarHomeButton_Click"></AppBarButton>
-                <TextBlock x:Name="header" Text="RulesPage" Foreground="White" VerticalAlignment="Center" FontSize="40" Margin="100,0,0,0"></TextBlock>
+                <TextBlock x:Name="header" Text="RulesPage" Foreground="White" VerticalAlignment="Center" FontSize="26" ></TextBlock>
             </StackPanel>
         </AppBar>
     </Page.TopAppBar>
@@ -37,7 +37,7 @@
                     <StackPanel>
                         <TextBlock x:Name="popupText" Text="popupText" FontSize="28" Foreground="Orange" FontFamily="Comic Sans MS" VerticalAlignment="Center" Margin="20,12,20,4"/>
                         <Image x:Name="popupImage" Source="{Binding Converter={StaticResource ImgConverter}}" Height="150" Width="200"/>
-                        <RichTextBlock x:Name="popupRtb" common:RichTextBlockContent.Content="{Binding}" Margin="5,0,15,0"/>
+                        <RichTextBlock x:Name="popupRtb" common:RichTextBlockContent.Content="{Binding}" common:RichTextBlockContent.FontSize="24" Margin="5,0,15,0"/>
                     </StackPanel>
                 </ScrollViewer>
             </Border>
