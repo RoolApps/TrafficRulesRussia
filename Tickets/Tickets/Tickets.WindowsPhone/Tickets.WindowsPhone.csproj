@@ -132,8 +132,8 @@
     <Content Include="Assets\imgRulesBG.png" />
     <Content Include="Assets\imgSigns.png" />
     <Content Include="Assets\imgSignsBG.png" />
-    <Content Include="Assets\imgStatistics.png" />
-    <Content Include="Assets\imgStatisticsBG.png" />
+    <Content Include="Assets\imgAbout.png" />
+    <Content Include="Assets\imgAboutBG.png" />
     <Content Include="Assets\imgTicket.png" />
     <Content Include="Assets\imgTicketBG.png" />
     <Content Include="Assets\imgWheelDrive.png" />
