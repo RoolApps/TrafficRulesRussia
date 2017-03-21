@@ -31,6 +31,8 @@ namespace Tickets.CommonUI {
     }
 
     public class RichTextBlockContent {
+        private static double fontSize = 14;
+
         public static String GetContent( DependencyObject obj ) {
             return (String)obj.GetValue(ContentProperty);
         }
@@ -39,15 +41,31 @@ namespace Tickets.CommonUI {
             obj.SetValue(ContentProperty, value);
         }
 
+        public static int GetFontSize( DependencyObject obj ) {
+            return (int)obj.GetValue(FontSizeProperty);
+        }
+
+        public static void SetFontSize( DependencyObject obj, int value ) {
+            obj.SetValue(FontSizeProperty, value);
+        }
+
         public static readonly DependencyProperty ContentProperty =
            DependencyProperty.RegisterAttached("Content", typeof(string),
            typeof(RichTextBlockContent), new PropertyMetadata(String.Empty, OnContentChanged));
+
+        public static readonly DependencyProperty FontSizeProperty =
+           DependencyProperty.RegisterAttached("FontSize", typeof(int),
+           typeof(RichTextBlockContent), new PropertyMetadata(String.Empty, OnFontSizeChanged));
 
         public static event EventHandler<HLContent> onBlockTapped;
         protected static void RaiseEventBlockTapped( object sender, HLContent content ) {
             if(onBlockTapped != null) {
                 onBlockTapped(sender, content);
             }
+        }
+
+        private static void OnFontSizeChanged( DependencyObject d, DependencyPropertyChangedEventArgs e ) {
+            fontSize = Double.Parse(e.NewValue.ToString());
         }
 
         private static void OnContentChanged( DependencyObject d, DependencyPropertyChangedEventArgs e ) {
@@ -138,6 +156,7 @@ namespace Tickets.CommonUI {
         private static Inline generateRun( IXmlNode node ) {
             Run run = new Run();
             run.Text = node.InnerText;
+            run.FontSize = fontSize;
             return run;
         }
 
@@ -149,6 +168,7 @@ namespace Tickets.CommonUI {
             string type = match.Groups["type"].Value;
             string text = match.Groups["text"].Value;
             run.Text = text;
+            run.FontSize = fontSize;
             hyperlink.Inlines.Add(run);
             hyperlink.Click += ( s, e ) => {
                 RaiseEventBlockTapped(s, new HLContent(type, text));

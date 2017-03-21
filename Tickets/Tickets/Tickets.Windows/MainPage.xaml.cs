@@ -77,10 +77,9 @@ namespace Tickets
             this.Frame.Navigate(typeof(MarksPage));
         }
 
-        private async void StatisticsBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
-            string sessionState = await SettingSaver.GetSettingFromFile(GlobalConstants.sesstionState);
-            this.Frame.Navigate(typeof(ResultsPage), sessionState);
-        }
+        void AboutBtn_Tapped( object sender, TappedRoutedEventArgs e ) {
+            this.Frame.Navigate(typeof(AboutPage));
+        }   
         #endregion
 
         #region Constructor
@@ -91,8 +90,8 @@ namespace Tickets
             RulesBtn.Tapped += RulesBtn_Tapped;
             SignsBtn.Tapped += SignsBtn_Tapped;
             MarksBtn.Tapped += MarksBtn_Tapped;
-            StatisticsBtn.Tapped += StatisticsBtn_Tapped;
-        }        
+            AboutBtn.Tapped += AboutBtn_Tapped;
+        }
         #endregion
     }
 
