@@ -61,17 +61,21 @@ namespace DataBaseGenerator.Readers
             {
                 if(node.Classes.Contains("pdd-inline-sign"))
                 {
-                    var match = new Regex(@"https://media.am.ru/pdd/(?<type>\w+)/xs/(?<num>[\w\.]+).png").Match(node.InnerHTML);
-                    if(match != null)
+                    var type = "sign";
+                    var numRegex = new Regex(@"<span class=""pdd-inline-sign__text"">(?<num>[\w\.]+)</span>");
+                    var num = numRegex.Match(node.InnerHTML).Groups["num"].Value;
+
+                    var match = new Regex(@"https://media.am.ru/pdd/(?<type>\w+)/(xs|l)/(?<num>[\w\.]+).png").Match(node.InnerHTML);
+                    if(match != null && match.Groups["type"].Value != String.Empty)
                     {
-                        var type = match.Groups["type"].Value;
-                        var num = match.Groups["num"].Value;
+                        type = match.Groups["type"].Value;
                         if(type == "marking")
                         {
                             type = "mark";
                         }
-                        return String.Format("<Run> @@{{{0}s}}{1}@@ </Run>", match.Groups["type"].Value, match.Groups["num"].Value);
                     }
+
+                    return String.Format("<Run> @@{{{0}s}}{1}@@ </Run>", type, num);
                 }
                 else if (node.ChildNodes.Any())
                 {
@@ -96,12 +100,6 @@ namespace DataBaseGenerator.Readers
         static string GetIdent(int level)
         {
             return Environment.NewLine + new String(Enumerable.Range(0, level * 2).Select(i => ' ').ToArray());
-        }
-
-        static string ReplaceUrl(string text, string replace)
-        {
-            text = text.Replace('_', '.');
-            return regex.Replace(text, String.Format("@@{{{0}}}${{num}}@@", replace));
         }
 
         public static String WrapText(String text)
