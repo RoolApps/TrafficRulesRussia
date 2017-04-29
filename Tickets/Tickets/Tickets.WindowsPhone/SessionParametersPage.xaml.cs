@@ -59,6 +59,11 @@ namespace Tickets
         /// </summary>
         private void EnableControls()
         {
+            btnStart.IsEnabled = false;
+            if (listTickets.SelectedItems.Any())
+            {
+                btnStart.IsEnabled = true;
+            }
         }
         #endregion Private Methods
 
@@ -70,22 +75,11 @@ namespace Tickets
         /// This parameter is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-
-        }
-
-        private void chkRandomTicket_Checked(object sender, RoutedEventArgs e)
-        {
-            EnableControls();
-        }
-
-        private void chkRandomTicket_Unchecked(object sender, RoutedEventArgs e)
-        {
-            EnableControls();
+            
         }
 
         private void listTickets_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //EnableControls();
             foreach(var item in e.AddedItems.Select(item => new { Item = item, Selected = true }).Union(e.RemovedItems.Select(item => new { Item = item, Selected = false })))
             {
                 var container = listTickets.ContainerFromItem(item.Item);
@@ -105,6 +99,7 @@ namespace Tickets
                     image.Source = new BitmapImage(new Uri(url, UriKind.Absolute));
                 }
             }
+            EnableControls();
         }
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
@@ -171,6 +166,7 @@ namespace Tickets
             {
                 image.Source = new BitmapImage(new Uri(url, UriKind.Absolute));   
             }
+            EnableControls();
         }
         #endregion
     }
