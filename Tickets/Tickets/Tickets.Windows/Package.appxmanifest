@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="1de91a92-70bd-44ae-86f6-34d3089d1262" Publisher="CN=Geslot" Version="1.0.0.0" />
+  <Identity Name="1de91a92-70bd-44ae-86f6-34d3089d1262" Publisher="CN=Geslot" Version="1.0.0.1" />
   <Properties>
     <DisplayName>Tickets.Windows</DisplayName>
     <PublisherDisplayName>Rool Apps</PublisherDisplayName>
