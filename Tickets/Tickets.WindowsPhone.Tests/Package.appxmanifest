@@ -1,18 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
-
-  <Identity Name="3ced4ed8-0b4b-4c63-af5f-d0bfd07ed82f"
-            Publisher="CN=Geslot"
-            Version="1.0.0.0" />
-
-  <mp:PhoneIdentity PhoneProductId="3ced4ed8-0b4b-4c63-af5f-d0bfd07ed82f" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
-
+  <Identity Name="3ced4ed8-0b4b-4c63-af5f-d0bfd07ed82f" Publisher="CN=Geslot" Version="1.0.0.0" />
+  <mp:PhoneIdentity PhoneProductId="3ced4ed8-0b4b-4c63-af5f-d0bfd07ed82f" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Tickets.WindowsPhone.Tests</DisplayName>
-    <PublisherDisplayName>Geslot</PublisherDisplayName>
+    <PublisherDisplayName>Rool Apps</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
-
   <Prerequisites>
     <OSMinVersion>6.3.1</OSMinVersion>
     <OSMaxVersionTested>6.3.1</OSMaxVersionTested>
@@ -21,23 +15,17 @@
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
-    <Application Id="App" 
-        Executable="vstest.executionengine.appcontainer.exe" 
-        EntryPoint="Microsoft.VisualStudio.TestPlatform.TestExecutor.AppContainer.App">
-        <m3:VisualElements
-            DisplayName="Tickets.WindowsPhone.Tests"
-            Square150x150Logo="Assets\Logo.png"
-            Square44x44Logo="Assets\SmallLogo.png"
-            Description="Tickets.WindowsPhone.Tests"
-            ForegroundText="light"
-            BackgroundColor="#464646">
-            <m3:DefaultTile Wide310x150Logo="Assets\WideLogo.png" Square71x71Logo="Assets\Square71x71Logo.png"/>
-            <m3:SplashScreen Image="Assets\SplashScreen.png"/>
-            <m3:ApplicationView MinWidth="width320"/> <!--Used in XAML Designer. DO NOT REMOVE-->
-        </m3:VisualElements>
+    <Application Id="App" Executable="vstest.executionengine.appcontainer.exe" EntryPoint="Microsoft.VisualStudio.TestPlatform.TestExecutor.AppContainer.App">
+      <m3:VisualElements DisplayName="Tickets.WindowsPhone.Tests" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="Tickets.WindowsPhone.Tests" ForegroundText="light" BackgroundColor="#464646">
+        <m3:DefaultTile Wide310x150Logo="Assets\WideLogo.png" Square71x71Logo="Assets\Square71x71Logo.png">
+        </m3:DefaultTile>
+        <m3:SplashScreen Image="Assets\SplashScreen.png" />
+        <m3:ApplicationView MinWidth="width320" />
+        <!--Used in XAML Designer. DO NOT REMOVE-->
+      </m3:VisualElements>
     </Application>
   </Applications>
   <Capabilities>
     <Capability Name="internetClientServer" />
-  </Capabilities> 
+  </Capabilities>
 </Package>
