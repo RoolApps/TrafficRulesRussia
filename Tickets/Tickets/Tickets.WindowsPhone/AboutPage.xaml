@@ -62,15 +62,25 @@
                     Text="Кривченко Роман"
                     Style="{StaticResource elementStyle}"/>
                 <TextBlock
-                    Text="github.com/febonachi"
-                    Style="{StaticResource elementStyle}"/>
+                    Style="{StaticResource elementStyle}">
+                    <Hyperlink
+                        NavigateUri="https://github.com/febonachi"
+                        FontSize="18"
+                        Foreground="#FFFFA016">
+                        github.com/febonachi</Hyperlink>
+                </TextBlock>
                 <TextBlock
                     Margin="0,10,0,0"
                     Text="Ракович Олег"
                     Style="{StaticResource elementStyle}" />
                 <TextBlock
-                    Text="github.com/OlegRakovitch" 
-                    Style="{StaticResource elementStyle}"/>
+                    Style="{StaticResource elementStyle}">
+                    <Hyperlink
+                        NavigateUri="https://github.com/OlegRakovitch"
+                        FontSize="18"
+                        Foreground="#FFFFA016">
+                        github.com/OlegRakovitch</Hyperlink>
+                </TextBlock>
             </StackPanel>
 
             <StackPanel Grid.Row="3">
@@ -92,7 +102,11 @@
                 <TextBlock
                     Style="{StaticResource elementStyle}">
                     Оставляйте свои отзывы и пожелания на
-                    <Hyperlink NavigateUri="https://www.microsoft.com/ru-RU/store/apps/9pbtnfgk447w" FontSize="18" Foreground="#FFFFA016">странице приложения</Hyperlink>
+                    <Hyperlink
+                        NavigateUri="https://www.microsoft.com/ru-RU/store/apps/9pbtnfgk447w"
+                        FontSize="18"
+                        Foreground="#FFFFA016">
+                        странице приложения</Hyperlink>
                 </TextBlock>
             </StackPanel>
 
