@@ -106,6 +106,8 @@ namespace Tickets {
             setPopupContent(v);
             if(!contentPopup.IsOpen) {
                 contentPopup.IsOpen = true;
+            } else {
+                contentPopup.IsOpen = false;
             }
         }
     }

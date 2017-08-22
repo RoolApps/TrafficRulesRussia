@@ -29,7 +29,7 @@
     </Page.Resources>
 
     <Page.TopAppBar>
-        <AppBar IsOpen="True" IsSticky="True" Background="#ff006064">
+        <AppBar x:Name="appbar" IsOpen="True" IsSticky="True" Background="#ff006064">
             <StackPanel Orientation="Horizontal">
                 <AppBarButton x:Name="BackButton" Icon="Back" Label="Назад" Click="AppBarBackButton_Click"></AppBarButton>
                 <AppBarButton x:Name="ForwardButton" Icon="Forward" Label="Вперед" Click="AppBarForwardButton_Click"></AppBarButton>
@@ -54,7 +54,7 @@
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
-        <Popup x:Name="contentPopup" IsLightDismissEnabled="True">
+        <Popup x:Name="contentPopup" IsLightDismissEnabled="False">
             <Border x:Name="popUpContent" BorderBrush="Aqua" BorderThickness="4" Background="#1D7074">
                 <ScrollViewer>
                     <StackPanel>

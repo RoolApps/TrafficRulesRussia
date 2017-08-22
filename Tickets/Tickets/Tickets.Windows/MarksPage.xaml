@@ -54,7 +54,7 @@
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
-        <Popup x:Name="contentPopup" IsLightDismissEnabled="True">
+        <Popup x:Name="contentPopup" IsLightDismissEnabled="False">
             <Border x:Name="popUpContent" BorderBrush="Aqua" BorderThickness="4" Background="#1D7074">
                 <ScrollViewer>
                     <StackPanel>
