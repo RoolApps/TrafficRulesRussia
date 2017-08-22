@@ -106,9 +106,11 @@ namespace Tickets {
             setPopupContent(v);
             if(!contentPopup.IsOpen) {
                 contentPopup.IsOpen = true;
-            } else {
-                contentPopup.IsOpen = false;
             }
+        }
+
+        private void Button_Tapped( object sender, TappedRoutedEventArgs e ) {
+            contentPopup.IsOpen = false;
         }
     }
 }
