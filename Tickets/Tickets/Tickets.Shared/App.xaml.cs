@@ -50,6 +50,9 @@ namespace Tickets
         private void InitApp()
         {
             InitDBFile();
+#if WINDOWS_PHONE_APP
+            Windows.Phone.UI.Input.HardwareButtons.BackPressed += HardwareButtons_BackPressed;
+#endif
         }
 
         /// <summary>
@@ -101,6 +104,23 @@ namespace Tickets
                 return false;
             }
         }
+
+#if WINDOWS_PHONE_APP
+        private void HardwareButtons_BackPressed(object sender, Windows.Phone.UI.Input.BackPressedEventArgs e)
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+
+            if (rootFrame != null && rootFrame.CanGoBack && rootFrame.CurrentSourcePageType != typeof(Tickets.MainPage))
+            {
+                e.Handled = true;
+                rootFrame.GoBack();
+            }
+            else
+            {
+                e.Handled = false;
+            }
+        }
+#endif
 
         /// <summary>
         /// Вызывается при обычном запуске приложения пользователем.  Будут использоваться другие точки входа,

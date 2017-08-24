@@ -52,7 +52,11 @@ namespace Tickets
 
         private void rich_onBlockTapped(object sender, HLContent e)
         {
-            this.Frame.Navigate(typeof(SignMarkPage), GetCommonObject(e.Type, e.Data));
+            var commonObject = GetCommonObject(e.Type, e.Data);
+            if (!commonObject.IsNull)
+            {
+                this.Frame.Navigate(typeof(SignMarkPage), commonObject);
+            }
         }
 
         private CommonObject GetCommonObject(String type, String num)
@@ -60,9 +64,9 @@ namespace Tickets
             switch (type)
             {
                 case "signs":
-                    return new CommonObject(AppLogic.Static.PreloadedContent.Signs.Data.Single(sign => sign.num == num));
+                    return new CommonObject(AppLogic.Static.PreloadedContent.Signs.Data.SingleOrDefault(sign => sign.num == num));
                 case "marks":
-                    return new CommonObject(AppLogic.Static.PreloadedContent.Marks.Data.Single(mark => mark.num == num));
+                    return new CommonObject(AppLogic.Static.PreloadedContent.Marks.Data.SingleOrDefault(mark => mark.num == num));
                 default:
                     return null;
             }
@@ -82,8 +86,10 @@ namespace Tickets
                 },
                 (dataSource, current) =>
                 {
-                    
-                    this.Frame.Navigate(typeof(MainPage));
+                    if (this.Frame.CanGoBack)
+                    {
+                        this.Frame.GoBack();
+                    }
                     return null;
                 }
             );
