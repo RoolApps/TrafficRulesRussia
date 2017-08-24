@@ -99,5 +99,9 @@ namespace Tickets {
         private void AppBarHomeButton_Click( object sender, RoutedEventArgs e ) {
             this.Frame.Navigate(typeof(MainPage));
         }
+
+        private void Button_Tapped( object sender, TappedRoutedEventArgs e ) {
+            contentPopup.IsOpen = false;
+        }
     }
 }

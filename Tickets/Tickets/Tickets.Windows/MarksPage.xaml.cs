@@ -108,5 +108,9 @@ namespace Tickets {
                 contentPopup.IsOpen = true;
             }
         }
+
+        private void Button_Tapped( object sender, TappedRoutedEventArgs e ) {
+            contentPopup.IsOpen = false;
+        }
     }
 }
