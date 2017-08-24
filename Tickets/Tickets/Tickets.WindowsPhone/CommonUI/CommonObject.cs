@@ -13,6 +13,14 @@ namespace Tickets.CommonUI
         Signs sign = null;
         Marks mark = null;
 
+        public bool IsNull
+        {
+            get
+            {
+                return sign == null && mark == null;
+            }
+        }
+
         public String Num
         {
             get

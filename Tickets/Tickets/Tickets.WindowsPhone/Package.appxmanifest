@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
-  <Identity Name="3b0610c1-cff7-4d92-8aee-a1feb7b1d297" Publisher="CN=Oleg" Version="1.0.0.4" />
-  <mp:PhoneIdentity PhoneProductId="3b0610c1-cff7-4d92-8aee-a1feb7b1d297" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="49820RoolApps.48739C73D14D9" Publisher="CN=BFA47B4F-54BF-4775-A82E-445A05803A55" Version="1.1.0.6" />
+  <mp:PhoneIdentity PhoneProductId="92f44e49-fede-406e-8922-b7252e783786" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>Tickets.WindowsPhone</DisplayName>
+    <DisplayName>Билеты ПДД России</DisplayName>
     <PublisherDisplayName>Rool Apps</PublisherDisplayName>
     <Logo>Assets\Square50x50Logo.png</Logo>
   </Properties>
@@ -16,7 +16,7 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Tickets.WindowsPhone.App">
-      <m3:VisualElements DisplayName="Tickets.WindowsPhone" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="Tickets.WindowsPhone" ForegroundText="light" BackgroundColor="transparent">
+      <m3:VisualElements DisplayName="Билеты ПДД России" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="Tickets.WindowsPhone" ForegroundText="light" BackgroundColor="transparent">
         <m3:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\Square71x71Logo.png">
           <m3:ShowNameOnTiles>
             <m3:ShowOn Tile="square150x150Logo" />

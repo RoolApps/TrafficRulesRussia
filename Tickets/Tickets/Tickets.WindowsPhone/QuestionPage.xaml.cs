@@ -17,6 +17,7 @@ using AppLogic;
 using AppLogic.Interfaces;
 using XAMLMarkup;
 using Utils;
+using Windows.Phone.UI.Input;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
@@ -41,6 +42,7 @@ namespace Tickets
         /// This parameter is typically used to configure the page.</param>
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            HardwareButtons.BackPressed += HardwareButtons_BackPressed;
             if(e.NavigationMode != NavigationMode.New) {
                 string sessionState = await SettingSaver.GetSettingFromFile(GlobalConstants.sesstionState);
                 Session = Serializer.DeserializeFromString<Session>(sessionState);
@@ -92,7 +94,14 @@ namespace Tickets
                 });
         }
 
+        private void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
+        {
+            e.Handled = true;
+            Frame.Navigate(typeof(MainPage));
+        }
+
         protected override async void OnNavigatedFrom( NavigationEventArgs e ) {
+            HardwareButtons.BackPressed -= HardwareButtons_BackPressed;
             await SettingSaver.SaveSettingToFile(GlobalConstants.sesstionState, Serializer.SerializeToString(Session));
         }
 

@@ -16,6 +16,7 @@ using AppLogic.Interfaces;
 using Utils;
 using AppLogic;
 using AppLogic.Enums;
+using Windows.Phone.UI.Input;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
@@ -34,7 +35,6 @@ namespace Tickets
         {
             this.InitializeComponent();
         }
-
         /// <summary>
         /// Invoked when this page is about to be displayed in a Frame.
         /// </summary>
@@ -42,6 +42,7 @@ namespace Tickets
         /// This parameter is typically used to configure the page.</param>
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            HardwareButtons.BackPressed += HardwareButtons_BackPressed;
             if(e.NavigationMode != NavigationMode.New) {
                 string sessionState = await SettingSaver.GetSettingFromFile(GlobalConstants.sesstionState);
                 session = Serializer.DeserializeFromString<Session>(sessionState);
@@ -51,6 +52,12 @@ namespace Tickets
             ISessionStatistics statistics;
             var creationResult = SessionStatisticsFactory.CreateSessionStatistics(session, out statistics);
             gridResults.DataContext = statistics;
+        }
+
+        private void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
+        {
+            e.Handled = true;
+            Frame.Navigate(typeof(MainPage));
         }
 
         protected override async void OnNavigatedFrom( NavigationEventArgs e ) {
@@ -91,6 +98,11 @@ namespace Tickets
             public int[] TicketNums { get { return null; } }
 
             public QuestionsGenerationMode Mode { get { return QuestionsGenerationMode.Questions; } }
+        }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            HardwareButtons.BackPressed -= HardwareButtons_BackPressed;
         }
     }
 }

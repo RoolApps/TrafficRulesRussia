@@ -26,6 +26,8 @@ namespace Tickets
     /// </summary>
     public sealed partial class SignsMarksPage : Page
     {
+        SelectionChangedEventHandler handler = null;
+
         public SignsMarksPage()
         {
             this.NavigationCacheMode = NavigationCacheMode.Required;
@@ -57,9 +59,6 @@ namespace Tickets
                     throw new NotImplementedException(String.Format("Unexpected type: {0}", e.Parameter));
                 }
 
-                SelectionChangedEventHandler handler = null;
-
-
                 handler = (s, ev) =>
                 {
                     if (ev.AddedItems.Count == 0)
@@ -73,6 +72,7 @@ namespace Tickets
                     else
                     {
                         var commonObjectsArray = commonObjects.Single(commonObject => commonObject.Key.Equals(ev.AddedItems.Single().ToString())).ToArray();
+                        cnvsSignsMarks.DataSource = null;
                         cnvsSignsMarks.DataSource = new VirtualLinkedList<CommonObject[]>(new CommonObject[][] { commonObjectsArray },
                         (dataSource, current) =>
                         {
@@ -80,22 +80,32 @@ namespace Tickets
                         },
                         (dataSource, current) =>
                         {
-                            this.cmbSections.SelectionChanged -= handler;
-                            this.Frame.Navigate(typeof(MainPage));
+                            if (this.Frame.CanGoBack)
+                            {
+                                this.Frame.GoBack();
+                            }
                             return null;
                         });
                     }
                 };
-                this.cmbSections.SelectionChanged += handler;
                 var itemsSource = commonObjects.Select(commonObject => commonObject.Key).ToArray();
                 if (itemsSource.Length < 6)
                 {
                     itemsSource = itemsSource.Concat(Enumerable.Range(0, 6 - itemsSource.Length).Select(i => String.Empty)).ToArray();
                 }
                 this.cmbSections.ItemsSource = itemsSource;
+                this.cmbSections.SelectionChanged += handler;
                 this.cmbSections.SelectedItem = itemsSource.First();
             }
             
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            if (e.NavigationMode == NavigationMode.Back)
+            {
+                this.cmbSections.SelectionChanged -= handler;
+            }
         }
 
         private void Image_Tapped(object sender, TappedRoutedEventArgs e)
